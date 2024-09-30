@@ -93,7 +93,7 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACPP_Player::Look);
 
-		EnhancedInputComponent->BindAction(DrawShapeAction, ETriggerEvent::Completed, this, &ACPP_Player::DrawShape);
+		EnhancedInputComponent->BindAction(DrawShapeAction, ETriggerEvent::Started, this, &ACPP_Player::DrawShape);
 	}
 }
 
@@ -101,9 +101,9 @@ void ACPP_Player::DrawShape()
 {
 	if (ShapeFabric)
 	{
-		ShapeFabric->Draw(0);
-		ShapeFabric->Draw(1);
-		ShapeFabric->Draw(2);
-		ShapeFabric->Draw(3);
+		for (int i = 0; i < ShapeFabric->Shapes.Num(); ++i)
+		{
+			ShapeFabric->Draw(i);
+		}
 	}
 }
