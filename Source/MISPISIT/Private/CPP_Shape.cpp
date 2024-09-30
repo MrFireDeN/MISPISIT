@@ -19,6 +19,8 @@ ACPP_Shape::ACPP_Shape()
 void ACPP_Shape::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Draw();
 }
 
 // Called every frame

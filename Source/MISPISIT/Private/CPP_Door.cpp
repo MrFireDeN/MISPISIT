@@ -7,8 +7,6 @@ ACPP_Door::ACPP_Door()
 {
 	Width = 0.5;
 	Height = 1;
-
-	SetActorScale3D(FVector(0.05, Width, Height));
 }
 
 void ACPP_Door::Draw()

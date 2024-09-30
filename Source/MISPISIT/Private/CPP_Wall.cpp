@@ -8,8 +8,6 @@ ACPP_Wall::ACPP_Wall()
 	Length = 2;
 	Width = 2;
 	Height = 2;
-
-	SetActorScale3D(FVector(Length, Width, Height));
 }
 
 void ACPP_Wall::Draw()
