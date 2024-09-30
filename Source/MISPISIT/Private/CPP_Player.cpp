@@ -8,7 +8,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "ToolBuilderUtil.h"
 #include "Animation/AnimInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACPP_Player::ACPP_Player()
@@ -42,6 +44,8 @@ void ACPP_Player::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	ShapeFabric = Cast<ACPP_ShapeFabric>(UGameplayStatics::GetActorOfClass(GetWorld(), ACPP_ShapeFabric::StaticClass()));
 }
 
 void ACPP_Player::Move(const FInputActionValue& Value)
@@ -88,8 +92,18 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACPP_Player::Look);
+
+		EnhancedInputComponent->BindAction(DrawShapeAction, ETriggerEvent::Completed, this, &ACPP_Player::DrawShape);
 	}
 }
 
-
-
+void ACPP_Player::DrawShape()
+{
+	if (ShapeFabric)
+	{
+		ShapeFabric->Draw(0);
+		ShapeFabric->Draw(1);
+		ShapeFabric->Draw(2);
+		ShapeFabric->Draw(3);
+	}
+}

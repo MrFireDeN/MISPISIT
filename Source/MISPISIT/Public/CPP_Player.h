@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Kismet/GameplayStatics.h"
+#include "CPP_ShapeFabric.h"
 #include "CPP_Player.generated.h"
 
 class USpringArmComponent;
@@ -38,8 +40,14 @@ class MISPISIT_API ACPP_Player : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* DrawShapeAction;
+
 public:
 	ACPP_Player();
+
+private:
+	void DrawShape();
 
 protected:
 	virtual void BeginPlay() override;
@@ -47,6 +55,9 @@ protected:
 	void Move(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
+	
+	UPROPERTY(BlueprintReadOnly)
+	ACPP_ShapeFabric* ShapeFabric;
 
 public:	
 	// Called every frame
