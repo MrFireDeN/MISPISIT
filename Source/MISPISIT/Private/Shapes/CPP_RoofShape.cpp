@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CPP_Roof.h"
+#include "Shapes/CPP_RoofShape.h"
 
-ACPP_Roof::ACPP_Roof()
+ACPP_RoofShape::ACPP_RoofShape()
 {
 	Length = 2;
 	Width = 2;
 }
 
-void ACPP_Roof::Draw()
+void ACPP_RoofShape::Draw()
 {
 	Super::Draw();
 

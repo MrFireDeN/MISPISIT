@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CPP_Shape.h"
+#include "Shapes/CPP_Shape.h"
 
 // Sets default values
 ACPP_Shape::ACPP_Shape()

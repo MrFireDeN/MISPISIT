@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CPP_Pipe.h"
+#include "Shapes/CPP_PipeShape.h"
 
-ACPP_Pipe::ACPP_Pipe()
+ACPP_PipeShape::ACPP_PipeShape()
 {
 	Height = 1;
 }
 
-void ACPP_Pipe::Draw()
+void ACPP_PipeShape::Draw()
 {
 	Super::Draw();
 

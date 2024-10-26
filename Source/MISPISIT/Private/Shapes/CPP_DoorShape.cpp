@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CPP_Door.h"
+#include "Shapes/CPP_DoorShape.h"
 
-ACPP_Door::ACPP_Door()
+ACPP_DoorShape::ACPP_DoorShape()
 {
 	Width = 0.5;
 	Height = 1;
 }
 
-void ACPP_Door::Draw()
+void ACPP_DoorShape::Draw()
 {
 	Super::Draw();
 

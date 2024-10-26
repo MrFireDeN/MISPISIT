@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "CPP_Shape.h"
-#include "CPP_Roof.generated.h"
+#include "CPP_WallShape.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MISPISIT_API ACPP_Roof : public ACPP_Shape
+class MISPISIT_API ACPP_WallShape : public ACPP_Shape
 {
 	GENERATED_BODY()
 
 public:
-	ACPP_Roof();
+	ACPP_WallShape();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shape Dimensions")
@@ -24,6 +24,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shape Dimensions")
 	float Width;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shape Dimensions")
+	float Height;
+	
 public:
 	virtual void Draw() override;
 };

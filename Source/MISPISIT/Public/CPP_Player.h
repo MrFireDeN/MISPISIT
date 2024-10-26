@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "Kismet/GameplayStatics.h"
-#include "CPP_ShapeFabric.h"
+#include "Shapes/CPP_ShapeFabric.h"
 #include "CPP_Player.generated.h"
 
 class USpringArmComponent;

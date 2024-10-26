@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "CPP_Shape.h"
-#include "CPP_Door.generated.h"
+#include "CPP_DoorShape.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MISPISIT_API ACPP_Door : public ACPP_Shape
+class MISPISIT_API ACPP_DoorShape : public ACPP_Shape
 {
 	GENERATED_BODY()
 
 public:
-	ACPP_Door();
+	ACPP_DoorShape();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shape Dimensions")
