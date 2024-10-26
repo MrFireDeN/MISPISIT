@@ -1,5 +1,13 @@
+// CPP_Door.cpp
+
 #include "House/CPP_Door.h"
 
+/**
+ * @brief Toggles the door's state between open and closed, with a message indicating the new state.
+ * 
+ * Calls IsOpen() to check the current state. If the door is open, it prints "Door closed"; if closed,
+ * it prints "Door opened". Override this function to implement actual door state tracking.
+ */
 void ACPP_Door::Toggle()
 {
 	if (IsOpen())
@@ -12,6 +20,14 @@ void ACPP_Door::Toggle()
 	}
 }
 
+/**
+ * @brief Returns whether the door is open. 
+ * 
+ * Default implementation always returns false, meaning the door is closed.
+ * Override this function to return the actual state of the door.
+ * 
+ * @return false, indicating the door is closed by default.
+ */
 bool ACPP_Door::IsOpen()
 {
 	return false;
