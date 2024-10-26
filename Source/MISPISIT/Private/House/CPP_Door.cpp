@@ -12,11 +12,11 @@ void ACPP_Door::Toggle()
 {
 	if (IsOpen())
 	{
-		UKismetSystemLibrary::PrintString(this, "Door closed");
+		UKismetSystemLibrary::PrintString(this, Name + ": closed");
 	}
 	else
 	{
-		UKismetSystemLibrary::PrintString(this, "Door opened");
+		UKismetSystemLibrary::PrintString(this, Name + ": opened");
 	}
 }
 
