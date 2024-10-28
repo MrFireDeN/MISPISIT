@@ -24,38 +24,51 @@ class MISPISIT_API UCPP_BuildingFactory : public UObject
 
 public:
 	/**
-	 * @brief Creates a new instance of ACPP_Door.
+	 * @brief Creates a new instance of ACPP_Door with specified dimensions.
 	 * 
-	 * This function should be overridden in subclasses to create and return a door instance.
+	 * @param World The world context in which the door should be spawned.
+	 * @param Width The width of the door in meters. Default is 1 meter.
+	 * @param Height The height of the door in meters. Default is 2 meters.
 	 * 
 	 * @return Pointer to the created ACPP_Door object, or nullptr if not implemented.
 	 */
-	virtual ACPP_Door* CreateDoor();
+	UFUNCTION(BlueprintCallable)
+	virtual ACPP_Door* CreateDoor(UWorld* World, float Width = 1, float Height = 2);
 
 	/**
-	 * @brief Creates a new instance of ACPP_Roof.
+	 * @brief Creates a new instance of ACPP_Roof with specified dimensions.
 	 * 
-	 * This function should be overridden in subclasses to create and return a roof instance.
+	 * @param World The world context in which the roof should be spawned.
+	 * @param Length The length of the roof in meters. Default is 4 meters.
+	 * @param Width The width of the roof in meters. Default is 4 meters.
 	 * 
 	 * @return Pointer to the created ACPP_Roof object, or nullptr if not implemented.
 	 */
-	virtual ACPP_Roof* CreateRoof();
+	UFUNCTION(BlueprintCallable)
+	virtual ACPP_Roof* CreateRoof(UWorld* World, float Length = 4, float Width = 4);
 
 	/**
-	 * @brief Creates a new instance of ACPP_Wall.
+	 * @brief Creates a new instance of ACPP_Wall with specified dimensions.
 	 * 
-	 * This function should be overridden in subclasses to create and return a wall instance.
+	 * @param World The world context in which the wall should be spawned.
+	 * @param Length The length of the wall in meters. Default is 4 meters.
+	 * @param Width The width of the wall in meters. Default is 4 meters.
+	 * @param Height The height of the wall in meters. Default is 3 meters.
 	 * 
 	 * @return Pointer to the created ACPP_Wall object, or nullptr if not implemented.
 	 */
-	virtual ACPP_Wall* CreateWall();
+	UFUNCTION(BlueprintCallable)
+	virtual ACPP_Wall* CreateWall(UWorld* World, float Length = 4, float Width = 4, float Height = 3);
 
 	/**
-	 * @brief Creates a new instance of ACPP_Window.
+	 * @brief Creates a new instance of ACPP_Window with specified dimensions.
 	 * 
-	 * This function should be overridden in subclasses to create and return a window instance.
+	 * @param World The world context in which the window should be spawned.
+	 * @param Width The width of the window in meters. Default is 1.5 meters.
+	 * @param Height The height of the window in meters. Default is 1.5 meters.
 	 * 
 	 * @return Pointer to the created ACPP_Window object, or nullptr if not implemented.
 	 */
-	virtual ACPP_Window* CreateWindow();
+	UFUNCTION(BlueprintCallable)
+	virtual ACPP_Window* CreateWindow(UWorld* World, float Width = 1.5, float Height = 1.5);
 };
