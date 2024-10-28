@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "House/CPP_BuildingFactory.h"
-#include "House/Door/CPP_MedievalDoor.h"
-#include "House/Roof/CPP_MedievalRoof.h"
-#include "House/Wall/CPP_MedievalWall.h"
-#include "House/Window/CPP_MedievalWindow.h"
+#include "../CPP_BuildingFactory.h"
+#include "../Door/CPP_MedievalDoor.h"
+#include "../Roof/CPP_MedievalRoof.h"
+#include "../Wall/CPP_MedievalWall.h"
+#include "../Window/CPP_MedievalWindow.h"
 #include "CPP_MedievalBuildingFactory.generated.h"
 
 /**

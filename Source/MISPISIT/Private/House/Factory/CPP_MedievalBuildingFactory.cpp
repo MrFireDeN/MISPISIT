@@ -1,6 +1,6 @@
 // CPP_MedievalBuildingFactory.cpp
 
-#include "House/CPP_MedievalBuildingFactory.h"
+#include "House/Factory/CPP_MedievalBuildingFactory.h"
 
 UCPP_MedievalBuildingFactory::UCPP_MedievalBuildingFactory()
 {
