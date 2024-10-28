@@ -13,7 +13,7 @@
  * Inherits from ACPP_BuildingComponent and adds properties for width and height, along with functions to toggle and check
  * the state of a light associated with the window.
  */
-UCLASS()
+UCLASS(Abstract)
 class MISPISIT_API ACPP_Window : public ACPP_BuildingComponent
 {
 	GENERATED_BODY()

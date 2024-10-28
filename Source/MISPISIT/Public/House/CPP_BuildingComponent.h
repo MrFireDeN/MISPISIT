@@ -14,7 +14,7 @@
  * This class provides the basic structure and functions required to initialize and spawn a building component. 
  * The component displays a spawn message when it is initialized in the game world.
  */
-UCLASS()
+UCLASS(Abstract)
 class MISPISIT_API ACPP_BuildingComponent : public AActor
 {
 	GENERATED_BODY()

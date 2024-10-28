@@ -13,7 +13,7 @@
  * Inherits from ACPP_BuildingComponent and provides properties for setting the roof's
  * length and width, allowing for customizable roof sizes within the game environment.
  */
-UCLASS()
+UCLASS(Abstract)
 class MISPISIT_API ACPP_Roof : public ACPP_BuildingComponent
 {
 	GENERATED_BODY()

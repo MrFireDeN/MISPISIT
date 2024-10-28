@@ -13,7 +13,7 @@
  * Inherits from ACPP_BuildingComponent and adds properties for length, width, and height,
  * allowing for flexible wall sizing within the game environment.
  */
-UCLASS()
+UCLASS(Abstract)
 class MISPISIT_API ACPP_Wall : public ACPP_BuildingComponent
 {
 	GENERATED_BODY()

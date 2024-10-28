@@ -13,7 +13,7 @@
  * Inherits from ACPP_BuildingComponent, adding properties for width and height, and functions to toggle
  * the door state and check if it is open.
  */
-UCLASS()
+UCLASS(Abstract)
 class MISPISIT_API ACPP_Door : public ACPP_BuildingComponent
 {
 	GENERATED_BODY()
