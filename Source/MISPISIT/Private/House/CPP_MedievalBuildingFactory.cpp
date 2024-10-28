@@ -7,22 +7,35 @@ UCPP_MedievalBuildingFactory::UCPP_MedievalBuildingFactory()
 	
 }
 
-ACPP_Door* UCPP_MedievalBuildingFactory::CreateDoor(UWorld* World, float Width, float Height)
+ACPP_Door* UCPP_MedievalBuildingFactory::CreateDoor(float Width, float Height)
 {
-	return Super::CreateDoor(World);
+	// if (!World)
+	// {
+	// 	return nullptr;
+	// }
+
+	FActorSpawnParameters SpawnParams;
+	FVector Location = FVector(1200, 1200, 0);
+	FRotator Rotation = FRotator(0, 90, 0);
+
+	
+	ACPP_Door* Door = GetWorld()->SpawnActor<ACPP_MedievalDoor>(ACPP_MedievalDoor::StaticClass(), Location, Rotation, SpawnParams);
+	Door->Spawn();
+
+	return Door;
 }
 
-ACPP_Roof* UCPP_MedievalBuildingFactory::CreateRoof(UWorld* World, float Length, float Width)
+ACPP_Roof* UCPP_MedievalBuildingFactory::CreateRoof(float Length, float Width)
 {
-	return Super::CreateRoof(World);
+	return Super::CreateRoof();
 }
 
-ACPP_Wall* UCPP_MedievalBuildingFactory::CreateWall(UWorld* World, float Length, float Width, float Height)
+ACPP_Wall* UCPP_MedievalBuildingFactory::CreateWall(float Length, float Width, float Height)
 {
-	return Super::CreateWall(World);
+	return Super::CreateWall();
 }
 
-ACPP_Window* UCPP_MedievalBuildingFactory::CreateWindow(UWorld* World, float Width, float Height)
+ACPP_Window* UCPP_MedievalBuildingFactory::CreateWindow(float Width, float Height)
 {
-	return Super::CreateWindow(World);
+	return Super::CreateWindow();
 }
