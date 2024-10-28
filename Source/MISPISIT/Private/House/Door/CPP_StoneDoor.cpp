@@ -1,24 +1,26 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
+﻿// CPP_StoneDoor.cpp
 
 #include "House/Door/CPP_StoneDoor.h"
 
-
-// Sets default values
 ACPP_StoneDoor::ACPP_StoneDoor()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
+	RootComponent = DoorMesh;
+	
+	const ConstructorHelpers::FObjectFinder<UStaticMesh>
+		DoorMeshAsset(TEXT("/Game/Megascans/3D_Assets/Modular_Wooden_Door_xedsdifdw/S_Modular_Wooden_Door_xedsdifdw_lod3_Var1.S_Modular_Wooden_Door_xedsdifdw_lod3_Var1"));
+	if (DoorMeshAsset.Succeeded())
+	{
+		DoorMesh->SetStaticMesh(DoorMeshAsset.Object);
+	}
 }
 
-// Called when the game starts or when spawned
 void ACPP_StoneDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ACPP_StoneDoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

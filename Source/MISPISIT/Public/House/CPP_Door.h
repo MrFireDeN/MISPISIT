@@ -36,6 +36,7 @@ protected:
 	float Height;
 
 public:
+	
 	/**
 	 * @brief Toggles the door's open or closed state, displaying a message based on the action.
 	 * 
@@ -53,4 +54,13 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	virtual bool IsOpen();
+
+protected:
+	/**
+	 * @brief Mesh component representing the visual appearance of the door.
+	 * 
+	 * This component provides the static mesh for the door, allowing it to be rendered in the game world.
+	 */
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* DoorMesh;
 };
