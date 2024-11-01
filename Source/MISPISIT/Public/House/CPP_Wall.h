@@ -47,6 +47,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* WallMesh;
 
+	FString WallMeshAssetPath;
+	FString WallMeshCornerAssetPath;
+
 public:
 	virtual void Initialize(FString WallType);
 };
