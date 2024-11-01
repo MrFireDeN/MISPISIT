@@ -42,4 +42,14 @@ protected:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Height;
+
+protected:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* WallLong;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* WallShort;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* WallCorner;
 };
