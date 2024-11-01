@@ -45,11 +45,8 @@ protected:
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* WallLong;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* WallShort;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* WallCorner;
+	UStaticMeshComponent* WallMesh;
+
+public:
+	virtual void Initialize(FString WallType);
 };

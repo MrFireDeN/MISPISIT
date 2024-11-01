@@ -19,4 +19,6 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void Initialize(FString WallType) override;
 };

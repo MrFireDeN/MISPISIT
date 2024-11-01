@@ -9,3 +9,6 @@
  * as all functionality is provided through properties that define the wall's dimensions.
  * Additional behavior and functionality can be implemented here as needed.
  */
+void ACPP_Wall::Initialize(FString WallType)
+{
+}
