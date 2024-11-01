@@ -63,4 +63,6 @@ protected:
 	 */
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* DoorMesh;
+
+	FString DoorMeshAssetPath;
 };

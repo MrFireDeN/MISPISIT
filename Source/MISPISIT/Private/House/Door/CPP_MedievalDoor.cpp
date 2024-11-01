@@ -5,13 +5,18 @@
 // Sets default values
 ACPP_MedievalDoor::ACPP_MedievalDoor()
 {
+	DoorMeshAssetPath = "/Game/Project/Models/House/Doors/SM_MedievalDoor.SM_MedievalDoor";
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
 	RootComponent = DoorMesh;
-	
-	const ConstructorHelpers::FObjectFinder<UStaticMesh> DoorMeshAsset(TEXT("/Game/Megascans/3D_Assets/Medieval_Modular_Wall_ucskcaehx/S_Medieval_Modular_Wall_ucskcaehx_lod3_Var1.S_Medieval_Modular_Wall_ucskcaehx_lod3_Var1"));
-	if (DoorMeshAsset.Succeeded())
+
+	UStaticMesh* DoorMeshAsset = LoadObject<UStaticMesh>(nullptr, *DoorMeshAssetPath);
+	if (DoorMeshAsset)
 	{
-		DoorMesh->SetStaticMesh(DoorMeshAsset.Object);
+		DoorMesh->SetStaticMesh(DoorMeshAsset);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to load wall mesh asset at path: %s"), *DoorMeshAssetPath);
 	}
 }
 

@@ -5,8 +5,7 @@
 
 ACPP_BrickWall::ACPP_BrickWall()
 {
-	WallMeshAssetPath = "/Game/Megascans/3D_Assets/Modular_Building_Base_Wall_Kit_wdetchodw/S_Modular_Building_Base_Wall_Kit_wdetchodw_lod3_Var1.S_Modular_Building_Base_Wall_Kit_wdetchodw_lod3_Var1";
-	
+	WallMeshAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall.SM_BrickWall";
 	WallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WallMesh"));
 	RootComponent = WallMesh;
 
