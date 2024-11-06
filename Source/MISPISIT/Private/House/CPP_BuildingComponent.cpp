@@ -33,3 +33,16 @@ void ACPP_BuildingComponent::Spawn()
 	
 	UKismetSystemLibrary::PrintString(this, SpawnText);
 }
+
+bool ACPP_BuildingComponent::LoadMeshFromAsset(UStaticMeshComponent* Mesh, FString AssetPath)
+{
+	UStaticMesh* MeshAsset = LoadObject<UStaticMesh>(nullptr, *AssetPath);
+	if (MeshAsset)
+	{
+		Mesh->SetStaticMesh(MeshAsset);
+		return true;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Failed to load mesh asset at path: %s"), *AssetPath);
+	return false;
+}

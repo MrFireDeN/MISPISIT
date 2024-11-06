@@ -32,3 +32,33 @@ bool ACPP_Door::IsOpen()
 {
 	return false;
 }
+
+void ACPP_Door::InitializeMeshes()
+{
+	// Component creation and attachment
+	DoorFrameMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorFrameMesh"));
+	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
+	RootComponent = DoorFrameMesh;
+	DoorMesh->SetupAttachment(DoorFrameMesh);
+
+	// Door frame setup
+	const FVector DoorFrameSize(30.0f);
+	DoorFrameMesh->SetWorldScale3D(DoorFrameSize);
+
+	// Door setup with relative scale and location
+	const FVector DoorScale(1.0f / 30.0f);
+	const FVector DoorLocation(94.94f / 30.0f, -4.97f / 30.0f, 0.0f);
+	DoorMesh->SetRelativeScale3D(DoorScale);
+	DoorMesh->SetRelativeLocation(DoorLocation);
+
+	// Load and assign meshes
+	if (!LoadMeshFromAsset(DoorFrameMesh, DoorFrameMeshAssetPath))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to load DoorFrameMesh from %s"), *DoorFrameMeshAssetPath);
+	}
+    
+	if (!LoadMeshFromAsset(DoorMesh, DoorMeshAssetPath))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to load DoorMesh from %s"), *DoorMeshAssetPath);
+	}
+}

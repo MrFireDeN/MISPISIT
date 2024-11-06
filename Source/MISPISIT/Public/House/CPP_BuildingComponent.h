@@ -54,4 +54,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	virtual void Spawn();
+
+	static bool LoadMeshFromAsset(UStaticMeshComponent* Mesh, FString AssetPath);
 };

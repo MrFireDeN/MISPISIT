@@ -4,19 +4,12 @@
 
 ACPP_StoneDoor::ACPP_StoneDoor()
 {
+	
+	// Asset paths
+	DoorFrameMeshAssetPath = "/Game/Project/Models/House/Doors/SM_StoneDoorFrame.SM_StoneDoorFrame";
 	DoorMeshAssetPath = "/Game/Project/Models/House/Doors/SM_StoneDoor.SM_StoneDoor";
-	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
-	RootComponent = DoorMesh;
 
-	UStaticMesh* DoorMeshAsset = LoadObject<UStaticMesh>(nullptr, *DoorMeshAssetPath);
-	if (DoorMeshAsset)
-	{
-		DoorMesh->SetStaticMesh(DoorMeshAsset);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Failed to load wall mesh asset at path: %s"), *DoorMeshAssetPath);
-	}
+	InitializeMeshes();
 }
 
 void ACPP_StoneDoor::BeginPlay()
