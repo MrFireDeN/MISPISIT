@@ -17,12 +17,11 @@ ACPP_Door* UCPP_BuildingFactory::CreateDoor(FTransform Transform)
 /**
  * @brief Creates a new instance of ACPP_Roof with specified dimensions.
  * 
- * @param Length The length of the roof in meters.
- * @param Width The width of the roof in meters.
+ * @param Transform
  * 
  * @return nullptr, as the default implementation does not create a roof instance.
  */
-ACPP_Roof* UCPP_BuildingFactory::CreateRoof(float Length, float Width)
+ACPP_Roof* UCPP_BuildingFactory::CreateRoof(FTransform Transform)
 {
  return nullptr;
 }

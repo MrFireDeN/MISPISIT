@@ -18,9 +18,17 @@ ACPP_Door* UCPP_MedievalBuildingFactory::CreateDoor(FTransform Transform)
 	return Door;
 }
 
-ACPP_Roof* UCPP_MedievalBuildingFactory::CreateRoof(float Length, float Width)
+ACPP_Roof* UCPP_MedievalBuildingFactory::CreateRoof(FTransform Transform)
 {
-	return Super::CreateRoof();
+	FActorSpawnParameters SpawnParams;
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+	FVector Scale3d = Transform.GetScale3D();
+	
+	ACPP_Roof* Roof = GetWorld()->SpawnActor<ACPP_MedievalRoof>(ACPP_MedievalRoof::StaticClass(), Location, Rotation, SpawnParams);
+	Roof->SetActorScale3D(Scale3d);
+
+	return Roof;
 }
 
 ACPP_Wall* UCPP_MedievalBuildingFactory::CreateWall(FTransform Transform, EWallType WallType)

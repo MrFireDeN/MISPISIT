@@ -23,7 +23,7 @@ public:
 
 	virtual ACPP_Door* CreateDoor(FTransform Transform) override;
 
-	virtual ACPP_Roof* CreateRoof(float Length = 4, float Width = 4) override;
+	virtual ACPP_Roof* CreateRoof(FTransform Transform) override;
 	
 	virtual ACPP_Wall* CreateWall(FTransform Transform, EWallType WallType) override;
 

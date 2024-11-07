@@ -36,13 +36,12 @@ public:
 	/**
 	 * @brief Creates a new instance of ACPP_Roof with specified dimensions.
 	 * 
-	 * @param Length The length of the roof in meters. Default is 4 meters.
-	 * @param Width The width of the roof in meters. Default is 4 meters.
+	 * @param Transform
 	 * 
 	 * @return Pointer to the created ACPP_Roof object, or nullptr if not implemented.
 	 */
 	UFUNCTION(BlueprintCallable)
-	virtual ACPP_Roof* CreateRoof(float Length = 4, float Width = 4);
+	virtual ACPP_Roof* CreateRoof(FTransform Transform);
 
 	/**
 	 * @brief Creates a new instance of ACPP_Wall with specified dimensions.

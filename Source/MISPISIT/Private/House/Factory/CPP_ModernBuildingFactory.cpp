@@ -18,9 +18,17 @@ ACPP_Door* UCPP_ModernBuildingFactory::CreateDoor(FTransform Transform)
 	return Door;
 }
 
-ACPP_Roof* UCPP_ModernBuildingFactory::CreateRoof(float Length, float Width)
+ACPP_Roof* UCPP_ModernBuildingFactory::CreateRoof(FTransform Transform)
 {
-	return Super::CreateRoof(Length, Width);
+	FActorSpawnParameters SpawnParams;
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+	FVector Scale3d = Transform.GetScale3D();
+	
+	ACPP_Roof* Roof = GetWorld()->SpawnActor<ACPP_ModernRoof>(ACPP_ModernRoof::StaticClass(), Location, Rotation, SpawnParams);
+	Roof->SetActorScale3D(Scale3d);
+
+	return Roof;
 }
 
 ACPP_Wall* UCPP_ModernBuildingFactory::CreateWall(FTransform Transform, EWallType WallType)

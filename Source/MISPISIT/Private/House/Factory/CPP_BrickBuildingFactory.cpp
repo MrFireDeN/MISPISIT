@@ -2,6 +2,8 @@
 
 #include "House/Factory/CPP_BrickBuildingFactory.h"
 
+#include "Math/TransformCalculus3D.h"
+
 UCPP_BrickBuildingFactory::UCPP_BrickBuildingFactory()
 {
 }
@@ -17,9 +19,17 @@ ACPP_Door* UCPP_BrickBuildingFactory::CreateDoor(FTransform Transform)
 	return Door;
 }
 
-ACPP_Roof* UCPP_BrickBuildingFactory::CreateRoof(float Length, float Width)
+ACPP_Roof* UCPP_BrickBuildingFactory::CreateRoof(FTransform Transform)
 {
-	return Super::CreateRoof(Length, Width);
+	FActorSpawnParameters SpawnParams;
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+	FVector Scale3d = Transform.GetScale3D();
+	
+	ACPP_Roof* Roof = GetWorld()->SpawnActor<ACPP_BrickRoof>(ACPP_BrickRoof::StaticClass(), Location, Rotation, SpawnParams);
+	Roof->SetActorScale3D(Scale3d);
+
+	return Roof;
 }
 
 ACPP_Wall* UCPP_BrickBuildingFactory::CreateWall(FTransform Transform, EWallType WallType)
