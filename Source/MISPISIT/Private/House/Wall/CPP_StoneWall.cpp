@@ -12,6 +12,7 @@ ACPP_StoneWall::ACPP_StoneWall()
 	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_StoneWall_Tile.SM_StoneWall_Tile";
 	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_StoneWall_Corner.SM_StoneWall_Corner";
 	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_StoneWall_Door.SM_StoneWall_Door";
+	WallMeshForWindowAssetPath = "/Game/Project/Models/House/Walls/SM_StoneWall_Window.SM_StoneWall_Window";
 
 	ACPP_Wall::InitializeMeshes();
 }

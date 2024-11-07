@@ -12,6 +12,7 @@ ACPP_MedievalWall::ACPP_MedievalWall()
 	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_MedievalWall_Tile.SM_MedievalWall_Tile";
 	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_MedievalWall_Corner.SM_MedievalWall_Corner";
 	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_MedievalWall_Door.SM_MedievalWall_Door";
+	WallMeshForWindowAssetPath = "/Game/Project/Models/House/Walls/SM_MedievalWall_Window.SM_MedievalWall_Window";
 
 	ACPP_Wall::InitializeMeshes();
 }

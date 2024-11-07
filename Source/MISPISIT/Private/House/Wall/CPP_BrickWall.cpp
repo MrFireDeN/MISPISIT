@@ -10,6 +10,7 @@ ACPP_BrickWall::ACPP_BrickWall()
 	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall_Tile.SM_BrickWall_Tile";
 	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall_Corner.SM_BrickWall_Corner";
 	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall_Door.SM_BrickWall_Door";
+	WallMeshForWindowAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall_Window.SM_BrickWall_Window";
 
 	ACPP_Wall::InitializeMeshes();
 }

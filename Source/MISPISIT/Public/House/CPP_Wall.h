@@ -15,7 +15,8 @@ enum class EWallType : uint8
 {
 	Default UMETA(DisplayName = "Default"),
 	Corner UMETA(DisplayName = "Corner"),
-	UpDoor UMETA(DisplayName = "UpDoor")
+	UpDoor UMETA(DisplayName = "UpDoor"),
+	ForWindow UMETA(DisplayName = "ForWindow")
 };
 
 /**
@@ -62,6 +63,7 @@ protected:
 	FString WallMeshTileAssetPath;
 	FString WallMeshCornerAssetPath;
 	FString WallMeshUpDoorAssetPath;
+	FString WallMeshForWindowAssetPath;
 	
 	virtual void InitializeMeshes() override;
 

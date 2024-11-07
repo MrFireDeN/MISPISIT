@@ -23,6 +23,10 @@ void ACPP_Wall::SetWallType(const EWallType NewWallType)
  case EWallType::UpDoor:
   LoadMeshFromAsset(WallMesh, WallMeshUpDoorAssetPath);
   break;
+		
+ case EWallType::ForWindow:
+  LoadMeshFromAsset(WallMesh, WallMeshForWindowAssetPath);
+  break;
 
  default:
   LoadMeshFromAsset(WallMesh, WallMeshTileAssetPath);

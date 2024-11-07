@@ -12,6 +12,7 @@ ACPP_ModernWall::ACPP_ModernWall()
 	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_ModernWall_Tile.SM_ModernWall_Tile";
 	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_ModernWall_Corner.SM_ModernWall_Corner";
 	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_ModernWall_Door.SM_ModernWall_Door";
+	WallMeshForWindowAssetPath = "/Game/Project/Models/House/Walls/SM_ModernWall_Window.SM_ModernWall_Window";
 
 	ACPP_Wall::InitializeMeshes();
 }
