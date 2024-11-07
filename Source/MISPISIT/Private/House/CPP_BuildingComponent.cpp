@@ -22,6 +22,10 @@ void ACPP_BuildingComponent::BeginPlay()
 	Spawn();
 }
 
+void ACPP_BuildingComponent::InitializeMeshes()
+{
+}
+
 /**
  * @brief Prints a message indicating that the component has been spawned.
  * 
