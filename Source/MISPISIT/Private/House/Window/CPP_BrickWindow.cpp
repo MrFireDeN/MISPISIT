@@ -7,8 +7,12 @@
 // Sets default values
 ACPP_BrickWindow::ACPP_BrickWindow()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Name = "Brick Window";
+
+	// Asset paths
+	WindowMeshAssetPath = "/Game/Project/Models/House/Windows/SM_BrickWindow.SM_BrickWindow";
+
+	ACPP_Window::InitializeMeshes();
 }
 
 // Called when the game starts or when spawned

@@ -7,8 +7,12 @@
 // Sets default values
 ACPP_MedievalWindow::ACPP_MedievalWindow()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Name = "Medieval Window";
+
+	// Asset paths
+	WindowMeshAssetPath = "/Game/Project/Models/House/Windows/SM_MedievalWindow.SM_MedievalWindow";
+
+	ACPP_Window::InitializeMeshes();
 }
 
 // Called when the game starts or when spawned

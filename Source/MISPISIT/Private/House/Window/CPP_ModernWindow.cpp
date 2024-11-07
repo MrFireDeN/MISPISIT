@@ -7,8 +7,12 @@
 // Sets default values
 ACPP_ModernWindow::ACPP_ModernWindow()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Name = "Modern Window";
+
+	// Asset paths
+	WindowMeshAssetPath = "/Game/Project/Models/House/Windows/SM_ModernWindow.SM_ModernWindow";
+
+	ACPP_Window::InitializeMeshes();
 }
 
 // Called when the game starts or when spawned
