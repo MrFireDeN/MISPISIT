@@ -32,3 +32,11 @@ bool ACPP_Window::IsLightOn()
 {
 	return false;
 }
+
+void ACPP_Window::InitializeMeshes()
+{
+	WindowMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WindowMesh"));
+	RootComponent = WindowMesh;
+
+	LoadMeshFromAsset(WindowMesh, WindowMeshAssetPath);
+}

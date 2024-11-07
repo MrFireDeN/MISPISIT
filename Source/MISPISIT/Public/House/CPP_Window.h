@@ -53,4 +53,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	virtual bool IsLightOn();
+
+protected:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* WindowMesh;
+
+	FString WindowMeshAssetPath;
+	
+	virtual void InitializeMeshes() override;
 };
