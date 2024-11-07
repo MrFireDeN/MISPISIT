@@ -34,4 +34,12 @@ protected:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Width;
+
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* RoofMesh;
+	
+	FString RoofMeshAssetPath;
+
+	virtual void InitializeMeshes() override;
 };

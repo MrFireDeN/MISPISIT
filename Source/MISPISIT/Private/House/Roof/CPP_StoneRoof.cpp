@@ -7,8 +7,12 @@
 // Sets default values
 ACPP_StoneRoof::ACPP_StoneRoof()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Name = "Stone Roof";
+
+	// Asset paths
+	RoofMeshAssetPath = "/Game/Project/Models/House/Roof/SM_StoneRoof.SM_StoneRoof";
+
+	ACPP_Roof::InitializeMeshes();
 }
 
 // Called when the game starts or when spawned

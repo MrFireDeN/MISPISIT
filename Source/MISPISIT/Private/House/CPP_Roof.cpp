@@ -9,3 +9,10 @@
  * as all functionality is defined by the properties that represent the roof's dimensions.
  * Additional behavior and functionality for ACPP_Roof can be implemented here as needed.
  */
+void ACPP_Roof::InitializeMeshes()
+{
+ RoofMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WindowMesh"));
+ RootComponent = RoofMesh;
+
+ LoadMeshFromAsset(RoofMesh, RoofMeshAssetPath);
+}
