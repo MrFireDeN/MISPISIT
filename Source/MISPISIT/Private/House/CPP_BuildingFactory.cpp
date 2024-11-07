@@ -5,12 +5,11 @@
 /**
  * @brief Creates a new instance of ACPP_Door with specified dimensions.
  * 
- * @param Width The width of the door in meters.
- * @param Height The height of the door in meters.
+ * @param Transform The width of the door in meters.
  * 
  * @return nullptr, as the default implementation does not create a door instance.
  */
-ACPP_Door* UCPP_BuildingFactory::CreateDoor(float Width, float Height)
+ACPP_Door* UCPP_BuildingFactory::CreateDoor(FTransform Transform)
 {
  return nullptr;
 }
@@ -31,13 +30,12 @@ ACPP_Roof* UCPP_BuildingFactory::CreateRoof(float Length, float Width)
 /**
  * @brief Creates a new instance of ACPP_Wall with specified dimensions.
  * 
- * @param Length The length of the wall in meters.
- * @param Width The width of the wall in meters.
- * @param Height The height of the wall in meters.
+ * @param Transform
+ * @param WallType
  * 
  * @return nullptr, as the default implementation does not create a wall instance.
  */
-ACPP_Wall* UCPP_BuildingFactory::CreateWall(float Length, float Width, float Height)
+ACPP_Wall* UCPP_BuildingFactory::CreateWall(FTransform Transform, EWallType WallType)
 {
  return nullptr;
 }

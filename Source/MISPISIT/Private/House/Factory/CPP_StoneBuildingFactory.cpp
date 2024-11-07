@@ -6,15 +6,13 @@ UCPP_StoneBuildingFactory::UCPP_StoneBuildingFactory()
 {
 }
 
-ACPP_Door* UCPP_StoneBuildingFactory::CreateDoor(float Width, float Height)
+ACPP_Door* UCPP_StoneBuildingFactory::CreateDoor(FTransform Transform)
 {
 	FActorSpawnParameters SpawnParams;
 	FVector Location = FVector(1200, 1200, 0);
 	FRotator Rotation = FRotator(0, 90, 0);
-
 	
 	ACPP_Door* Door = GetWorld()->SpawnActor<ACPP_StoneDoor>(ACPP_StoneDoor::StaticClass(), Location, Rotation, SpawnParams);
-	Door->Spawn();
 
 	return Door;
 }
@@ -24,9 +22,16 @@ ACPP_Roof* UCPP_StoneBuildingFactory::CreateRoof(float Length, float Width)
 	return Super::CreateRoof(Length, Width);
 }
 
-ACPP_Wall* UCPP_StoneBuildingFactory::CreateWall(float Length, float Width, float Height)
+ACPP_Wall* UCPP_StoneBuildingFactory::CreateWall(FTransform Transform, EWallType WallType)
 {
-	return Super::CreateWall(Length, Width, Height);
+	FActorSpawnParameters SpawnParams;
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+
+	ACPP_Wall* Wall = GetWorld()->SpawnActor<ACPP_StoneWall>(ACPP_StoneWall::StaticClass(), Location, Rotation, SpawnParams);
+	Wall->SetWallType(WallType);
+	
+	return Wall;
 }
 
 ACPP_Window* UCPP_StoneBuildingFactory::CreateWindow(float Width, float Height)

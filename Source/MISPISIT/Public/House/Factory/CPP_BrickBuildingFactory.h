@@ -18,11 +18,11 @@ class MISPISIT_API UCPP_BrickBuildingFactory : public UCPP_BuildingFactory
 public:
 	UCPP_BrickBuildingFactory();
 
-	virtual ACPP_Door* CreateDoor(float Width, float Height) override;
+	virtual ACPP_Door* CreateDoor(FTransform Transform) override;
 
 	virtual ACPP_Roof* CreateRoof(float Length, float Width) override;
 	
-	virtual ACPP_Wall* CreateWall(float Length, float Width, float Height) override;
+	virtual ACPP_Wall* CreateWall(FTransform Transform, EWallType WallType) override;
 
 	virtual ACPP_Window* CreateWindow(float Width, float Height) override;
 };

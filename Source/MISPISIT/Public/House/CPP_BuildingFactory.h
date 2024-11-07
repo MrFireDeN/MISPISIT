@@ -26,13 +26,12 @@ public:
 	/**
 	 * @brief Creates a new instance of ACPP_Door with specified dimensions.
 	 * 
-	 * @param Width The width of the door in meters. Default is 1 meter.
-	 * @param Height The height of the door in meters. Default is 2 meters.
+	 * @param Transform The width of the door in meters. Default is 1 meter.
 	 * 
 	 * @return Pointer to the created ACPP_Door object, or nullptr if not implemented.
 	 */
 	UFUNCTION(BlueprintCallable)
-	virtual ACPP_Door* CreateDoor(float Width = 1, float Height = 2);
+	virtual ACPP_Door* CreateDoor(FTransform Transform);
 
 	/**
 	 * @brief Creates a new instance of ACPP_Roof with specified dimensions.
@@ -48,14 +47,13 @@ public:
 	/**
 	 * @brief Creates a new instance of ACPP_Wall with specified dimensions.
 	 * 
-	 * @param Length The length of the wall in meters. Default is 4 meters.
-	 * @param Width The width of the wall in meters. Default is 4 meters.
-	 * @param Height The height of the wall in meters. Default is 3 meters.
+	 * @param Transform
+	 * @param WallType
 	 * 
 	 * @return Pointer to the created ACPP_Wall object, or nullptr if not implemented.
 	 */
 	UFUNCTION(BlueprintCallable)
-	virtual ACPP_Wall* CreateWall(float Length = 4, float Width = 4, float Height = 3);
+	virtual ACPP_Wall* CreateWall(FTransform Transform, EWallType WallType);
 
 	/**
 	 * @brief Creates a new instance of ACPP_Window with specified dimensions.
