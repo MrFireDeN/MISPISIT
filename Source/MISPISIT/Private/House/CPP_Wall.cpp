@@ -2,13 +2,30 @@
 
 #include "House/CPP_Wall.h"
 
-/**
- * @file CPP_Wall.cpp
- * 
- * Implementation file for ACPP_Wall. Currently, this file only includes the header for ACPP_Wall,
- * as all functionality is provided through properties that define the wall's dimensions.
- * Additional behavior and functionality can be implemented here as needed.
- */
-void ACPP_Wall::Initialize(FString WallType)
+void ACPP_Wall::InitializeMeshes()
 {
+ WallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WallMesh"));
+ RootComponent = WallMesh;
+ 
+ SetWallType(WallType);
+}
+
+void ACPP_Wall::SetWallType(const EWallType NewWallType)
+{
+ this->WallType = NewWallType;
+
+ switch (this->WallType)
+ {
+ case EWallType::Corner:
+  LoadMeshFromAsset(WallMesh, WallMeshCornerAssetPath);
+  break;
+		
+ case EWallType::UpDoor:
+  LoadMeshFromAsset(WallMesh, WallMeshUpDoorAssetPath);
+  break;
+
+ default:
+  LoadMeshFromAsset(WallMesh, WallMeshTileAssetPath);
+  break;
+ }
 }

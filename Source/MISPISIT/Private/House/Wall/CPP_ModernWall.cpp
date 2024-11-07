@@ -7,8 +7,13 @@
 // Sets default values
 ACPP_ModernWall::ACPP_ModernWall()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Name = "Modern Wall";
+	
+	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_ModernWall_Tile.SM_ModernWall_Tile";
+	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_ModernWall_Corner.SM_ModernWall_Corner";
+	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_ModernWall_Door.SM_ModernWall_Door";
+
+	ACPP_Wall::InitializeMeshes();
 }
 
 // Called when the game starts or when spawned

@@ -7,8 +7,13 @@
 // Sets default values
 ACPP_StoneWall::ACPP_StoneWall()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Name = "Stone Wall";
+	
+	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_StoneWall_Tile.SM_StoneWall_Tile";
+	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_StoneWall_Corner.SM_StoneWall_Corner";
+	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_StoneWall_Door.SM_StoneWall_Door";
+
+	ACPP_Wall::InitializeMeshes();
 }
 
 // Called when the game starts or when spawned

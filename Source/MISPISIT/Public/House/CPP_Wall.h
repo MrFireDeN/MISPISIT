@@ -7,6 +7,18 @@
 #include "CPP_Wall.generated.h"
 
 /**
+ * @enum EWallType
+ * @brief Enumerates the types of walls that can be created.
+ */
+UENUM(BlueprintType)
+enum class EWallType : uint8
+{
+	Default UMETA(DisplayName = "Default"),
+	Corner UMETA(DisplayName = "Corner"),
+	UpDoor UMETA(DisplayName = "UpDoor")
+};
+
+/**
  * @class ACPP_Wall
  * @brief Represents a wall component in a building, with customizable dimensions.
  * 
@@ -47,9 +59,18 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* WallMesh;
 
-	FString WallMeshAssetPath;
+	FString WallMeshTileAssetPath;
 	FString WallMeshCornerAssetPath;
+	FString WallMeshUpDoorAssetPath;
+	
+	virtual void InitializeMeshes() override;
+
+	/**
+	 * @brief The wall type, exposed on spawn for easy customization in the editor.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"))
+	EWallType WallType;
 
 public:
-	virtual void Initialize(FString WallType);
+	virtual void SetWallType(const EWallType NewWallType);
 };

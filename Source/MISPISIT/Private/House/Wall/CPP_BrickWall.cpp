@@ -5,19 +5,13 @@
 
 ACPP_BrickWall::ACPP_BrickWall()
 {
-	WallMeshAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall.SM_BrickWall";
-	WallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WallMesh"));
-	RootComponent = WallMesh;
+	Name = "Brick Wall";
+	
+	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall_Tile.SM_BrickWall_Tile";
+	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall_Corner.SM_BrickWall_Corner";
+	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_BrickWall_Door.SM_BrickWall_Door";
 
-	UStaticMesh* WallMeshAsset = LoadObject<UStaticMesh>(nullptr, *WallMeshAssetPath);
-	if (WallMeshAsset)
-	{
-		WallMesh->SetStaticMesh(WallMeshAsset);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Failed to load wall mesh asset at path: %s"), *WallMeshAssetPath);
-	}
+	ACPP_Wall::InitializeMeshes();
 }
 
 void ACPP_BrickWall::BeginPlay()
@@ -29,10 +23,5 @@ void ACPP_BrickWall::BeginPlay()
 void ACPP_BrickWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void ACPP_BrickWall::Initialize(FString WallType)
-{
-	Super::Initialize(WallType);
 }
 

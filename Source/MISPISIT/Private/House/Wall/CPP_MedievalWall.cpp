@@ -7,8 +7,13 @@
 // Sets default values
 ACPP_MedievalWall::ACPP_MedievalWall()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Name = "Medieval Wall";
+	
+	WallMeshTileAssetPath = "/Game/Project/Models/House/Walls/SM_MedievalWall_Tile.SM_MedievalWall_Tile";
+	WallMeshCornerAssetPath = "/Game/Project/Models/House/Walls/SM_MedievalWall_Corner.SM_MedievalWall_Corner";
+	WallMeshUpDoorAssetPath = "/Game/Project/Models/House/Walls/SM_MedievalWall_Door.SM_MedievalWall_Door";
+
+	ACPP_Wall::InitializeMeshes();
 }
 
 // Called when the game starts or when spawned
