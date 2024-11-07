@@ -5,11 +5,13 @@
 // Sets default values
 ACPP_MedievalDoor::ACPP_MedievalDoor()
 {
+    Name = "Medieval Door";
+	
 	// Asset paths
 	DoorFrameMeshAssetPath = "/Game/Project/Models/House/Doors/SM_MedievalDoorFrame.SM_MedievalDoorFrame";
 	DoorMeshAssetPath = "/Game/Project/Models/House/Doors/SM_MedievalDoor.SM_MedievalDoor";
 
-	InitializeMeshes();
+	ACPP_Door::InitializeMeshes();
 }
 
 void ACPP_MedievalDoor::BeginPlay()

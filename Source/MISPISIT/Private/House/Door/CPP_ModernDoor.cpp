@@ -4,11 +4,13 @@
 
 ACPP_ModernDoor::ACPP_ModernDoor()
 {
+	Name = "Modern Door";
+	
 	// Asset paths
 	DoorFrameMeshAssetPath = "/Game/Project/Models/House/Doors/SM_ModernDoorFrame.SM_ModernDoorFrame";
 	DoorMeshAssetPath = "/Game/Project/Models/House/Doors/SM_ModernDoor.SM_ModernDoor";
 
-	InitializeMeshes();
+	ACPP_Door::InitializeMeshes();
 }
 
 void ACPP_ModernDoor::BeginPlay()
