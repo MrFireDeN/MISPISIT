@@ -70,5 +70,5 @@ protected:
 	FString DoorMeshAssetPath;
 	FString DoorFrameMeshAssetPath;
 
-	virtual void InitializeMeshes();
+	virtual void InitializeMeshes() override;
 };

@@ -44,6 +44,8 @@ protected:
 	 */
 	UPROPERTY(BlueprintReadOnly)
 	FString Name = "BuildingComponent";
+	
+	virtual void InitializeMeshes();
 
 public:
 	/**
@@ -56,4 +58,5 @@ public:
 	virtual void Spawn();
 
 	static bool LoadMeshFromAsset(UStaticMeshComponent* Mesh, FString AssetPath);
+
 };
