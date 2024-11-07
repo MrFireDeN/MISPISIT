@@ -24,5 +24,5 @@ public:
 	
 	virtual ACPP_Wall* CreateWall(FTransform Transform, EWallType WallType) override;
 
-	virtual ACPP_Window* CreateWindow(float Width, float Height) override;
+	virtual ACPP_Window* CreateWindow(FTransform Transform) override;
 };

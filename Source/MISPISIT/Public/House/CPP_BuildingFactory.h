@@ -58,11 +58,10 @@ public:
 	/**
 	 * @brief Creates a new instance of ACPP_Window with specified dimensions.
 	 * 
-	 * @param Width The width of the window in meters. Default is 1.5 meters.
-	 * @param Height The height of the window in meters. Default is 1.5 meters.
+	 * @param Transform
 	 * 
 	 * @return Pointer to the created ACPP_Window object, or nullptr if not implemented.
 	 */
 	UFUNCTION(BlueprintCallable)
-	virtual ACPP_Window* CreateWindow(float Width = 1.5, float Height = 1.5);
+	virtual ACPP_Window* CreateWindow(FTransform Transform);
 };

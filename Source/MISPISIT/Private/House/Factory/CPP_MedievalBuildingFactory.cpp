@@ -10,8 +10,8 @@ UCPP_MedievalBuildingFactory::UCPP_MedievalBuildingFactory()
 ACPP_Door* UCPP_MedievalBuildingFactory::CreateDoor(FTransform Transform)
 {
 	FActorSpawnParameters SpawnParams;
-	FVector Location = FVector(1200, 1200, 0);
-	FRotator Rotation = FRotator(0, 90, 0);
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
 	
 	ACPP_Door* Door = GetWorld()->SpawnActor<ACPP_MedievalDoor>(ACPP_MedievalDoor::StaticClass(), Location, Rotation, SpawnParams);
 
@@ -35,7 +35,13 @@ ACPP_Wall* UCPP_MedievalBuildingFactory::CreateWall(FTransform Transform, EWallT
 	return Wall;
 }
 
-ACPP_Window* UCPP_MedievalBuildingFactory::CreateWindow(float Width, float Height)
+ACPP_Window* UCPP_MedievalBuildingFactory::CreateWindow(FTransform Transform)
 {
-	return Super::CreateWindow();
+	FActorSpawnParameters SpawnParams;
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+	
+	ACPP_Window* Window = GetWorld()->SpawnActor<ACPP_MedievalWindow>(ACPP_MedievalWindow::StaticClass(), Location, Rotation, SpawnParams);
+
+	return Window;
 }

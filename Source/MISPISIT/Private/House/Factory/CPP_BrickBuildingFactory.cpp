@@ -9,8 +9,8 @@ UCPP_BrickBuildingFactory::UCPP_BrickBuildingFactory()
 ACPP_Door* UCPP_BrickBuildingFactory::CreateDoor(FTransform Transform)
 {
 	FActorSpawnParameters SpawnParams;
-	FVector Location = FVector(1200, 1200, 0);
-	FRotator Rotation = FRotator(0, 90, 0);
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
 	
 	ACPP_Door* Door = GetWorld()->SpawnActor<ACPP_BrickDoor>(ACPP_BrickDoor::StaticClass(), Location, Rotation, SpawnParams);
 
@@ -34,7 +34,13 @@ ACPP_Wall* UCPP_BrickBuildingFactory::CreateWall(FTransform Transform, EWallType
 	return Wall;
 }
 
-ACPP_Window* UCPP_BrickBuildingFactory::CreateWindow(float Width, float Height)
+ACPP_Window* UCPP_BrickBuildingFactory::CreateWindow(FTransform Transform)
 {
-	return Super::CreateWindow(Width, Height);
+	FActorSpawnParameters SpawnParams;
+	FVector Location = Transform.GetLocation();
+	FRotator Rotation = Transform.Rotator();
+	
+	ACPP_Window* Window = GetWorld()->SpawnActor<ACPP_BrickWindow>(ACPP_BrickWindow::StaticClass(), Location, Rotation, SpawnParams);
+
+	return Window;
 }

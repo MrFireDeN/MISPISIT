@@ -43,12 +43,11 @@ ACPP_Wall* UCPP_BuildingFactory::CreateWall(FTransform Transform, EWallType Wall
 /**
  * @brief Creates a new instance of ACPP_Window with specified dimensions.
  * 
- * @param Width The width of the window in meters.
- * @param Height The height of the window in meters.
+ * @param Transform
  * 
  * @return nullptr, as the default implementation does not create a window instance.
  */
-ACPP_Window* UCPP_BuildingFactory::CreateWindow(float Width, float Height)
+ACPP_Window* UCPP_BuildingFactory::CreateWindow(FTransform Transform)
 {
  return nullptr;
 }
