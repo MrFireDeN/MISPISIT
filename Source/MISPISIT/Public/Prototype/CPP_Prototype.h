@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../House/CPP_BuildingFactory.h"
 #include "CPP_Prototype.generated.h"
 
 UCLASS()
@@ -16,6 +17,12 @@ public:
 	
 	virtual ACPP_Prototype* Clone();
 
+	virtual void SetStyle(const FString Name);
+
 protected:
-	virtual void Initialize();
+	TArray<FString> Styles = {"Medieval", "Stone", "Brick", "Modern"};
+	
+	FString CurrentStyle = Styles[0];
+	
+	virtual void Initialize(ACPP_Prototype* Source);
 };
