@@ -2,14 +2,13 @@
 
 #include "Prototype/CPP_WallPrototype.h"
 
-void ACPP_WallPrototype::Initialize(ACPP_Prototype* Source)
+void ACPP_WallPrototype::Initialize(ACPP_Prototype*& Target)
 {
-	Super::Initialize(Source);
-
-	if (const ACPP_WallPrototype* WallSource = Cast<ACPP_WallPrototype>(Source))
-	{
-		SetWallType(WallSource->WallType);
-	}
+	Target = GetWorld()->SpawnActor<ACPP_WallPrototype>(ACPP_WallPrototype::StaticClass(), this->GetActorLocation(), this->GetActorRotation());
+	
+	Cast<ACPP_WallPrototype>(Target)->SetWallType(this->WallType);
+	
+	Super::Initialize(Target);
 }
 
 ACPP_WallPrototype::ACPP_WallPrototype()

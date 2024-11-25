@@ -10,9 +10,16 @@ ACPP_Prototype::ACPP_Prototype()
 
 ACPP_Prototype* ACPP_Prototype::Clone()
 {
-	ACPP_Prototype* NewPrototype = GetWorld()->SpawnActor<ACPP_Prototype>(GetClass());
+	ACPP_Prototype* NewPrototype = nullptr;
 
-	Initialize(this);
+	Initialize(NewPrototype);
+
+	if (NewPrototype == nullptr)
+	{
+		UKismetSystemLibrary::PrintString(this, "NewPrototype is null");
+		NewPrototype =
+			GetWorld()->SpawnActor<ACPP_Prototype>(ACPP_Prototype::StaticClass(), this->GetActorLocation(), this->GetActorRotation());
+	}
 	
 	return NewPrototype;
 }
@@ -27,10 +34,10 @@ void ACPP_Prototype::SetStyle(const FString Name)
 	}
 }
 
-void ACPP_Prototype::Initialize(ACPP_Prototype* Source)
+void ACPP_Prototype::Initialize(ACPP_Prototype*& Target)
 {
 	// Initialize class params
-
-	SetStyle(Source->CurrentStyle);
+	Target->SetStyle(this->CurrentStyle);
+	Target->SetActorLabel(this->GetActorLabel() + "Clone");
 }
 

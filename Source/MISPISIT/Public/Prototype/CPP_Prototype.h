@@ -24,5 +24,5 @@ protected:
 	
 	FString CurrentStyle = Styles[0];
 	
-	virtual void Initialize(ACPP_Prototype* Source);
+	virtual void Initialize(ACPP_Prototype*& Target);
 };
