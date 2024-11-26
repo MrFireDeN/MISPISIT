@@ -7,6 +7,7 @@
 #include "CPP_WallPrototype.h"
 #include "CPP_DoorPrototype.h"
 #include "CPP_RoofPrototype.h"
+#include "CPP_WindowPrototype.h"
 #include "CPP_PrototypeRegistry.generated.h"
 
 UCLASS()

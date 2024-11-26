@@ -42,4 +42,13 @@ void ACPP_PrototypeRegistry::BeginPlay()
 
 	ACPP_Prototype* ConcreteModernRoof = ModernRoofPrototype->Clone();
 	ConcreteModernRoof->SetActorLocation(FVector(1200, 1000, 0));
+
+
+	// CPP_WidnowPrototype
+	ACPP_WindowPrototype* MedievalWindowPrototype = GetWorld()->SpawnActor<ACPP_WindowPrototype>(ACPP_WindowPrototype::StaticClass(), FVector::Zero(), FRotator::ZeroRotator);
+	MedievalWindowPrototype->SetActorLabel("MedievalWindowPrototype");
+	MedievalWindowPrototype->SetStyle("Medieval");
+
+	ACPP_Prototype* ConcreteMedievalWindow = MedievalWindowPrototype->Clone();
+	ConcreteMedievalWindow->SetActorLocation(FVector(1000, 1000, 0));
 }
