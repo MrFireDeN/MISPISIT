@@ -32,4 +32,14 @@ void ACPP_PrototypeRegistry::BeginPlay()
 
 	ACPP_Prototype* ConcreteBrickDoor = BrickDoorPrototype->Clone();
 	ConcreteBrickDoor->SetActorLocation(FVector(1100, 1000, 0));
+
+
+	// CPP_RoofPrototype
+	ACPP_RoofPrototype* ModernRoofPrototype = GetWorld()->SpawnActor<ACPP_RoofPrototype>(ACPP_RoofPrototype::StaticClass(), FVector::Zero(), FRotator::ZeroRotator);
+	ModernRoofPrototype->SetActorLabel("ModernDoorPrototype");
+	ModernRoofPrototype->SetStyle("Modern");
+	ModernRoofPrototype->SetActorScale3D(FVector(2, 1, 3));
+
+	ACPP_Prototype* ConcreteModernRoof = ModernRoofPrototype->Clone();
+	ConcreteModernRoof->SetActorLocation(FVector(1200, 1000, 0));
 }
