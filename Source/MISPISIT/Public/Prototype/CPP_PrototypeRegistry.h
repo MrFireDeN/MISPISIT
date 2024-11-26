@@ -18,10 +18,23 @@ class MISPISIT_API ACPP_PrototypeRegistry : public AActor
 public:
 	ACPP_PrototypeRegistry();
 
+	// Adds a prototype to the registry with the given name
+	void Add(ACPP_Prototype* Prototype);
+
+	// Finds a prototype by name in the registry
+	ACPP_Prototype* FindByName(FString Name) const;
+
+	// Creates a new instance from the prototype identified by name
+	ACPP_Prototype* Create(FString Name);
+
 protected:
 	virtual void BeginPlay() override;
 	
-	// The default scene root component
+	// Default scene root component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* SceneRoot;
+
+	// Map for storing prototypes with their names as keys
+	UPROPERTY()
+	TMap<FString, ACPP_Prototype*> PrototypeRegistry;
 };
