@@ -47,7 +47,7 @@ ACPP_WallPrototype::ACPP_WallPrototype()
 	WallMeshForWindowAssetPaths.Add(Styles[2], "/Game/Project/Models/House/Walls/SM_BrickWall_Window.SM_BrickWall_Window");
 	WallMeshForWindowAssetPaths.Add(Styles[3], "/Game/Project/Models/House/Walls/SM_ModernWall_Window.SM_ModernWall_Window");
 
-	SetWallType(WallType);
+	SetStyle(CurrentStyle);
 }
 
 void ACPP_WallPrototype::SetWallType(const EWallType NewWallType)
