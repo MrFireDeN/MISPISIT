@@ -16,7 +16,7 @@ class MISPISIT_API ACPP_WallPrototype : public ACPP_Prototype
 	GENERATED_BODY()
 
 protected:
-	virtual void Initialize(ACPP_Prototype*& Target) override;
+	virtual void CopyPropertiesTo(ACPP_Prototype*& Target) override;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* WallMesh;

@@ -2,13 +2,19 @@
 
 #include "Prototype/CPP_WallPrototype.h"
 
-void ACPP_WallPrototype::Initialize(ACPP_Prototype*& Target)
+void ACPP_WallPrototype::CopyPropertiesTo(ACPP_Prototype*& Target)
 {
-	Target = GetWorld()->SpawnActor<ACPP_WallPrototype>(ACPP_WallPrototype::StaticClass(), this->GetActorLocation(), this->GetActorRotation());
+	if (Target == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Clone created from CPP_WallPrototype class"));
+		
+		Target =
+			Target = GetWorld()->SpawnActor<ACPP_WallPrototype>(ACPP_WallPrototype::StaticClass(), this->GetActorLocation(), this->GetActorRotation());
+	}
 	
 	Cast<ACPP_WallPrototype>(Target)->SetWallType(this->WallType);
 	
-	Super::Initialize(Target);
+	Super::CopyPropertiesTo(Target);
 }
 
 ACPP_WallPrototype::ACPP_WallPrototype()
