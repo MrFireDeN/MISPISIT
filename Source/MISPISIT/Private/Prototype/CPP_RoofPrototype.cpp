@@ -19,7 +19,6 @@ ACPP_RoofPrototype::ACPP_RoofPrototype()
 
 void ACPP_RoofPrototype::CopyPropertiesTo(ACPP_Prototype*& Target)
 {
-	
 	if (Target == nullptr)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Clone created from CPP_WallPrototype class"));
