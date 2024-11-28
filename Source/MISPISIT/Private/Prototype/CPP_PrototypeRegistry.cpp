@@ -74,21 +74,25 @@ void ACPP_PrototypeRegistry::BeginPlay()
 	// Clone and place each prototype at a unique location
 	if (ACPP_Prototype* ConcreteBrickWall = Create("BrickWallPrototype"))
 	{
-		ConcreteBrickWall->SetActorLocation(FVector(1000, 1000, 0));
+		ConcreteBrickWall->SetActorLocation(FVector(2500, 2900, 2000));
+		ConcreteBrickWall->SetActorRotation(FRotator(0, 180, 0));
 	}
 
 	if (ACPP_Prototype* ConcreteBrickDoor = Create("BrickDoorPrototype"))
 	{
-		ConcreteBrickDoor->SetActorLocation(FVector(1100, 1000, 0));
+		ConcreteBrickDoor->SetActorLocation(FVector(2400, 2900, 2000));
+		ConcreteBrickDoor->SetActorRotation(FRotator(0, 180, 0));
 	}
 
 	if (ACPP_Prototype* ConcreteModernRoof = Create("ModernRoofPrototype"))
 	{
-		ConcreteModernRoof->SetActorLocation(FVector(1200, 1000, 0));
+		ConcreteModernRoof->SetActorLocation(FVector(2300, 2900, 2000));
+		ConcreteModernRoof->SetActorRotation(FRotator(0, 180, 0));
 	}
 
 	if (ACPP_Prototype* ConcreteMedievalWindow = Create("MedievalWindowPrototype"))
 	{
-		ConcreteMedievalWindow->SetActorLocation(FVector(1000, 1000, 0));
+		ConcreteMedievalWindow->SetActorLocation(FVector(2500, 2900, 2000));
+		ConcreteMedievalWindow->SetActorRotation(FRotator(0, 180, 0));
 	}
 }
