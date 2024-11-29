@@ -19,17 +19,18 @@ public:
 	ACPP_PrototypeRegistry();
 
 	// Adds a prototype to the registry with the given name
-	void Add(ACPP_Prototype* Prototype);
+	UFUNCTION(BlueprintCallable)
+	virtual void Add(ACPP_Prototype* Prototype, FString Name);
 
 	// Finds a prototype by name in the registry
-	ACPP_Prototype* FindByName(FString Name) const;
+	UFUNCTION(BlueprintCallable)
+	virtual ACPP_Prototype* FindByName(FString Name) const;
 
 	// Creates a new instance from the prototype identified by name
-	ACPP_Prototype* Create(FString Name);
+	UFUNCTION(BlueprintCallable)
+	virtual ACPP_Prototype* Create(FString Name);
 
 protected:
-	virtual void BeginPlay() override;
-	
 	// Default scene root component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* SceneRoot;
