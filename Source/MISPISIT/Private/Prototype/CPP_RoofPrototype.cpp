@@ -10,7 +10,7 @@ ACPP_RoofPrototype::ACPP_RoofPrototype()
 	
 	// RoofMeshAssetPaths
 	RoofMeshAssetPaths.Add(Styles[0], "/Game/Project/Models/House/Roof/SM_MedievalRoof.SM_MedievalRoof");
-	RoofMeshAssetPaths.Add(Styles[2], "/Game/Project/Models/House/Roof/SM_StoneRoof.SM_StoneRoof");
+	RoofMeshAssetPaths.Add(Styles[1], "/Game/Project/Models/House/Roof/SM_StoneRoof.SM_StoneRoof");
 	RoofMeshAssetPaths.Add(Styles[2], "/Game/Project/Models/House/Roof/SM_BrickRoof.SM_BrickRoof");
 	RoofMeshAssetPaths.Add(Styles[3], "/Game/Project/Models/House/Roof/SM_ModernRoof.SM_ModernRoof");
 
