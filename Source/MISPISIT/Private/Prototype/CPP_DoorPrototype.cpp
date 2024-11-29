@@ -7,9 +7,10 @@
 ACPP_DoorPrototype::ACPP_DoorPrototype()
 {
 	// Component creation and attachment
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("DoorRoot"));
 	DoorFrameMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorFrameMesh"));
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
-	RootComponent = DoorFrameMesh;
+	DoorFrameMesh->SetupAttachment(RootComponent);
 	DoorMesh->SetupAttachment(DoorFrameMesh);
 
 	// Door frame setup
