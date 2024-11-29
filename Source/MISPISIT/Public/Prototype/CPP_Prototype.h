@@ -14,9 +14,11 @@ class MISPISIT_API ACPP_Prototype : public AActor
 	
 public:
 	ACPP_Prototype();
-	
+
+	UFUNCTION(BlueprintCallable)
 	virtual ACPP_Prototype* Clone();
 
+	UFUNCTION(BlueprintCallable)
 	virtual void SetStyle(const FString Name);
 
 protected:

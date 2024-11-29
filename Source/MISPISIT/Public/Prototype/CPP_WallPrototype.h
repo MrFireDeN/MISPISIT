@@ -34,7 +34,8 @@ protected:
 
 public:
 	ACPP_WallPrototype();
-	
+
+	UFUNCTION(BlueprintCallable)
 	virtual void SetWallType(const EWallType NewWallType);
 
 	virtual void SetStyle(const FString Name) override;
