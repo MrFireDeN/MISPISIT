@@ -38,6 +38,8 @@ public:
 protected:
 	ACPP_MedievalHouse* MedievalHouse;
 
+	virtual void BeginPlay() override;
+
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "HouseBuilder")
 	bool SetWalls(int Length, int Width); virtual bool SetWalls_Implementation(int Length, int Width) override;

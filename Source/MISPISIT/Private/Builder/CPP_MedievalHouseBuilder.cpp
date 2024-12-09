@@ -26,7 +26,23 @@ ACPP_MedievalHouse::ACPP_MedievalHouse()
 
 ACPP_MedievalHouseBuilder::ACPP_MedievalHouseBuilder()
 {
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("BuilderRoot"));
+}
+
+void ACPP_MedievalHouseBuilder::BeginPlay()
+{
+	Super::BeginPlay();
+
 	
+	FActorSpawnParameters SpawnParameters;
+	MedievalHouse =
+		GetWorld()->SpawnActor<ACPP_MedievalHouse>(ACPP_MedievalHouse::StaticClass(),
+			this->GetActorLocation(), this->GetActorRotation(), SpawnParameters);
+
+	if (MedievalHouse)
+	{
+		SetWalls(2, 2);
+	}
 }
 
 bool ACPP_MedievalHouseBuilder::SetWalls_Implementation(int Length, int Width)
@@ -37,32 +53,38 @@ bool ACPP_MedievalHouseBuilder::SetWalls_Implementation(int Length, int Width)
 		return false;
 	}
 
+	const TArray<FVector> WallCornerLocations = {
+		FVector(0, 0, 0),
+		FVector(Length * 100, 0, 0),
+		FVector(0, Width * 100, 0),
+		FVector(Length * 100, Width * 100, 0)
+	};
+
 	for (int I = 0; I < 4; ++I)
 	{
-		UStaticMeshComponent* WallCornerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WallCorner"));
-		WallCornerMesh->SetupAttachment(MedievalHouse->GetRootComponent());
-		
-		WallCornerMesh->SetRelativeRotation(FRotator(0, I*90, 0));
+		//UStaticMeshComponent* WallCornerMesh = CreateDefaultSubobject<UStaticMeshComponent>(*FString::Printf(TEXT("WallCorner_%d"), I));
 
-		FVector WallCornerLocation = FVector(0, 0, 0);
-		
-		switch (I)
+		UStaticMeshComponent* WallCornerMesh =
+			NewObject<UStaticMeshComponent>(MedievalHouse,
+				UStaticMeshComponent::StaticClass(), *FString::Printf(TEXT("WallCorner_%d"), I));
+
+		if (!WallCornerMesh)
 		{
-		case 1:
-			WallCornerLocation.Set(Length*100, 0, 0);
-			break;
-		case 2:
-			WallCornerLocation.Set(0, Width*100, 0);
-			break;
-		case 3:
-			WallCornerLocation.Set(Length*100, Width*100, 0);
-			break;
+			UE_LOG(LogTemp, Error, TEXT("Failed to create WallCornerMesh"));
+			return false;
 		}
 		
-		MedievalHouse->Walls.Add(WallCornerLocation);
-		WallCornerMesh->SetRelativeLocation(WallCornerLocation);
+		WallCornerMesh->SetupAttachment(MedievalHouse->GetRootComponent());
+		WallCornerMesh->SetRelativeRotation(FRotator(0, I*90, 0));
+		WallCornerMesh->SetRelativeLocation(WallCornerLocations[I]);
 
-		ACPP_BuildingComponent::LoadMeshFromAsset(WallCornerMesh, MedievalHouse->WallMeshAssetPaths.Find("Corner"));
+		if (ACPP_BuildingComponent::LoadMeshFromAsset(WallCornerMesh, *MedievalHouse->WallMeshAssetPaths.Find("Corner")))
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to load corner from mesh asset"));
+			return false;
+		}
+		
+		MedievalHouse->Walls.Add(WallCornerLocations[I]);
 	}
 	
 	/*
