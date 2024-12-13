@@ -59,7 +59,7 @@ public:
 	* @return True if the static mesh asset was successfully loaded and applied to the component, false otherwise.
 	*         Logs errors or warnings if parameters are invalid or loading fails.
 	*/ 
-	static bool AttachMeshToActorFromAsset(AActor* Owner, const FString& ComponentName, const FString& AssetPath)
+	static bool AttachMeshToActorFromAsset(AActor* Owner, const FString& ComponentName, const FString& AssetPath, const FVector& Location = FVector(0))
 	{
 	    // Validate the Owner actor
 	    if (!Owner)
@@ -92,6 +92,7 @@ public:
 
 	    // Attach the new component to the actor's root component
 	    NewStaticMesh->SetupAttachment(Owner->GetRootComponent());
+		NewStaticMesh->SetRelativeLocation(Location);
 
 	    // Attempt to load the mesh asset and assign it to the component
 	    if (!LoadMeshFromAsset(NewStaticMesh, AssetPath))
