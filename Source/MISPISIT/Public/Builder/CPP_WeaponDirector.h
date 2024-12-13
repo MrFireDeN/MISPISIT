@@ -8,6 +8,7 @@
 #include "CPP_SniperRifleBuilder.h"
 #include "CPP_AssaultRifleBuilder.h"
 #include "CPP_TacticalRifleBuilder.h"
+#include "CPP_MachineGunBuilder.h"
 #include "CPP_WeaponDirector.generated.h"
 
 UCLASS()
