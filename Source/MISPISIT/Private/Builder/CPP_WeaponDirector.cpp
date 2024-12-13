@@ -48,11 +48,32 @@ void ACPP_WeaponDirector::BeginPlay()
 
 	if (Cast<ACPP_SniperRifleBuilder>(Builder.GetObject())->GetResult())
 	{
-		UE_LOG(LogTemp, Log, TEXT("Pistol succesfully constructed!!!"));
+		UE_LOG(LogTemp, Log, TEXT("SniperRifle succesfully constructed!!!"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to construct pistol."));
+		UE_LOG(LogTemp, Error, TEXT("Failed to construct SniperRifle."));
+	}
+
+	// AssaultRifle
+	Builder = GetWorld()->SpawnActor<ACPP_AssaultRifleBuilder>(GetActorLocation() + FVector(200, 0, 0), GetActorRotation());
+
+	Builder->Execute_ResetState(Builder.GetObject());
+
+	Builder->Execute_SetBarrel(Builder.GetObject(), "");
+	Builder->Execute_SetChamber(Builder.GetObject());
+	Builder->Execute_SetTrigger(Builder.GetObject());
+	Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
+	Builder->Execute_SetScope(Builder.GetObject(), TEXT("SniperScope"));
+	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Foregrip"));
+
+	if (Cast<ACPP_AssaultRifleBuilder>(Builder.GetObject())->GetResult())
+	{
+		UE_LOG(LogTemp, Log, TEXT("AssaultRifle succesfully constructed!!!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to construct AssaultRifle."));
 	}
 }
 

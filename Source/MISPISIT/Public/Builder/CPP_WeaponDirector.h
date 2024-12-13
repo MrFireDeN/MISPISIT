@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CPP_PistolBuilder.h"
 #include "CPP_SniperRifleBuilder.h"
+#include "CPP_AssaultRifleBuilder.h"
 #include "CPP_WeaponDirector.generated.h"
 
 UCLASS()
