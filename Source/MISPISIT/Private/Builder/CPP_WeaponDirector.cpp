@@ -64,7 +64,7 @@ void ACPP_WeaponDirector::BeginPlay()
 	Builder->Execute_SetChamber(Builder.GetObject());
 	Builder->Execute_SetTrigger(Builder.GetObject());
 	Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
-	Builder->Execute_SetScope(Builder.GetObject(), TEXT("SniperScope"));
+	Builder->Execute_SetScope(Builder.GetObject(), TEXT("Red Rot"));
 	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Foregrip"));
 
 	if (Cast<ACPP_AssaultRifleBuilder>(Builder.GetObject())->GetResult())
@@ -74,6 +74,27 @@ void ACPP_WeaponDirector::BeginPlay()
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("Failed to construct AssaultRifle."));
+	}
+
+	// TacticalRifle
+	Builder = GetWorld()->SpawnActor<ACPP_TacticalRifleBuilder>(GetActorLocation() + FVector(300, 0, 0), GetActorRotation());
+
+	Builder->Execute_ResetState(Builder.GetObject());
+
+	Builder->Execute_SetBarrel(Builder.GetObject(), "");
+	Builder->Execute_SetChamber(Builder.GetObject());
+	Builder->Execute_SetTrigger(Builder.GetObject());
+	Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
+	Builder->Execute_SetScope(Builder.GetObject(), TEXT("SniperScope"));
+	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Foregrip"));
+
+	if (Cast<ACPP_TacticalRifleBuilder>(Builder.GetObject())->GetResult())
+	{
+		UE_LOG(LogTemp, Log, TEXT("TacticalRifle succesfully constructed!!!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to construct TacticalRifle."));
 	}
 }
 
