@@ -117,5 +117,26 @@ void ACPP_WeaponDirector::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("Failed to construct MachineGun."));
 	}
+
+	// SMG
+	Builder = GetWorld()->SpawnActor<ACPP_SMGBuilder>(GetActorLocation() + FVector(500, 0, 0), GetActorRotation());
+
+	Builder->Execute_ResetState(Builder.GetObject());
+
+	Builder->Execute_SetBarrel(Builder.GetObject(), "");
+	Builder->Execute_SetChamber(Builder.GetObject());
+	Builder->Execute_SetTrigger(Builder.GetObject());
+	Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
+	Builder->Execute_SetScope(Builder.GetObject(), TEXT("Red Dot"));
+	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Laser"));
+
+	if (Cast<ACPP_SMGBuilder>(Builder.GetObject())->GetResult())
+	{
+		UE_LOG(LogTemp, Log, TEXT("SMG succesfully constructed!!!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to construct SMG."));
+	}
 }
 
