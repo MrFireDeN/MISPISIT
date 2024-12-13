@@ -98,65 +98,36 @@ ACPP_Pistol* ACPP_PistolBuilder::GetResult()
 		return nullptr;
 	}
 	
-	UStaticMeshComponent* Barrel =
-		NewObject<UStaticMeshComponent>(Pistol, UStaticMeshComponent::StaticClass(), TEXT("Barrel"));
-	Barrel->SetupAttachment(Pistol->GetRootComponent());
-
-	if (!Barrel)
+	if (!UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Barrel"), TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN.SM_FN_FIVE-SEVEN")))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can NOT create Barrel"));
+		UE_LOG(LogTemp, Error, TEXT("Failed to attach Barrel to Pistol. Destroying Pistol."));
 		Pistol->Destroy();
 		return nullptr;
 	}
-	
-	UAssetLoader::LoadMeshFromAsset(Barrel, TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN.SM_FN_FIVE-SEVEN"));
-	
+
+	// Apply Barrel color if specified
 	if (!WeaponData.BarrelColor.IsEmpty())
 	{
-		// Set Color
+		// Set color logic here
 	}
 
 	if (WeaponData.IsChamber)
 	{
-		UStaticMeshComponent* Chamber =
-		NewObject<UStaticMeshComponent>(Pistol, UStaticMeshComponent::StaticClass(), TEXT("Chamber"));
-		Chamber->SetupAttachment(Pistol->GetRootComponent());
-
-		if (UAssetLoader::LoadMeshFromAsset
-			(Chamber, TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_slide.SM_FN_FIVE-SEVEN_slide")))
-		{
-			UE_LOG(LogTemp, Log, TEXT("LoadMeshFromAsset!!!"));
-		}
+		UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Chamber"),
+			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_slide.SM_FN_FIVE-SEVEN_slide"));
 	}
 
 	if (WeaponData.IsTrigger)
 	{
-		UStaticMeshComponent* Trigger =
-		NewObject<UStaticMeshComponent>(Pistol, UStaticMeshComponent::StaticClass(), TEXT("Trigger"));
-		
-		Trigger->SetupAttachment(Pistol->GetRootComponent());
-		
-		if (UAssetLoader::LoadMeshFromAsset
-			(Trigger, TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_trigger.SM_FN_FIVE-SEVEN_trigger")))
-		{
-			UE_LOG(LogTemp, Log, TEXT("LoadMeshFromAsset!!!"));
-		}
+		UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Trigger"),
+			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_trigger.SM_FN_FIVE-SEVEN_trigger"));
 	}
 
 	if (WeaponData.Magazine.Equals("Small"))
 	{
-		UStaticMeshComponent* Magazine =
-		NewObject<UStaticMeshComponent>(Pistol, UStaticMeshComponent::StaticClass(), TEXT("Magazine"));
-		
-		Magazine->SetupAttachment(Pistol->GetRootComponent());
-		
-		if (UAssetLoader::LoadMeshFromAsset
-			(Magazine, TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_Mag.SM_FN_FIVE-SEVEN_Mag")))
-		{
-			UE_LOG(LogTemp, Log, TEXT("LoadMeshFromAsset!!!"));
-		}
+		UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Magazine"),
+			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_Mag.SM_FN_FIVE-SEVEN_Mag"));
 	}
-	
+
 	return Pistol;
 }
-
