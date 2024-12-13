@@ -7,5 +7,6 @@
 ACPP_Pistol::ACPP_Pistol()
 {
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetActorScale3D(FVector(0.5));
 }
 
