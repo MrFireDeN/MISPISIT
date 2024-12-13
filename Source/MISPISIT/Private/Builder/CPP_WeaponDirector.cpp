@@ -12,131 +12,167 @@ ACPP_WeaponDirector::ACPP_WeaponDirector()
 void ACPP_WeaponDirector::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	// Pistol
-	Builder = GetWorld()->SpawnActor<ACPP_PistolBuilder>(GetActorLocation(), GetActorRotation());
+bool ACPP_WeaponDirector::SetBuilder(TScriptInterface<ICPP_WeaponBuilder> NewBuilder)
+{
+	if (NewBuilder)
+	{
+		Builder = NewBuilder;
+		return true;
+	}
 
+	return false;
+}
+
+ACPP_Weapon* ACPP_WeaponDirector::CreateEmptyWeapon()
+{
+	Builder->Execute_ResetState(Builder->_getUObject());
+
+	return GetResult();
+}
+
+ACPP_Weapon* ACPP_WeaponDirector::CreateStandardWeapon()
+{
 	Builder->Execute_ResetState(Builder.GetObject());
 
-	Builder->Execute_SetBarrel(Builder.GetObject(), "");
+	Builder->Execute_SetBarrel(Builder.GetObject(), "White");
 	Builder->Execute_SetChamber(Builder.GetObject());
 	Builder->Execute_SetTrigger(Builder.GetObject());
-	Builder->Execute_SetMagazine(Builder.GetObject(), "Small");
-	Builder->Execute_SetScope(Builder.GetObject(), TEXT("Red Dot"));
-	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Flashlight"));
+	
+	ACPP_Weapon* Result = nullptr;
 
-	if (Cast<ACPP_PistolBuilder>(Builder.GetObject())->GetResult())
+	if (auto PistolBuilder = Cast<ACPP_PistolBuilder>(Builder.GetObject()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("Pistol succesfully constructed!!!"));
+		Builder->Execute_SetMagazine(Builder.GetObject(), "Small");
+		
+		Result = PistolBuilder->GetResult();
 	}
-	else
+	else if (auto SniperRifleBuilder = Cast<ACPP_SniperRifleBuilder>(Builder.GetObject()))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to construct pistol."));
+		Builder->Execute_SetMagazine(Builder.GetObject(), "Large");
+		
+		Result = SniperRifleBuilder->GetResult();
+	}
+	else if (auto TacticalRifleBuilder = Cast<ACPP_TacticalRifleBuilder>(Builder.GetObject()))
+	{
+		Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
+		
+		Result = TacticalRifleBuilder->GetResult();
+	}
+	else if (auto AssaultRifleBuilder = Cast<ACPP_AssaultRifleBuilder>(Builder.GetObject()))
+	{
+		Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
+		
+		Result = AssaultRifleBuilder->GetResult();
+	}
+	else if (auto MachineGunBuilder = Cast<ACPP_MachineGunBuilder>(Builder.GetObject()))
+	{
+		Builder->Execute_SetMagazine(Builder.GetObject(), "Large");
+		
+		Result = MachineGunBuilder->GetResult();
+	}
+	else if (auto SMGBuilder = Cast<ACPP_SMGBuilder>(Builder.GetObject()))
+	{
+		Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
+		
+		Result = SMGBuilder->GetResult();
 	}
 
-	// SniperRifle
-	Builder = GetWorld()->SpawnActor<ACPP_SniperRifleBuilder>(GetActorLocation() + FVector(100, 0, 0), GetActorRotation());
+	return Result;
+}
 
-	Builder->Execute_ResetState(Builder.GetObject());
+ACPP_Weapon* ACPP_WeaponDirector::CreateFullWeapon()
+{
+	Builder->Execute_ResetState(Builder->_getUObject());
 
-	Builder->Execute_SetBarrel(Builder.GetObject(), "");
+	Builder->Execute_SetBarrel(Builder.GetObject(), "Gold");
 	Builder->Execute_SetChamber(Builder.GetObject());
 	Builder->Execute_SetTrigger(Builder.GetObject());
-	Builder->Execute_SetMagazine(Builder.GetObject(), "Large");
-	Builder->Execute_SetScope(Builder.GetObject(), TEXT("SniperScope"));
-	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Laser"));
+	
+	ACPP_Weapon* Result = nullptr;
 
-	if (Cast<ACPP_SniperRifleBuilder>(Builder.GetObject())->GetResult())
+	if (auto PistolBuilder = Cast<ACPP_PistolBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("SniperRifle succesfully constructed!!!"));
+		Builder->Execute_SetMagazine(Builder->_getUObject(), "Small");
+		Builder->Execute_SetScope(Builder->_getUObject(), TEXT("Red Dot"));
+		Builder->Execute_SetAddition(Builder->_getUObject(), TEXT("Flashlight"));
+		
+		Result = PistolBuilder->GetResult();
 	}
-	else
+	else if (auto SniperRifleBuilder = Cast<ACPP_SniperRifleBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to construct SniperRifle."));
+		Builder->Execute_SetMagazine(Builder->_getUObject(), "Large");
+		Builder->Execute_SetScope(Builder->_getUObject(), TEXT("SniperScope"));
+		Builder->Execute_SetAddition(Builder->_getUObject(), TEXT("Laser"));
+		
+		Result = SniperRifleBuilder->GetResult();
 	}
-
-	// AssaultRifle
-	Builder = GetWorld()->SpawnActor<ACPP_AssaultRifleBuilder>(GetActorLocation() + FVector(200, 0, 0), GetActorRotation());
-
-	Builder->Execute_ResetState(Builder.GetObject());
-
-	Builder->Execute_SetBarrel(Builder.GetObject(), "");
-	Builder->Execute_SetChamber(Builder.GetObject());
-	Builder->Execute_SetTrigger(Builder.GetObject());
-	Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
-	Builder->Execute_SetScope(Builder.GetObject(), TEXT("Red Dot"));
-	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Foregrip"));
-
-	if (Cast<ACPP_AssaultRifleBuilder>(Builder.GetObject())->GetResult())
+	else if (auto TacticalRifleBuilder = Cast<ACPP_TacticalRifleBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("AssaultRifle succesfully constructed!!!"));
+		Builder->Execute_SetMagazine(Builder->_getUObject(), "Default");
+		Builder->Execute_SetScope(Builder->_getUObject(), TEXT("SniperScope"));
+		Builder->Execute_SetAddition(Builder->_getUObject(), TEXT("Laser"));
+		
+		Result = TacticalRifleBuilder->GetResult();
 	}
-	else
+	else if (auto AssaultRifleBuilder = Cast<ACPP_AssaultRifleBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to construct AssaultRifle."));
+		Builder->Execute_SetMagazine(Builder->_getUObject(), "Default");
+		Builder->Execute_SetScope(Builder->_getUObject(), TEXT("Red Dot"));
+		Builder->Execute_SetAddition(Builder->_getUObject(), TEXT("Flashlight"));
+		
+		Result = AssaultRifleBuilder->GetResult();
 	}
-
-	// TacticalRifle
-	Builder = GetWorld()->SpawnActor<ACPP_TacticalRifleBuilder>(GetActorLocation() + FVector(300, 0, 0), GetActorRotation());
-
-	Builder->Execute_ResetState(Builder.GetObject());
-
-	Builder->Execute_SetBarrel(Builder.GetObject(), "");
-	Builder->Execute_SetChamber(Builder.GetObject());
-	Builder->Execute_SetTrigger(Builder.GetObject());
-	Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
-	Builder->Execute_SetScope(Builder.GetObject(), TEXT("SniperScope"));
-	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Foregrip"));
-
-	if (Cast<ACPP_TacticalRifleBuilder>(Builder.GetObject())->GetResult())
+	else if (auto MachineGunBuilder = Cast<ACPP_MachineGunBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("TacticalRifle succesfully constructed!!!"));
+		Builder->Execute_SetMagazine(Builder->_getUObject(), "Large");
+		Builder->Execute_SetScope(Builder->_getUObject(), TEXT("Red Dot"));
+		Builder->Execute_SetAddition(Builder->_getUObject(), TEXT("Laser"));
+		
+		Result = MachineGunBuilder->GetResult();
 	}
-	else
+	else if (auto SMGBuilder = Cast<ACPP_SMGBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to construct TacticalRifle."));
+		Builder->Execute_SetMagazine(Builder->_getUObject(), "Default");
+		Builder->Execute_SetScope(Builder->_getUObject(), TEXT("Red Dot"));
+		Builder->Execute_SetAddition(Builder->_getUObject(), TEXT("Laser"));
+		
+		Result = SMGBuilder->GetResult();
 	}
 
-	//  MachineGun
-	Builder = GetWorld()->SpawnActor<ACPP_MachineGunBuilder>(GetActorLocation() + FVector(400, 0, 0), GetActorRotation());
+	return Result;
+}
 
-	Builder->Execute_ResetState(Builder.GetObject());
+ACPP_Weapon* ACPP_WeaponDirector::GetResult()
+{
+	ACPP_Weapon* Result = nullptr;
 
-	Builder->Execute_SetBarrel(Builder.GetObject(), "");
-	Builder->Execute_SetChamber(Builder.GetObject());
-	Builder->Execute_SetTrigger(Builder.GetObject());
-	Builder->Execute_SetMagazine(Builder.GetObject(), "Large");
-	Builder->Execute_SetScope(Builder.GetObject(), TEXT("Red Dot"));
-	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Laser"));
-
-	if (Cast<ACPP_MachineGunBuilder>(Builder.GetObject())->GetResult())
+	if (auto PistolBuilder = Cast<ACPP_PistolBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("MachineGun succesfully constructed!!!"));
+		Result = PistolBuilder->GetResult();
 	}
-	else
+	else if (auto SniperRifleBuilder = Cast<ACPP_SniperRifleBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to construct MachineGun."));
+		Result = SniperRifleBuilder->GetResult();
 	}
-
-	// SMG
-	Builder = GetWorld()->SpawnActor<ACPP_SMGBuilder>(GetActorLocation() + FVector(500, 0, 0), GetActorRotation());
-
-	Builder->Execute_ResetState(Builder.GetObject());
-
-	Builder->Execute_SetBarrel(Builder.GetObject(), "");
-	Builder->Execute_SetChamber(Builder.GetObject());
-	Builder->Execute_SetTrigger(Builder.GetObject());
-	Builder->Execute_SetMagazine(Builder.GetObject(), "Default");
-	Builder->Execute_SetScope(Builder.GetObject(), TEXT("Red Dot"));
-	Builder->Execute_SetAddition(Builder.GetObject(), TEXT("Laser"));
-
-	if (Cast<ACPP_SMGBuilder>(Builder.GetObject())->GetResult())
+	else if (auto TacticalRifleBuilder = Cast<ACPP_TacticalRifleBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("SMG succesfully constructed!!!"));
+		Result = TacticalRifleBuilder->GetResult();
 	}
-	else
+	else if (auto AssaultRifleBuilder = Cast<ACPP_AssaultRifleBuilder>(Builder->_getUObject()))
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed to construct SMG."));
+		Result = AssaultRifleBuilder->GetResult();
 	}
+	else if (auto MachineGunBuilder = Cast<ACPP_MachineGunBuilder>(Builder->_getUObject()))
+	{
+		Result = MachineGunBuilder->GetResult();
+	}
+	else if (auto SMGBuilder = Cast<ACPP_SMGBuilder>(Builder->_getUObject()))
+	{
+		Result = SMGBuilder->GetResult();
+	}
+
+	return Result;
 }
 

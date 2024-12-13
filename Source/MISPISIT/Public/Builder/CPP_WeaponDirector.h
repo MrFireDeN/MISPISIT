@@ -26,4 +26,18 @@ protected:
 	TScriptInterface<ICPP_WeaponBuilder> Builder;
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "WeaponDirector")
+	virtual bool SetBuilder(TScriptInterface<ICPP_WeaponBuilder> NewBuilder);
+	
+	UFUNCTION(BlueprintCallable, Category = "WeaponDirector")
+	virtual ACPP_Weapon* CreateEmptyWeapon();
+	
+	UFUNCTION(BlueprintCallable, Category = "WeaponDirector")
+	virtual ACPP_Weapon* CreateStandardWeapon();
+	
+	UFUNCTION(BlueprintCallable, Category = "WeaponDirector")
+	virtual ACPP_Weapon* CreateFullWeapon();
+
+private:
+	ACPP_Weapon* GetResult();
 };
