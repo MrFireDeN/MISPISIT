@@ -2,8 +2,6 @@
 
 #include "Builder/CPP_PistolBuilder.h"
 
-#include "IMovieSceneTracksModule.h"
-
 // Sets default values
 ACPP_PistolBuilder::ACPP_PistolBuilder()
 {
@@ -98,7 +96,11 @@ ACPP_Pistol* ACPP_PistolBuilder::GetResult()
 		return nullptr;
 	}
 	
-	if (!UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Barrel"), TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN.SM_FN_FIVE-SEVEN")))
+	if (!UAssetLoader::AttachMeshToActorFromAsset(
+		Pistol,
+		TEXT("Barrel"),
+		TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN.SM_FN_FIVE-SEVEN")
+		))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Failed to attach Barrel to Pistol. Destroying Pistol."));
 		Pistol->Destroy();
@@ -108,25 +110,84 @@ ACPP_Pistol* ACPP_PistolBuilder::GetResult()
 	// Apply Barrel color if specified
 	if (!WeaponData.BarrelColor.IsEmpty())
 	{
-		// Set color logic here
+		// Set color logic here TODO
 	}
 
 	if (WeaponData.IsChamber)
 	{
-		UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Chamber"),
-			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_slide.SM_FN_FIVE-SEVEN_slide"));
+		UAssetLoader::AttachMeshToActorFromAsset(
+			Pistol,
+			TEXT("Chamber"),
+			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_slide.SM_FN_FIVE-SEVEN_slide")
+			);
 	}
 
 	if (WeaponData.IsTrigger)
 	{
-		UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Trigger"),
-			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_trigger.SM_FN_FIVE-SEVEN_trigger"));
+		UAssetLoader::AttachMeshToActorFromAsset(
+			Pistol,
+			TEXT("Trigger"),
+			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_trigger.SM_FN_FIVE-SEVEN_trigger")
+			);
 	}
 
 	if (WeaponData.Magazine.Equals("Small"))
 	{
-		UAssetLoader::AttachMeshToActorFromAsset(Pistol, TEXT("Magazine"),
-			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_Mag.SM_FN_FIVE-SEVEN_Mag"));
+		UAssetLoader::AttachMeshToActorFromAsset(
+			Pistol,
+			TEXT("Magazine"),
+			TEXT("/Game/Project/Models/Weapons/SM_FN_FIVE-SEVEN_Mag.SM_FN_FIVE-SEVEN_Mag")
+			);
+	}
+
+	if (WeaponData.Scope.Equals("Red Dot"))
+	{
+		UAssetLoader::AttachMeshToActorFromAsset(
+			Pistol,
+			TEXT("Scope"),
+			TEXT("/Game/Project/Models/Weapons/SM_Red_dot.SM_Red_dot"),
+			FVector(0, -2, 22)
+			);
+	}
+
+	if (WeaponData.Addition.Equals("Flashlight"))
+	{
+		UAssetLoader::AttachMeshToActorFromAsset(
+			Pistol,
+			TEXT("Addition"),
+			TEXT("/Game/Project/Models/Weapons/SM_Flashlight.SM_Flashlight"),
+			FVector(0, -40, 18)
+			);
+
+		USpotLightComponent* Flashlight = NewObject<USpotLightComponent>(
+			Pistol,
+			USpotLightComponent::StaticClass(),
+			TEXT("Light")
+			);
+
+		if (Flashlight)
+		{
+			Flashlight->SetupAttachment(Pistol->GetRootComponent());
+			Flashlight->SetRelativeLocation(FVector(0, -60, 8));
+			Flashlight->SetRelativeRotation(FRotator(0, 270, 0));
+		
+			Flashlight->IntensityUnits = ELightUnits::Lumens;
+			Flashlight->Intensity = 150;
+		
+			Flashlight->RegisterComponent();
+		}
+	}
+
+	if (WeaponData.Addition.Equals("Laser"))
+	{
+		UAssetLoader::AttachMeshToActorFromAsset(
+			Pistol,
+			TEXT("Addition"),
+			TEXT("/Game/Project/Models/Weapons/SM_Laser.SM_Laser"),
+			FVector(0, -40, 18)
+			);
+
+		// Laser Light need TODO
 	}
 
 	return Pistol;

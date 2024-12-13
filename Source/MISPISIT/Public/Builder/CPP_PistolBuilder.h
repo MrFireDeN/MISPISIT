@@ -7,6 +7,7 @@
 #include "CPP_WeaponBuilder.h"
 #include "CPP_Pistol.h"
 #include "AssetLoader.h"
+#include "Components/SpotLightComponent.h"
 #include "CPP_PistolBuilder.generated.h"
 
 UCLASS(BlueprintType)
