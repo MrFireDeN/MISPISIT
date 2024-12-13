@@ -117,6 +117,15 @@ ACPP_AssaultRifle* ACPP_AssaultRifleBuilder::GetResult()
         );
     }
 
+    if (WeaponData.IsTrigger)
+    {
+        UAssetLoader::AttachMeshToActorFromAsset(
+            AssaultRifle,
+            TEXT("Trigger"),
+            TEXT("/Game/Project/Models/Weapons/SM_AK-556_trigger.SM_AK-556_trigger")
+        );
+    }
+
     FVector ScopeLocation = FVector(0, -20, 40);
 
     if (WeaponData.Scope.Equals("Red Dot"))
