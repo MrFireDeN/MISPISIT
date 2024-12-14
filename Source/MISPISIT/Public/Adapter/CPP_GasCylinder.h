@@ -45,4 +45,13 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Gas")
 	virtual bool SetModal(const double& NewModal);
+	
+	UFUNCTION(BlueprintCallable, Category = "Gas")
+	virtual double GetVolume() const { return Volume; }
+	
+	UFUNCTION(BlueprintCallable, Category = "Gas")
+	virtual double GetMass() const { return Mass; }
+	
+	UFUNCTION(BlueprintCallable, Category = "Gas")
+	virtual double GetModal() const { return Modal; }
 };
