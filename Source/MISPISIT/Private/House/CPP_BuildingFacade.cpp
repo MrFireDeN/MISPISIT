@@ -2,8 +2,6 @@
 
 #include "House/CPP_BuildingFacade.h"
 
-#include "Math/TransformCalculus3D.h"
-
 ACPP_BuildingFacade::ACPP_BuildingFacade()
 {
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
