@@ -20,6 +20,6 @@ class MISPISIT_API ICPP_IGasAdapter
 public:
 	virtual double CalculateDp(const int& T0, const int& dT) = 0;
 	virtual bool ModifMass(const double& dm) = 0;
-	virtual bool ModiVolume(const double& dV) = 0;
+	virtual bool ModifVolume(const double& dV) = 0;
 	virtual FString GetData() = 0;
 };

@@ -2,7 +2,11 @@
 
 #include "Adapter/CPP_GasAdapter.h"
 
-bool UCPP_GasAdapter::Initialize(ACPP_GasCylinder*& InCylinder)
+UCPP_GasAdapter::UCPP_GasAdapter()
+{
+}
+
+bool UCPP_GasAdapter::Initialize(ACPP_GasCylinder* InCylinder)
 {
 	if (!InCylinder)
 	{
@@ -29,9 +33,9 @@ bool UCPP_GasAdapter::ModifMass(const double& dm)
 	return GasCylinder->SetMass(NewMass);
 }
 
-bool UCPP_GasAdapter::ModiVolume(const double& dV)
+bool UCPP_GasAdapter::ModifVolume(const double& dV)
 {
-	const double NewVolume = GasCylinder->GetMass() + dV;
+	const double NewVolume = GasCylinder->GetVolume() + dV;
 	
 	return GasCylinder->SetVolume(NewVolume);
 }
