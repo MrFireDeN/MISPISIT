@@ -2,8 +2,6 @@
 
 #include "Adapter/CPP_GasCylinder.h"
 
-#include "WorldPartition/ContentBundle/ContentBundleLog.h"
-
 ACPP_GasCylinder::ACPP_GasCylinder()
 {
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
