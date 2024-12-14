@@ -27,7 +27,7 @@ bool ACPP_SMGBuilder::SetChamber_Implementation()
 
 bool ACPP_SMGBuilder::SetMagazine_Implementation(const FString& Size)
 {
-	if (Size.Equals("Dafault"))
+	if (Size.Equals("Default"))
 	{
 		WeaponData.Magazine = Size;
 	}
