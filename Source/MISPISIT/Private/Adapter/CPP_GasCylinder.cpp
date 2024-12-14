@@ -39,7 +39,7 @@ bool ACPP_GasCylinder::SetVolume(const double& NewVolume)
 	}
 
 	Volume = NewVolume;
-	SetActorScale3D(FVector(Volume));
+	SetActorScale3D(FVector(FMath::Pow(Volume, 1.0f / 3.0f)));
 	return true;
 }
 
