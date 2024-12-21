@@ -46,7 +46,6 @@ public:
 		// Assign the loaded mesh to the component
 		UE_LOG(LogTemp, Log, TEXT("MeshLoaded: %s"), *LoadedMesh->GetName());
 		MeshComponent->SetStaticMesh(LoadedMesh);
-		MeshComponent->RegisterComponent();
 		return true;
 	}
 
