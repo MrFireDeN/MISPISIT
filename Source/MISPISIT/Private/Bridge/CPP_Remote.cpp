@@ -4,9 +4,8 @@
 
 ACPP_Remote::ACPP_Remote()
 {
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RemoteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RemoteMesh"));
-	RemoteMesh->SetupAttachment(RootComponent);
+	RootComponent = RemoteMesh;
 	
 	UAssetLoader::LoadMeshFromAsset(RemoteMesh, "/Game/Project/Models/Bridge/TV_Pixel/SM_TV_Remote.SM_TV_Remote");
 }

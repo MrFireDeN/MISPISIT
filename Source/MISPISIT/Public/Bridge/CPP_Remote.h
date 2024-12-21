@@ -17,6 +17,7 @@ public:
 	ACPP_Remote();
 
 protected:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* RemoteMesh;
 	ICPP_IDevice* Device;
 
