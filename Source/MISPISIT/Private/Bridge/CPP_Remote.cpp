@@ -4,8 +4,14 @@
 
 ACPP_Remote::ACPP_Remote()
 {
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RemoteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RemoteMesh"));
 	RootComponent = RemoteMesh;
+	RemoteMesh->SetRelativeScale3D(FVector(0.5));
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	BoxCollision->SetBoxExtent(FVector(50));
+	BoxCollision->SetupAttachment(RootComponent);
 	
 	UAssetLoader::LoadMeshFromAsset(RemoteMesh, "/Game/Project/Models/Bridge/TV_Pixel/SM_TV_Remote.SM_TV_Remote");
 }
@@ -111,4 +117,19 @@ bool ACPP_Remote::ChannelUp()
 
 	const int NewChannel = FMath::Clamp(DeviceInterface->GetChannel() + 1, 0 , 3);
 	return DeviceInterface->SetChannel(NewChannel);
+}
+
+bool ACPP_Remote::OnTouch()
+{
+	return true;
+}
+
+bool ACPP_Remote::OnAttach()
+{
+	return true;
+}
+
+bool ACPP_Remote::OnDetach()
+{
+	return true;
 }
