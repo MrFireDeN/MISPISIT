@@ -16,12 +16,16 @@ class MISPISIT_API ACPP_Remote : public AActor
 public:
 	ACPP_Remote();
 
+	virtual void BeginPlay() override;
+
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* RemoteMesh;
-	ICPP_IDevice* Device;
 
-	virtual bool Connect(ICPP_IDevice*& Target);
+	UPROPERTY(EditAnywhere, Category = "Remote")
+	AActor* Device;
+
+	ICPP_IDevice* DeviceInterface;
 
 public:
 	virtual bool TogglePower();

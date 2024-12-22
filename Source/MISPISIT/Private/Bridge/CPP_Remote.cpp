@@ -10,98 +10,105 @@ ACPP_Remote::ACPP_Remote()
 	UAssetLoader::LoadMeshFromAsset(RemoteMesh, "/Game/Project/Models/Bridge/TV_Pixel/SM_TV_Remote.SM_TV_Remote");
 }
 
-bool ACPP_Remote::Connect(ICPP_IDevice*& Target)
+void ACPP_Remote::BeginPlay()
 {
-	if (!Target)
+	Super::BeginPlay();
+
+	if (!Device)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Target Device is NULL"));
-		return false;
+		UE_LOG(LogTemp, Error, TEXT("Device is NULL in BeginPlay"));
+		return;
 	}
 	
-	Device = Target;
-	
-	return true;
+	if (Device->Implements<UCPP_IDevice>())
+	{
+		DeviceInterface = Cast<ICPP_IDevice>(Device);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Device [%s] does NOT implenet ICPP_IDevice interface"), *Device->GetName());
+	}
 }
 
 bool ACPP_Remote::TogglePower()
 {
-	if (!Device)
+	if (!DeviceInterface)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Device is NULL"));
 		return false;
 	}
 
-	return Device->IsEnabled() ? Device->Disable() : Device->Enable();
+	return DeviceInterface->IsEnabled() ? DeviceInterface->Disable() : DeviceInterface->Enable();
 }
 
 bool ACPP_Remote::VolumeDown()
 {
-	if (!Device)
+	if (!DeviceInterface)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Device is NULL"));
 		return false;
 	}
 
-	if (!Device->IsEnabled())
+	if (!DeviceInterface->IsEnabled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Can NOT VolumeDown. Device is DISABLED"));
 		return false;
 	}
 
-	const int NewVolume = FMath::Clamp(Device->GetVolume() - 10, 0, 100);
-	return Device->SetVolume(NewVolume);
+	const int NewVolume = FMath::Clamp(DeviceInterface->GetVolume() - 10, 0, 100);
+	return DeviceInterface->SetVolume(NewVolume);
 }
 
 bool ACPP_Remote::VolumeUp()
 {
-	if (!Device)
+	if (!DeviceInterface)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Device is NULL"));
 		return false;
 	}
 
-	if (!Device->IsEnabled())
+	if (!DeviceInterface->IsEnabled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Can NOT VolumeUp. Device is DISABLED"));
 		return false;
 	}
 
-	const int NewVolume = FMath::Clamp(Device->GetVolume() + 10, 0, 100);
-	return Device->SetVolume(NewVolume);
+	const int NewVolume = FMath::Clamp(DeviceInterface->GetVolume() + 10, 0, 100);
+	return DeviceInterface->SetVolume(NewVolume);
 }
 
 bool ACPP_Remote::ChannelDown()
 {
-	if (!Device)
+	if (!DeviceInterface)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Device is NULL"));
 		return false;
 	}
 
-	if (!Device->IsEnabled())
+	if (!DeviceInterface->IsEnabled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Can NOT ChannelDown. Device is DISABLED"));;
 		return false;
 	}
 
-	const int NewChannel = FMath::Clamp(Device->GetChannel() - 1, 0 , 3);
-	return Device->SetChannel(NewChannel);
+	const int NewChannel = FMath::Clamp(DeviceInterface->GetChannel() - 1, 0 , 3);
+	return DeviceInterface->SetChannel(NewChannel);
 }
 
 bool ACPP_Remote::ChannelUp()
 {
-	if (!Device)
+	if (!DeviceInterface)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Device is NULL"));
 		return false;
 	}
 
-	if (!Device->IsEnabled())
+	if (!DeviceInterface->IsEnabled())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Can NOT ChannelUp. Device is DISABLED"));
 		return false;
 	}
 
-	const int NewChannel = FMath::Clamp(Device->GetChannel() + 1, 0 , 3);
-	return Device->SetChannel(NewChannel);
+	const int NewChannel = FMath::Clamp(DeviceInterface->GetChannel() + 1, 0 , 3);
+	return DeviceInterface->SetChannel(NewChannel);
 }
