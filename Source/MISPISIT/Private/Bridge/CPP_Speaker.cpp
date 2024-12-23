@@ -29,6 +29,8 @@ ACPP_Speaker::ACPP_Speaker()
 
 	SpeakerAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("SpeakerAudio"));
 	SpeakerAudio->SetupAttachment(RootComponent);
+	
+	SetVolume(CurrentVolume);
 }
 
 void ACPP_Speaker::BeginPlay()
