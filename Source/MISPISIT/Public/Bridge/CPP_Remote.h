@@ -47,8 +47,4 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Remote")
 	virtual bool ChannelUp();
-
-	virtual bool OnTouch() override;
-	virtual bool OnAttach() override;
-	virtual bool OnDetach() override;
 };

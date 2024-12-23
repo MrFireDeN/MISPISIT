@@ -118,18 +118,3 @@ bool ACPP_Remote::ChannelUp()
 	const int NewChannel = FMath::Clamp(DeviceInterface->GetChannel() + 1, 0 , 3);
 	return DeviceInterface->SetChannel(NewChannel);
 }
-
-bool ACPP_Remote::OnTouch()
-{
-	return true;
-}
-
-bool ACPP_Remote::OnAttach()
-{
-	return true;
-}
-
-bool ACPP_Remote::OnDetach()
-{
-	return true;
-}
