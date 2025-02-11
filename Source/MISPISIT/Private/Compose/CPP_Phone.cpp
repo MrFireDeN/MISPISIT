@@ -11,7 +11,6 @@ ACPP_Phone::ACPP_Phone()
 	PhoneMesh->SetupAttachment(RootComponent);
 	PhoneMesh->SetRelativeScale3D(FVector(0.1));
 	PhoneMesh->SetRelativeRotation(FRotator(0, 180, 0));
-	//PhoneMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 	BoxCollision->SetBoxExtent(FVector(50));
