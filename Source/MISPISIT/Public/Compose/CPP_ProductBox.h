@@ -21,7 +21,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent*  ;
+	UStaticMeshComponent* BoxMesh;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* BoxCollision;
