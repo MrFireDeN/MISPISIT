@@ -49,4 +49,7 @@ public:
 	virtual bool ChannelUp();
 	
 	virtual bool OnNumericAction(const int Digit) override;
+
+	virtual bool OnAttach() override;
+	virtual bool OnDetach() override;
 };

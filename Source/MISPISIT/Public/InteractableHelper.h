@@ -19,6 +19,14 @@ class MISPISIT_API UInteractableHelper : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Interacteble")
+	static void CallOnAttach(AActor* Target);
+	
+	UFUNCTION(BlueprintCallable, Category = "Interacteble")
+	static void CallOnDetach(AActor* Target);
+	
+	UFUNCTION(BlueprintCallable, Category = "Interacteble")
+	static void CallOnTouch(AActor* Target);
 	
 	/**
 	 * Calls the OnPrimaryAction function on the target actor if it implements the ICPP_Interactable interface.

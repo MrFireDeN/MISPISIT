@@ -142,3 +142,19 @@ bool ACPP_Remote::OnNumericAction(const int Digit)
 		return true;
 	}
 }
+
+bool ACPP_Remote::OnAttach()
+{
+	RemoteMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RemoteMesh->SetSimulatePhysics(false);
+	
+	return ICPP_Interactable::OnAttach();
+}
+
+bool ACPP_Remote::OnDetach()
+{
+	RemoteMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	RemoteMesh->SetSimulatePhysics(true);
+	
+	return ICPP_Interactable::OnDetach();
+}

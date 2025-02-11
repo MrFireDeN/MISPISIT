@@ -4,6 +4,30 @@
 
 #include "InteractableHelper.h"
 
+void UInteractableHelper::CallOnAttach(AActor* Target)
+{
+	if (ICPP_Interactable* Interactable = Cast<ICPP_Interactable>(Target))
+	{
+		Interactable->OnAttach();
+	}
+}
+
+void UInteractableHelper::CallOnDetach(AActor* Target)
+{
+	if (ICPP_Interactable* Interactable = Cast<ICPP_Interactable>(Target))
+	{
+		Interactable->OnDetach();
+	}
+}
+
+void UInteractableHelper::CallOnTouch(AActor* Target)
+{
+	if (ICPP_Interactable* Interactable = Cast<ICPP_Interactable>(Target))
+	{
+		Interactable->OnTouch();
+	}
+}
+
 /**
  * Calls the OnPrimaryAction function on the target actor if it implements the ICPP_Interactable interface.
  * 
