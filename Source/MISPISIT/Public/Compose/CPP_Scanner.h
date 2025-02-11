@@ -6,6 +6,8 @@
 #include "CPP_Interactable.h"
 #include "GameFramework/Actor.h"
 #include "AssetLoader.h"
+#include "CPP_IProduct.h"
+#include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "CPP_Scanner.generated.h"
 
@@ -24,5 +26,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* BoxCollision;
 
+	APlayerCameraManager* CameraManager;
+
+	virtual void BeginPlay() override;
+
+	virtual void ScanProduct(ICPP_IProduct* Product);
 public:
+	virtual bool OnPrimaryAction() override;
+
+	virtual bool OnAttach() override;
+	virtual bool OnDetach() override;
 };
