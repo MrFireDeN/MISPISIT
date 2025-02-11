@@ -9,14 +9,41 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 //#include "ToolBuilderUtil.h"
+#include "EnhancedInputSubsystemInterface.h"
+#include "EnhancedInputSubsystemInterface.h"
 #include "Animation/AnimInstance.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACPP_Player::ACPP_Player()
 {
+
+	
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	// CharacterMesh
+	GetMesh()->SetRelativeLocation(FVector(0, 0, -89));
+	GetMesh()->SetRelativeRotation(FRotator(0, 270, 0));
+	
+	if (USkeletalMesh* LoadedCharacterMesh = LoadObject<USkeletalMesh>(nullptr, *CharacterMeshAsset))
+	{
+		GetMesh()->SetSkeletalMesh(LoadedCharacterMesh);
+	}
+
+	// AnimBP
+	TSubclassOf<UAnimInstance> AnimBP_Quinn =
+		LoadClass<UAnimInstance>(nullptr, TEXT("/Game/Characters/Mannequins/Animations/ABP_Quinn.ABP_Quinn_C"));
+	
+	if (AnimBP_Quinn)
+	{
+		GetMesh()->SetAnimInstanceClass(AnimBP_Quinn);
+		UE_LOG(LogTemp, Log, TEXT("Anim Loaded"));
+	}
+	else {
+		UE_LOG(LogTemp, Error, TEXT("Anim NOT Loaded"));
+	}
 
 	// SpringArm
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -28,8 +55,30 @@ ACPP_Player::ACPP_Player()
 	// Camera3P
 	Camera3P = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera3P"));
 	Camera3P->SetupAttachment(SpringArm);
-	Camera3P->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 	Camera3P->bUsePawnControlRotation = true;
+	Camera3P->SetAutoActivate(false);
+	Camera3P->SetActive(false);
+
+	// Camera1P
+	Camera1P = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera1P"));
+	Camera1P->SetupAttachment(GetMesh(), TEXT("head"));
+	Camera1P->SetRelativeLocation(FVector(10, 12, 0));
+	Camera1P->SetRelativeRotation(FRotator(0, 90, 270));
+	Camera1P->bUsePawnControlRotation = true;
+	Camera1P->SetAutoActivate(false);
+	Camera1P->SetActive(false);
+
+	//CameraTransition
+	CameraTransition = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraTransition"));
+	CameraTransition->SetupAttachment(GetCapsuleComponent());
+	CameraTransition->bUsePawnControlRotation = true;
+	CameraTransition->SetAutoActivate(false);
+	CameraTransition->SetActive(false);
+
+	// Default Settings
+	CurrentCamera = Camera1P;
+	bUseControllerRotationYaw = true;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +93,8 @@ void ACPP_Player::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+	
+	CurrentCamera->SetActive(true);
 
 	ShapeFabric = Cast<ACPP_ShapeFabric>(UGameplayStatics::GetActorOfClass(GetWorld(), ACPP_ShapeFabric::StaticClass()));
 }
@@ -51,11 +102,14 @@ void ACPP_Player::BeginPlay()
 void ACPP_Player::Move(const FInputActionValue& Value)
 {
 	FVector2d MovementVector = Value.Get<FVector2d>();
+	
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Move1"));
 
 	if (Controller != nullptr)
 	{
-		AddMovementInput(Camera3P->GetForwardVector(), MovementVector.Y);
-		AddMovementInput(Camera3P->GetRightVector(), MovementVector.X);
+		AddMovementInput(CurrentCamera->GetForwardVector(), MovementVector.Y);
+		AddMovementInput(CurrentCamera->GetRightVector(), MovementVector.X);
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Move2"));
 	}
 }
 

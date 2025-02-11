@@ -22,11 +22,22 @@ class MISPISIT_API ACPP_Player : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
+	ACPP_Player();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera3P;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* Camera1P;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* CameraTransition;
+	
+	UCameraComponent* CurrentCamera;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputMappingContext* DefaultMappingContext;
@@ -43,10 +54,9 @@ class MISPISIT_API ACPP_Player : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* DrawShapeAction;
 
-public:
-	ACPP_Player();
-
 private:
+	FString CharacterMeshAsset = "/Game/Characters/Mannequins/Meshes/SKM_Quinn_Simple.SKM_Quinn_Simple";
+	
 	void DrawShape();
 
 protected:
@@ -65,8 +75,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 	USpringArmComponent* GetSpringArm() const { return SpringArm; }
 	UCameraComponent* GetCamera3P() const { return  Camera3P; }
-
 };
