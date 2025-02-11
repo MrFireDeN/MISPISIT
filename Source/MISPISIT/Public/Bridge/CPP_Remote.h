@@ -47,4 +47,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Remote")
 	virtual bool ChannelUp();
+	
+	virtual bool OnNumericAction(const int Digit) override;
 };

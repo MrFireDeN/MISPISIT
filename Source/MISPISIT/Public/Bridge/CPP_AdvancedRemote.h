@@ -17,6 +17,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AdvancedRemote")
 	virtual bool Mute();
 
+	virtual bool OnNumericAction(const int Digit) override;
+
 protected:
 	float CachedVolume;
 };

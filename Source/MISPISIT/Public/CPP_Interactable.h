@@ -19,4 +19,9 @@ public:
 	virtual bool OnAttach() { return true; }
 	virtual bool OnDetach() { return true; }
 	virtual bool OnTouch() { return true; }
+
+	virtual bool OnPrimaryAction() { return true; }
+	virtual bool OnSecondaryAction() { return true; }
+	virtual bool OnNumericAction(const int Digit) { return true; }
+	virtual bool OnCustomKeyAction(const FKey Key) { return true; }
 };

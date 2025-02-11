@@ -118,3 +118,27 @@ bool ACPP_Remote::ChannelUp()
 	const int NewChannel = FMath::Clamp(DeviceInterface->GetChannel() + 1, 0 , 3);
 	return DeviceInterface->SetChannel(NewChannel);
 }
+
+bool ACPP_Remote::OnNumericAction(const int Digit)
+{
+	switch (Digit)
+	{
+	case 1:
+		return TogglePower();
+
+	case 2:
+		return VolumeDown();
+
+	case 3:
+		return VolumeUp();
+
+	case 4:
+		return ChannelDown();
+
+	case 5:
+		return ChannelUp();
+		
+	default:
+		return true;
+	}
+}

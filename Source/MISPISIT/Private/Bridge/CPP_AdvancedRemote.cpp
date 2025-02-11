@@ -20,3 +20,13 @@ bool ACPP_AdvancedRemote::Mute()
 	}
 }
 
+bool ACPP_AdvancedRemote::OnNumericAction(const int Digit)
+{
+	if (Digit == 6)
+	{
+		return Mute();
+	}
+	
+	return Super::OnNumericAction(Digit);
+}
+
