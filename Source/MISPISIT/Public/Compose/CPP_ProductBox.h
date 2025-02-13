@@ -26,7 +26,28 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* BoxCollision;
 
+	APlayerCameraManager* CameraManager;
+
+	UPROPERTY(VisibleAnywhere, Category = "Products")
+	TArray<TScriptInterface<ICPP_IProduct>> BoxChildren;
+
 public:
+	UFUNCTION(BlueprintCallable, Category = "Products")
+	virtual bool Add(TScriptInterface<ICPP_IProduct> Child);
+	
+	UFUNCTION(BlueprintCallable, Category = "Products")
+	virtual bool Remove(TScriptInterface<ICPP_IProduct> Child);
+	
+	virtual bool Remove(int ChildIndex);
+	
+	virtual float GetPrice() override;
+	virtual FName GetName() override;
+	virtual void PlaceInBox(AActor* Box) override;
+	virtual void PlaceInWorld() override;
+	
 	virtual bool OnAttach() override;
 	virtual bool OnDetach() override;
+
+	virtual bool OnPrimaryAction() override;
+	virtual bool OnNumericAction(const int Digit) override;
 };

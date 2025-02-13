@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// CPP_IProduct.h
 
 #pragma once
 
@@ -24,5 +24,6 @@ class MISPISIT_API ICPP_IProduct
 public:
 	virtual float GetPrice() { return 0; }
 	virtual FName GetName() { return "Name"; }
-	virtual void PlaceInBox() {}
+	virtual void PlaceInBox(AActor* Box) {}
+	virtual void PlaceInWorld() {}
 };

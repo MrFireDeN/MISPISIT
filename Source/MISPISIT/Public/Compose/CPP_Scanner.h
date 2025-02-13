@@ -9,6 +9,9 @@
 #include "CPP_IProduct.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Compose/CPP_ProductBox.h"
+#include "GameFramework/Character.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "CPP_Scanner.generated.h"
 
 UCLASS()
@@ -33,6 +36,7 @@ protected:
 	virtual void ScanProduct(ICPP_IProduct* Product);
 public:
 	virtual bool OnPrimaryAction() override;
+	virtual bool OnSecondaryAction() override;
 
 	virtual bool OnAttach() override;
 	virtual bool OnDetach() override;

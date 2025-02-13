@@ -2,10 +2,6 @@
 
 #include "Compose/CPP_Scanner.h"
 
-#include "GameFramework/Character.h"
-#include "Kismet/KismetSystemLibrary.h"
-
-
 // Sets default values
 ACPP_Scanner::ACPP_Scanner()
 {
@@ -37,44 +33,70 @@ void ACPP_Scanner::ScanProduct(ICPP_IProduct* Product)
 
 bool ACPP_Scanner::OnPrimaryAction()
 {
-	
 	if (!CameraManager) return false;
 
-	// Начальная точка луча — позиция камеры
 	FVector StartLocation = CameraManager->GetCameraLocation();
-
-	// Конечная точка луча — вперед от камеры на определенное расстояние
 	FVector ForwardVector = CameraManager->GetActorForwardVector();
-	FVector EndLocation = StartLocation + (ForwardVector * 1000.0f); // 1000 — длина луча
-
-	// Параметры трассировки
+	FVector EndLocation = StartLocation + (ForwardVector * 1000.0f);
+	
 	FCollisionQueryParams TraceParams(FName(TEXT("LineTrace")), true);
-	TraceParams.bTraceComplex = true; // Трассировка по сложной геометрии
-	TraceParams.bReturnPhysicalMaterial = true; // Возвращать физический материал
+	TraceParams.bTraceComplex = true;
+	TraceParams.bReturnPhysicalMaterial = true;
 
-	// Результат трассировки
 	FHitResult HitResult;
 
-	// Выполняем трассировку
 	bool bHit = GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		StartLocation,
 		EndLocation,
-		ECC_Visibility, // Канал трассировки (видимость)
+		ECC_Visibility,
 		TraceParams
 	);
 
-	// Обработка результата
 	if (bHit)
 	{
-		// Если луч попал в объект
 		AActor* HitActor = HitResult.GetActor();
 		if (HitActor)
 		{
 			ScanProduct(Cast<ICPP_IProduct>(HitActor));
 		}
 
-		// Визуализация точки попадания
+		DrawDebugSphere(GetWorld(), HitResult.Location, 10.0f, 12, FColor::Green, false, 5.0f);
+	}
+	
+	return true;
+}
+
+bool ACPP_Scanner::OnSecondaryAction()
+{
+	if (!CameraManager) return false;
+
+	FVector StartLocation = CameraManager->GetCameraLocation();
+	FVector ForwardVector = CameraManager->GetActorForwardVector();
+	FVector EndLocation = StartLocation + (ForwardVector * 1000.0f);
+	
+	FCollisionQueryParams TraceParams(FName(TEXT("LineTrace")), true);
+	TraceParams.bTraceComplex = true;
+	TraceParams.bReturnPhysicalMaterial = true;
+
+	FHitResult HitResult;
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		StartLocation,
+		EndLocation,
+		ECC_Visibility,
+		TraceParams
+	);
+
+	if (bHit)
+	{
+		AActor* HitActor = HitResult.GetActor();
+		if (HitActor)
+		{
+			Cast<ACPP_ProductBox>(HitActor)->Remove(0);
+		}
+
 		DrawDebugSphere(GetWorld(), HitResult.Location, 10.0f, 12, FColor::Green, false, 5.0f);
 	}
 	

@@ -8,6 +8,8 @@
 #include "GameFramework/Actor.h"
 #include "Components/BoxComponent.h"
 #include "AssetLoader.h"
+#include "CPP_ProductBox.h"
+#include "InteractableHelper.h"
 #include "CPP_Phone.generated.h"
 
 UCLASS()
@@ -24,6 +26,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* BoxCollision;
+
+	APlayerCameraManager* CameraManager;
 	
 	FName Name = "Google Pixel 7a";
 	float Price = 1000;
@@ -31,8 +35,10 @@ protected:
 public:
 	virtual float GetPrice() override;
 	virtual FName GetName() override;
-	virtual void PlaceInBox() override;
+	virtual void PlaceInBox(AActor* Box) override;
+	virtual void PlaceInWorld() override;
 
 	virtual bool OnAttach() override;
 	virtual bool OnDetach() override;
+	virtual bool OnPrimaryAction() override;
 };
