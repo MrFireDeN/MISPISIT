@@ -44,13 +44,6 @@ struct FCPP_SprayPattern
 	UPROPERTY()
 	FRandomStream RandomStream;
 
-	/** 
-	 * Seed value for deterministic pattern generation.
-	 * Changing this will produce different spray sequences.
-	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 Seed;
-
 	/** Pre-generated sequence of recoil offsets */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FVector2D> SprayOffsets;
