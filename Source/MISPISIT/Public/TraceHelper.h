@@ -87,7 +87,7 @@ public:
 
         if (bDebug)
         {
-            DrawDebugSphere(GetWorld(), HitResult.Location, 10.0f, 12, FColor::Green, false, 5.0f);
+            DrawDebugSphere(GetWorld(), HitResult.Location, 10.0f, 12, FColor::Green, false, 15.0f);
         }
         
         return HitResult;
