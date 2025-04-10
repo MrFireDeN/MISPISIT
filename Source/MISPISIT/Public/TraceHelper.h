@@ -11,7 +11,7 @@
  * Handles camera management and world collision checks.
  */
 UCLASS()
-class MISPISIT_API UTraceHelper : public UObject
+class MISPISIT_API UTraceHelper : public UWorldSubsystem
 {
     GENERATED_BODY()
 
@@ -39,7 +39,7 @@ public:
      * @warning Debug drawing only appears in development builds
      * @see DrawDebugSphere(), ECC_Visibility, FCollisionQueryParams
      */
-    TOptional<FHitResult> TraceFromPlayer(float Distance = 1000.0f, bool bDebug = false)
+    TOptional<FHitResult> TraceFromPlayer(float Distance = 5000.0f, bool bDebug = false)
     {
         // Early return if world context is invalid
         if (!GetWorld())
