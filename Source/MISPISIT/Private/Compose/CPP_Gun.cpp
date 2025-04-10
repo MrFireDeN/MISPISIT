@@ -22,6 +22,14 @@ void ACPP_Gun::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red,
 			TEXT("Failed to load TraceHelper"));
 	}
+
+	SpraySubsystem = GetWorld()->GetSubsystem<UCPP_SpraySubsystem>();
+
+	if (SpraySubsystem == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red,
+			TEXT("Failed to load SpraySubsystem"));
+	}
 }
 
 void ACPP_Gun::Fire(FHitResult Hit)
@@ -41,14 +49,21 @@ void ACPP_Gun::Fire(FHitResult Hit)
 	const FPointDamageEvent DamageEvent(Damage, Hit, GetActorForwardVector(), nullptr);
 	HitActor->TakeDamage(Damage, DamageEvent, GetInstigatorController(), this);
 
-	if (CharacterOwner != nullptr)
+	if (CharacterOwner != nullptr && SpraySubsystem != nullptr)
 	{
-		CharacterOwner->AddControllerPitchInput(-2);
+		const FCPP_SprayPattern* SprayPattern = SpraySubsystem->GetSprayPattern(SprayType);
+		
+		CharacterOwner->AddControllerPitchInput(- SprayPattern->GetSprayOffset(ShotIndex).X);
+		CharacterOwner->AddControllerYawInput(SprayPattern->GetSprayOffset(ShotIndex).Y);
+
+		ShotIndex++;
 	}
 }
 
 bool ACPP_Gun::OnAttach()
 {
+	ShotIndex = 0;
+	
 	CharacterOwner = Cast<ACharacter>(GetAttachParentActor());
     
 	// Проверка успешности
