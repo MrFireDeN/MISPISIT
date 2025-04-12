@@ -31,16 +31,23 @@ bool UCPP_DamageHandlerBASE::CanHandle(const FCPP_DamageData DamageData)
 
 void UCPP_DamageHandlerBASE::AppleEffects(FCPP_DamageData& DamageData)
 {
-	// TODO
+	if (DamageData.IsValid())
+	{
+		AActor* HitActor = DamageData.HitResult.GetActor();
+		if (HitActor != nullptr)
+		{
+			// HitActor->TakeDamage(DamageData.DamageAmount, DamageData.DamageTypeClass, DamageData.InstigatorController, DamageData.DamageCauser);
+		}
+	}
 }
 
-void UCPP_DamageHandlerBASE::SetNextHandler(UCPP_DamageHandlerBASE* NextHandler)
+void UCPP_DamageHandlerBASE::SetNextHandler(UCPP_DamageHandlerBASE* Next)
 {
-	if (NextHandler == nullptr)
+	if (Next == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NextHandler is NULL"));
 		return;
 	}
 	
-	this->NextHandler = NextHandler;
+	NextHandler = Next;
 }

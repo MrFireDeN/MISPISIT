@@ -9,6 +9,15 @@ struct FCPP_DamageData
 	GENERATED_BODY()
 
 	FCPP_DamageData();
+	
+	FCPP_DamageData(
+		float Damage,
+		TSubclassOf<UDamageType> DamageTypeClass,
+		FHitResult HitResult,
+		AActor* DamageCauser = nullptr,
+		AController* InstigatorController = nullptr,
+		bool bIsCriticalHit = false
+	);
 
 public:
 	UPROPERTY(BlueprintReadWrite, Category = "Damage")
@@ -28,4 +37,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Damage")
 	bool bIsCriticalHit = false;
+
+	bool IsValid() const { return DamageTypeClass != nullptr && HitResult.GetActor() != nullptr; }
 };

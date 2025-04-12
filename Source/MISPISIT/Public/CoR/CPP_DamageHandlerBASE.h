@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CPP_IDamagaHandler.h"
+#include "CPP_FDamageData.h"
 #include "UObject/Object.h"
 #include "CPP_DamageHandlerBASE.generated.h"
 
@@ -11,7 +11,7 @@
  * 
  */
 UCLASS(Abstract)
-class MISPISIT_API UCPP_DamageHandlerBASE : public UObject, public ICPP_IDamagaHandler
+class MISPISIT_API UCPP_DamageHandlerBASE : public UObject
 {
 	GENERATED_BODY()
 
@@ -23,9 +23,9 @@ private:
 	UCPP_DamageHandlerBASE* NextHandler;
 
 public:
-	virtual bool HandleDamage(FCPP_DamageData& DamageData) override;
-	virtual bool CanHandle(const FCPP_DamageData DamageData) override;
-	virtual void AppleEffects(FCPP_DamageData& DamageData) override;
+	virtual bool HandleDamage(FCPP_DamageData& DamageData);
+	virtual bool CanHandle(const FCPP_DamageData DamageData);
+	virtual void AppleEffects(FCPP_DamageData& DamageData);
 
-	virtual void SetNextHandler(UCPP_DamageHandlerBASE* NextHandler);
+	virtual void SetNextHandler(UCPP_DamageHandlerBASE* Next);
 };
