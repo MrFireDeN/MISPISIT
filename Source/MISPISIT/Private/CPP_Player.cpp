@@ -14,12 +14,11 @@
 #include "Animation/AnimInstance.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Observer/CPP_HealthComponent.h"
 
 // Sets default values
 ACPP_Player::ACPP_Player()
 {
-
-	
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -79,6 +78,9 @@ ACPP_Player::ACPP_Player()
 	CurrentCamera = Camera1P;
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// HealthComponent
+	HealthComponent = CreateDefaultSubobject<UCPP_HealthComponent>(TEXT("HealthComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -97,6 +99,12 @@ void ACPP_Player::BeginPlay()
 	CurrentCamera->SetActive(true);
 
 	ShapeFabric = Cast<ACPP_ShapeFabric>(UGameplayStatics::GetActorOfClass(GetWorld(), ACPP_ShapeFabric::StaticClass()));
+
+	// HealthComponent
+	if (HealthComponent)
+	{
+		HealthComponent->OnDeath.AddDynamic(this, &ACPP_Player::HandleDeath);
+	}
 }
 
 void ACPP_Player::Move(const FInputActionValue& Value)
@@ -123,6 +131,12 @@ void ACPP_Player::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ACPP_Player::HandleDeath()
+{
+	// PlayDeathAnim();
+	DisableInput(Cast<APlayerController>(GetController()));
 }
 
 // Called every frame
@@ -160,4 +174,12 @@ void ACPP_Player::DrawShape()
 			ShapeFabric->Draw(i);
 		}
 	}
+}
+
+float ACPP_Player::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	HealthComponent->TakeDamage(DamageAmount);
+	
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }

@@ -16,6 +16,7 @@ class USceneComponent;
 class UCameraComponent;
 class UAnimMontage;
 class USoundBase;
+class UCPP_HealthComponent;
 
 UCLASS()
 class MISPISIT_API ACPP_Player : public ACharacter
@@ -53,6 +54,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* DrawShapeAction;
+	
+	class UCPP_HealthComponent* HealthComponent;
 
 private:
 	FString CharacterMeshAsset = "/Game/Characters/Mannequins/Meshes/SKM_Quinn_Simple.SKM_Quinn_Simple";
@@ -69,6 +72,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ACPP_ShapeFabric* ShapeFabric;
 
+	UFUNCTION()
+	virtual void HandleDeath();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -78,4 +84,6 @@ public:
 	
 	USpringArmComponent* GetSpringArm() const { return SpringArm; }
 	UCameraComponent* GetCamera3P() const { return  Camera3P; }
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };
