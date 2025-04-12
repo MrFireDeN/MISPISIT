@@ -8,7 +8,7 @@ UCPP_HealthComponent::UCPP_HealthComponent()
 	CurrentHealth = MaxHealth;
 }
 
-void UCPP_HealthComponent::TakeDamage(float Damage)
+void UCPP_HealthComponent::TakeDamage(const float Damage)
 {
 	if (IsDead() || Damage <= 0) return;
 	
@@ -18,7 +18,7 @@ void UCPP_HealthComponent::TakeDamage(float Damage)
 	UE_LOG(LogTemp, Display, TEXT("Take Damage"));
 }
 
-void UCPP_HealthComponent::Heal(float Amount)
+void UCPP_HealthComponent::Heal(const float Amount)
 {
 	if (IsDead() || Amount <= 0) return;
 	
@@ -29,7 +29,7 @@ void UCPP_HealthComponent::Heal(float Amount)
 	
 }
 
-float UCPP_HealthComponent::UpdateHealth(float NewHealth)
+float UCPP_HealthComponent::UpdateHealth(const float NewHealth)
 {
 	const bool bHealthChanged = NewHealth != CurrentHealth;
 	CurrentHealth = NewHealth;

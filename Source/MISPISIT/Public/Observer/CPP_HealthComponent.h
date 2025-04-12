@@ -24,10 +24,10 @@ public:
 	FOnHealthChangedSignature OnHealthChanged;
 
 	UFUNCTION(BlueprintCallable, Category="Health")
-	virtual void TakeDamage(float Damage);
+	virtual void TakeDamage(const float Damage);
 
 	UFUNCTION(BlueprintCallable, Category="Health")
-	virtual void Heal(float Amount);
+	virtual void Heal(const float Amount);
 
 	UFUNCTION(BlueprintPure, Category="Health")
 	virtual bool IsDead() const { return CurrentHealth <= 0; };
@@ -46,5 +46,5 @@ protected:
 	UPROPERTY(VisibleInstanceOnly, Category = "Health")
 	float CurrentHealth;
 
-	float UpdateHealth(float NewHealth);
+	float UpdateHealth(const float NewHealth);
 };
