@@ -10,6 +10,10 @@ AMICharacterBase::AMICharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+}
+
 // Called when the game starts or when spawned
 void AMICharacterBase::BeginPlay()
 {

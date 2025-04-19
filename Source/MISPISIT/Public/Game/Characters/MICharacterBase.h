@@ -14,6 +14,7 @@ class MISPISIT_API AMICharacterBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AMICharacterBase();
+	explicit AMICharacterBase(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	// Called when the game starts or when spawned
