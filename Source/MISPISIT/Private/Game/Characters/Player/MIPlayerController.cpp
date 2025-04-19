@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AMIPlayerController::AMIPlayerController()
 {
@@ -59,6 +60,20 @@ void AMIPlayerController::SetupInputComponent()
 		{
 			Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMIPlayerController::HandleLook);
 		}
+
+		if (JumpAction)
+		{
+			Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AMIPlayerController::HandleJumpStarted);
+			Input->BindAction(JumpAction, ETriggerEvent::Canceled, this, &AMIPlayerController::HandleJumpStopped);
+			Input->BindAction(JumpAction, ETriggerEvent::Completed, this, &AMIPlayerController::HandleJumpStopped);
+		}
+
+		if (SprintAction)
+		{
+			Input->BindAction(SprintAction, ETriggerEvent::Started, this, &AMIPlayerController::HandleSprintStarted);
+			Input->BindAction(SprintAction, ETriggerEvent::Canceled, this, &AMIPlayerController::HandleSprintStopped);
+			Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMIPlayerController::HandleSprintStopped);
+		}
 	}
 }
 
@@ -88,3 +103,37 @@ void AMIPlayerController::HandleLook(const FInputActionValue& Value)
 		PlayerCharacter->AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
+
+void AMIPlayerController::HandleSprintStarted(const FInputActionValue& Value)
+{
+	if (PlayerCharacter && PlayerCharacter->GetMIMovement())
+	{
+		GetPlayerCharacter()->GetMIMovement()->StartSprinting();
+	}
+}
+
+void AMIPlayerController::HandleSprintStopped(const FInputActionValue& Value)
+{
+	if (PlayerCharacter && PlayerCharacter->GetMIMovement())
+	{
+		GetPlayerCharacter()->GetMIMovement()->StopSprinting();
+	}
+}
+
+void AMIPlayerController::HandleJumpStarted(const FInputActionValue& Value)
+{
+	if (PlayerCharacter)
+	{
+		PlayerCharacter->Jump();
+	}
+}
+
+void AMIPlayerController::HandleJumpStopped(const FInputActionValue& Value)
+{
+	if (PlayerCharacter)
+	{
+		PlayerCharacter->StopJumping();
+	}
+}
+
+

@@ -37,6 +37,18 @@ protected:
 
 	UFUNCTION()
 	void HandleLook(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleSprintStarted(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleSprintStopped(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleJumpStarted(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleJumpStopped(const FInputActionValue& Value);
 	
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
