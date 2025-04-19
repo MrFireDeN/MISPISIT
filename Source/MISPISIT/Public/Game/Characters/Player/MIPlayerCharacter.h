@@ -4,10 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../MICharacterBase.h"
-#include "Game/Characters/Components/MICharacterMovementComponent.h"
 #include "MIPlayerCharacter.generated.h"
-
-class UMICharacterMovementComponent;
 
 UCLASS()
 class MISPISIT_API AMIPlayerCharacter : public AMICharacterBase
@@ -16,12 +13,7 @@ class MISPISIT_API AMIPlayerCharacter : public AMICharacterBase
 
 public:
 	AMIPlayerCharacter();
-	explicit AMIPlayerCharacter(const FObjectInitializer& ObjectInitializer);
-
-	FORCEINLINE TObjectPtr<UMICharacterMovementComponent> GetMIMovement() const
-	{
-		return Cast<UMICharacterMovementComponent>(GetCharacterMovement());
-	}
+	explicit AMIPlayerCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

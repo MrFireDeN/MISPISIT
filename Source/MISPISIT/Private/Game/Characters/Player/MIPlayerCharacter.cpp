@@ -7,11 +7,6 @@ AMIPlayerCharacter::AMIPlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-AMIPlayerCharacter::AMIPlayerCharacter(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer.SetDefaultSubobjectClass<UMICharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
-{
-}
-
 void AMIPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();

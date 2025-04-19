@@ -10,7 +10,7 @@ AMICharacterBase::AMICharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UMICharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 }
 

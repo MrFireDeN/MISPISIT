@@ -106,17 +106,17 @@ void AMIPlayerController::HandleLook(const FInputActionValue& Value)
 
 void AMIPlayerController::HandleSprintStarted(const FInputActionValue& Value)
 {
-	if (PlayerCharacter && PlayerCharacter->GetMIMovement())
+	if (PlayerCharacter)
 	{
-		GetPlayerCharacter()->GetMIMovement()->StartSprinting();
+		PlayerCharacter->GetCharacterMovement()->StartSprinting();
 	}
 }
 
 void AMIPlayerController::HandleSprintStopped(const FInputActionValue& Value)
 {
-	if (PlayerCharacter && PlayerCharacter->GetMIMovement())
+	if (PlayerCharacter)
 	{
-		GetPlayerCharacter()->GetMIMovement()->StopSprinting();
+		PlayerCharacter->GetCharacterMovement()->StopSprinting();
 	}
 }
 
