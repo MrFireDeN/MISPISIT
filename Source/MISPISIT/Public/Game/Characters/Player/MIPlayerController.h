@@ -63,7 +63,7 @@ protected:
 	TObjectPtr<UInputAction> ChangeViewAction;
 	
 	UPROPERTY(EditDefaultsOnly, Category = Input)
-	class UInputAction* InteractAction;
+	TObjectPtr<UInputAction> InteractAction;
 
 private:
 	UPROPERTY()
