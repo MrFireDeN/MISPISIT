@@ -52,6 +52,17 @@ protected:
 
 	UFUNCTION()
 	void HandleInteract(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandlePrimaryAction(const FInputActionValue& Value);
+
+
+	UFUNCTION()
+	void HandleSecondaryAction(const FInputActionValue& Value);
+
+
+	UFUNCTION()
+	void HandleNumeric(const FInputActionValue& Value);
 	
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
@@ -79,6 +90,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	TObjectPtr<UInputAction> InteractAction;
+	
+	UPROPERTY(EditDefaultsOnly, Category = Input)
+	TObjectPtr<UInputAction> NumericAction;
 
 private:
 	UPROPERTY()

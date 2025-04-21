@@ -6,7 +6,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "InteractableHelper.h"
 #include "Blueprint/UserWidget.h"
+#include "Game/Characters/Components/MICharacterInteractComponent.h"
 #include "Game/Characters/Components/MICharacterMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -81,6 +83,21 @@ void AMIPlayerController::SetupInputComponent()
 		{
 			Input->BindAction(InteractAction, ETriggerEvent::Started, this, &AMIPlayerController::HandleInteract);
 		}
+
+		if (PrimaryAction)
+		{
+			Input->BindAction(PrimaryAction, ETriggerEvent::Started, this, &AMIPlayerController::HandlePrimaryAction);
+		}
+
+		if (SecondaryAction)
+		{
+			Input->BindAction(SecondaryAction, ETriggerEvent::Started, this, &AMIPlayerController::HandleSecondaryAction);
+		}
+
+		if (NumericAction)
+		{
+			Input->BindAction(NumericAction, ETriggerEvent::Started, this, &AMIPlayerController::HandleNumeric);
+		}
 	}
 }
 
@@ -151,4 +168,28 @@ void AMIPlayerController::HandleInteract(const FInputActionValue& Value)
 	}
 }
 
+void AMIPlayerController::HandlePrimaryAction(const FInputActionValue& Value)
+{
+	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	{
+		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnPrimaryAction();
+	}
+}
 
+void AMIPlayerController::HandleSecondaryAction(const FInputActionValue& Value)
+{
+	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	{
+		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnSecondaryAction();
+	}
+}
+
+void AMIPlayerController::HandleNumeric(const FInputActionValue& Value)
+{
+	const int32 Numeric = Value.Get<float>();
+
+	if (PlayerCharacter && Numeric && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	{
+		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnNumericAction(Numeric);
+	}
+}
