@@ -15,28 +15,28 @@ class MISPISIT_API UMICharacterMovementComponent : public UCharacterMovementComp
 public:
 	UMICharacterMovementComponent();
 
-	UFUNCTION(BlueprintCallable, Category="Movement")
+	UFUNCTION(BlueprintCallable, Category="Character Movement: Sprinting")
 	virtual void StartSprinting();
 	
-	UFUNCTION(BlueprintCallable, Category="Movement")
+	UFUNCTION(BlueprintCallable, Category="Character Movement: Sprinting")
 	virtual void StopSprinting();
 
-	UFUNCTION(BlueprintPure, Category="Movement")
+	UFUNCTION(BlueprintPure, Category="Character Movement: Sprinting")
 	bool IsSprinting() const { return bIsSprinting; }
 
-	UFUNCTION(BlueprintPure, Category="Movement")
+	UFUNCTION(BlueprintPure, Category="Character Movement: Sprinting")
 	bool CanSprint() const;
 
 protected:
 	virtual void InitializeComponent() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	UPROPERTY(EditDefaultsOnly, Category="Character Movement: Sprinting")
 	float SprintSpeed = 1200.f;
 
-	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	UPROPERTY(EditDefaultsOnly, Category="Character Movement: Sprinting")
 	float WalkSpeed = 800.f;
 
-	UPROPERTY(BlueprintReadOnly, Category="Movement")
+	UPROPERTY(BlueprintReadOnly, Category="Character Movement: Sprinting")
 	bool bIsSprinting = false;
 };
