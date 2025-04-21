@@ -22,7 +22,7 @@ AMIGameMode::AMIGameMode()
 		PlayerControllerClass = AMIPlayerController::StaticClass();
 	}
 
-	static ConstructorHelpers::FClassFinder<AMIPlayerCharacter> PlayerCharacterBP(TEXT("/Game/Project/Blueprints/BP_MainCharacter"));
+	static ConstructorHelpers::FClassFinder<AMIPlayerCharacter> PlayerCharacterBP(TEXT("/Game/Project/Blueprints/BP_MIPlayerCharacter"));
 	if (PlayerCharacterBP.Class)
 	{
 		DefaultPawnClass = PlayerCharacterBP.Class;
