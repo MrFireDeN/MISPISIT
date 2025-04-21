@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Interacteble")
 	static void CallOnTouch(AActor* Target);
 	
+	UFUNCTION(BlueprintCallable, Category = "Interacteble")
+	static void CallOnUnTouch(AActor* Target);
+	
 	/**
 	 * Calls the OnPrimaryAction function on the target actor if it implements the ICPP_Interactable interface.
 	 * 

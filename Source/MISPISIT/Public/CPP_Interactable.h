@@ -19,6 +19,7 @@ public:
 	virtual bool OnAttach() { return true; }
 	virtual bool OnDetach() { return true; }
 	virtual bool OnTouch() { return true; }
+	virtual bool OnUnTouch() { return true; }
 
 	virtual bool OnPrimaryAction() { return true; }
 	virtual bool OnSecondaryAction() { return true; }

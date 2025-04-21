@@ -6,6 +6,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Blueprint/UserWidget.h"
+#include "Game/Characters/Components/MICharacterMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AMIPlayerController::AMIPlayerController()
@@ -74,6 +76,11 @@ void AMIPlayerController::SetupInputComponent()
 			Input->BindAction(SprintAction, ETriggerEvent::Canceled, this, &AMIPlayerController::HandleSprintStopped);
 			Input->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMIPlayerController::HandleSprintStopped);
 		}
+
+		if (InteractAction)
+		{
+			Input->BindAction(InteractAction, ETriggerEvent::Started, this, &AMIPlayerController::HandleInteract);
+		}
 	}
 }
 
@@ -133,6 +140,14 @@ void AMIPlayerController::HandleJumpStopped(const FInputActionValue& Value)
 	if (PlayerCharacter)
 	{
 		PlayerCharacter->StopJumping();
+	}
+}
+
+void AMIPlayerController::HandleInteract(const FInputActionValue& Value)
+{
+	if (PlayerCharacter)
+	{
+		PlayerCharacter->CallAttachToHand();
 	}
 }
 

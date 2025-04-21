@@ -1,35 +1,52 @@
 ﻿// MICharacterBase.cpp
 
 #include "Game/Characters/MICharacterBase.h"
+#include "Game/Characters/Components/MICharacterMovementComponent.h"
+#include "Game/Characters/Components/MICharacterInteractComponent.h"
 
-
-// Sets default values
-AMICharacterBase::AMICharacterBase()
+AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UMICharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	// Create and attach the interaction component responsible for object interaction logic
+	InteractComponent = CreateDefaultSubobject<UMICharacterInteractComponent>(TEXT("InteractComponent"));
 }
 
-AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UMICharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+UMICharacterMovementComponent* AMICharacterBase::GetCharacterMovement() const
 {
+	// Returns the custom character movement component used for advanced locomotion features
+	return Cast<UMICharacterMovementComponent>(Super::GetCharacterMovement());
 }
 
-// Called when the game starts or when spawned
-void AMICharacterBase::BeginPlay()
+UMICharacterInteractComponent* AMICharacterBase::GetInteractComponent() const
 {
-	Super::BeginPlay();
-	
+	// Provides access to the interaction component that handles hover/attach behavior
+	return InteractComponent;
 }
 
-// Called every frame
-void AMICharacterBase::Tick(float DeltaTime)
+void AMICharacterBase::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	Super::Tick(DeltaTime);
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	// Start hover interaction if the overlapping actor implements the interactable interface
+	if (OtherActor && OtherActor->GetClass()->ImplementsInterface(UCPP_Interactable::StaticClass()))
+	{
+		GetInteractComponent()->StartHover(TScriptInterface<ICPP_Interactable>(OtherActor));
+	}
 }
 
-// Called to bind functionality to input
-void AMICharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMICharacterBase::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	Super::NotifyActorEndOverlap(OtherActor);
+
+	// End hover interaction if the actor matches the current interactable
+	if (OtherActor && OtherActor->GetClass()->ImplementsInterface(UCPP_Interactable::StaticClass()))
+	{
+		GetInteractComponent()->EndHover(TScriptInterface<ICPP_Interactable>(OtherActor));
+	}
 }
 
+void AMICharacterBase::CallAttachToHand()
+{
+	// Attaches the interactable to the character's right hand bone
+	GetInteractComponent()->AttachInteractable(GetMesh(), RightHandName);
+}

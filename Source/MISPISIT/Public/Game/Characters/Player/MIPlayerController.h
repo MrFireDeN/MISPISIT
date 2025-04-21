@@ -49,6 +49,9 @@ protected:
 
 	UFUNCTION()
 	void HandleJumpStopped(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleInteract(const FInputActionValue& Value);
 	
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;

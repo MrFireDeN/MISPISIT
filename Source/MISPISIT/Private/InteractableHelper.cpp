@@ -28,6 +28,14 @@ void UInteractableHelper::CallOnTouch(AActor* Target)
 	}
 }
 
+void UInteractableHelper::CallOnUnTouch(AActor* Target)
+{
+	if (ICPP_Interactable* Interactable = Cast<ICPP_Interactable>(Target))
+	{
+		Interactable->OnUnTouch();
+	}
+}
+
 /**
  * Calls the OnPrimaryAction function on the target actor if it implements the ICPP_Interactable interface.
  * 
