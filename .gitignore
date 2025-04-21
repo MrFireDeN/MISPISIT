@@ -75,3 +75,6 @@ DerivedDataCache/*
 
 # Common IntelliJ Platform excludes
 .idea/*
+
+# Delete this Unreal Engine trash from git
+/Content/StarterContent/*
