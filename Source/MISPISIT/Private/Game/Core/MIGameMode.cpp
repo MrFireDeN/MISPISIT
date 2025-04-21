@@ -9,29 +9,8 @@
 
 AMIGameMode::AMIGameMode()
 {
-	//PlayerControllerClass = AMIPlayerController::StaticClass();
-	//DefaultPawnClass = AMIPlayerCharacter::StaticClass();
-	
-	static ConstructorHelpers::FClassFinder<AMIPlayerController> PlayerControllerBP(TEXT("/Game/Project/Blueprints/BP_MainPlayerController"));
-	if (PlayerControllerBP.Class)
-	{
-		PlayerControllerClass = PlayerControllerBP.Class;
-	}
-	else
-	{
-		PlayerControllerClass = AMIPlayerController::StaticClass();
-	}
-
-	static ConstructorHelpers::FClassFinder<AMIPlayerCharacter> PlayerCharacterBP(TEXT("/Game/Project/Blueprints/BP_MIPlayerCharacter"));
-	if (PlayerCharacterBP.Class)
-	{
-		DefaultPawnClass = PlayerCharacterBP.Class;
-	}
-	else
-	{
-		DefaultPawnClass = AMIPlayerCharacter::StaticClass();
-	}
-	
+	PlayerControllerClass = AMIPlayerController::StaticClass();
+	DefaultPawnClass = AMIPlayerCharacter::StaticClass();
 	HUDClass = AMIPlayerHUD::StaticClass();
 	GameStateClass = AMIGameState::StaticClass();
 	PlayerStateClass = AMIPlayerState::StaticClass();
