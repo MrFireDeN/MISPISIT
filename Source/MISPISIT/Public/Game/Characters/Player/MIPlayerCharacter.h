@@ -31,28 +31,35 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void PostInitProperties() override;
 	virtual void PostInitializeComponents() override;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> FirstPersonCamera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> TransitionCamera;
 
-	UPROPERTY(EditDefaultsOnly, Category = Camera)
-	float CameraTransitionSpeed = 5.f;
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	float CameraTransitionSpeed = 15.f;
 
 private:
+	UPROPERTY()
 	TObjectPtr<UCameraComponent> CurrentCamera;
 
+	UPROPERTY()
 	FTimerHandle CameraTransitionTimerHandle;
 
+	UPROPERTY()
 	bool bCameraTransiting = false;
 
+	UFUNCTION()
 	void UpdateCameraTransition();
+
+	UFUNCTION()
+	void FinishCameraTransition();
 };
