@@ -61,12 +61,14 @@ public:
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 	/**
-	 * Triggers the interaction component to attach the current interactable actor
-	 * to the character's right hand socket.
-	 * Typically used during pickup animations or interaction events.
+	 * Initiates an interaction by attaching the currently hovered interactable object
+	 * to the character's right hand.
+	 *
+	 * This method is typically called when the player performs an interaction input,
+	 * such as pressing a key or triggering an animation event.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Character: Interaction")
-	virtual void CallAttachToHand();
+	virtual void InteractByHand();
 
 protected:
 	/** Name of the socket or bone on the skeletal mesh to attach interactables to (usually a hand socket). */

@@ -45,7 +45,7 @@ void AMICharacterBase::NotifyActorEndOverlap(AActor* OtherActor)
 	}
 }
 
-void AMICharacterBase::CallAttachToHand()
+void AMICharacterBase::InteractByHand()
 {
 	// Attaches the interactable to the character's right hand bone
 	GetInteractComponent()->AttachInteractable(GetMesh(), RightHandName);

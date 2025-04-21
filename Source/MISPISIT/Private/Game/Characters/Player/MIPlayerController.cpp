@@ -147,7 +147,7 @@ void AMIPlayerController::HandleInteract(const FInputActionValue& Value)
 {
 	if (PlayerCharacter)
 	{
-		PlayerCharacter->CallAttachToHand();
+		PlayerCharacter->InteractByHand();
 	}
 }
 
