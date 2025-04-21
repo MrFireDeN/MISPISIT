@@ -21,29 +21,26 @@ AMIPlayerCharacter::AMIPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	SpringArm->bUsePawnControlRotation = true;
 	SpringArm->TargetArmLength = 100.f;
 
-	// Camera3P
+	// ThirdPersonCamera
 	ThirdPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ThirdPersonCamera"));
 	ThirdPersonCamera->SetupAttachment(SpringArm);
 	ThirdPersonCamera->SetRelativeLocation(FVector(0, 50, 0));
-	ThirdPersonCamera->bUsePawnControlRotation = true;
+	ThirdPersonCamera->bUsePawnControlRotation = false;
 	ThirdPersonCamera->SetAutoActivate(false);
-	ThirdPersonCamera->SetActive(false);
 
-	// Camera1P
+	// FirstPersonCamera
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCamera->SetupAttachment(GetMesh(), TEXT("head"));
-	FirstPersonCamera->SetRelativeLocation(FVector(10, 12, 0));
+	FirstPersonCamera->SetRelativeLocation(FVector(8, 15, 0));
 	FirstPersonCamera->SetRelativeRotation(FRotator(0, 90, 270));
 	FirstPersonCamera->bUsePawnControlRotation = true;
 	FirstPersonCamera->SetAutoActivate(false);
-	FirstPersonCamera->SetActive(false);
 
-	//CameraTransition
+	// TransitionCamera
 	TransitionCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TransitionCamera"));
 	TransitionCamera->SetupAttachment(GetCapsuleComponent());
 	TransitionCamera->bUsePawnControlRotation = true;
 	TransitionCamera->SetAutoActivate(false);
-	TransitionCamera->SetActive(false);
 
 	// Default Settings
 	bUseControllerRotationYaw = true;
@@ -52,8 +49,12 @@ AMIPlayerCharacter::AMIPlayerCharacter(const FObjectInitializer& ObjectInitializ
 
 void AMIPlayerCharacter::ChangeView()
 {
+	TransitionCamera->SetWorldLocation(CurrentCamera->GetComponentLocation());
+	TransitionCamera->SetActive(true);
+	bCameraTransiting = true;
+	
 	CurrentCamera->SetActive(false);
-
+	
 	if (CurrentCamera == FirstPersonCamera)
 	{
 		CurrentCamera = ThirdPersonCamera;
@@ -65,11 +66,7 @@ void AMIPlayerCharacter::ChangeView()
 		bUseControllerRotationYaw = true;
 	}
 
-	TransitionCamera->SetActive(true);
-	TransitionCamera->SetRelativeLocation(CurrentCamera->GetRelativeLocation());
-	bCameraTransiting = true;
-
-	// GetWorldTimerManager().SetTimer(CameraTransitionTimerHandle, this, )
+	GetWorldTimerManager().SetTimer(CameraTransitionTimerHandle, this, &AMIPlayerCharacter::UpdateCameraTransition, 0.01f, true);
 }
 
 void AMIPlayerCharacter::BeginPlay()
@@ -80,7 +77,7 @@ void AMIPlayerCharacter::BeginPlay()
 void AMIPlayerCharacter::PostInitProperties()
 {
 	Super::PostInitProperties();
-
+	
 	if (!CurrentCamera)
 	{
 		CurrentCamera = FirstPersonCamera;
@@ -91,15 +88,42 @@ void AMIPlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	if (CurrentCamera)
-	{
-		CurrentCamera->SetActive(true);
-	}
+	CurrentCamera->SetActive(true);
 }
 
 void AMIPlayerCharacter::UpdateCameraTransition()
 {
-	//
+	if (!bCameraTransiting) return;
+
+	const FVector CameraTransitionTargetLocation = CurrentCamera->GetComponentLocation();
+	const FRotator CameraTransitionTargetRotation = CurrentCamera->GetComponentRotation();
+
+	const FVector CurrentLoc = TransitionCamera->GetComponentLocation();
+	const FRotator CurrentRot = TransitionCamera->GetComponentRotation();
+
+	// Interp
+	const FVector NewLoc = FMath::VInterpTo(CurrentLoc, CameraTransitionTargetLocation, GetWorld()->DeltaTimeSeconds, CameraTransitionSpeed);
+	const FRotator NewRot = FMath::RInterpTo(CurrentRot, CameraTransitionTargetRotation, GetWorld()->DeltaTimeSeconds, CameraTransitionSpeed);
+
+	TransitionCamera->SetWorldLocation(NewLoc);
+	TransitionCamera->SetWorldRotation(NewRot);
+
+	// Ending condition
+	if (FVector::Dist(NewLoc, CameraTransitionTargetLocation) < 1.0f &&
+		FMath::Abs((NewRot - CameraTransitionTargetRotation).GetNormalized().Yaw) < 1.0f)
+	{
+		FinishCameraTransition();
+	}
+}
+
+void AMIPlayerCharacter::FinishCameraTransition()
+{
+	bCameraTransiting = false;
+	GetWorldTimerManager().ClearTimer(CameraTransitionTimerHandle);
+
+	TransitionCamera->SetActive(false);
+	CurrentCamera->SetActive(true);
+
 }
 
 void AMIPlayerCharacter::Tick(float DeltaTime)
