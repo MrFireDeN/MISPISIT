@@ -8,6 +8,7 @@
 
 class UMICharacterMovementComponent;
 class UMICharacterInteractComponent;
+class UMIHealthComponent;
 
 /**
  * AMICharacterBase
@@ -43,6 +44,9 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	FORCEINLINE UMICharacterInteractComponent* GetInteractComponent() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "Character")
+	FORCEINLINE UMIHealthComponent* GetHealthComponent() const;
 
 	/**
 	 * Called when another actor begins to overlap this character.
@@ -70,6 +74,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character: Interaction")
 	virtual void InteractByHand();
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 protected:
 	/** Name of the socket or bone on the skeletal mesh to attach interactables to (usually a hand socket). */
 	UPROPERTY(EditDefaultsOnly, Category = "Character: Interaction", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -79,5 +85,9 @@ private:
 	/** Component responsible for managing interaction logic (hover, attach, detach). */
 	UPROPERTY(VisibleAnywhere, Category = "Character: Interaction", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMICharacterInteractComponent> InteractComponent;
+	
+	
+	UPROPERTY(VisibleAnywhere, Category = "Character: Health", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMIHealthComponent> HealthComponent;
 };
 

@@ -3,6 +3,7 @@
 #include "Game/Characters/MICharacterBase.h"
 #include "Game/Characters/Components/MICharacterMovementComponent.h"
 #include "Game/Characters/Components/MICharacterInteractComponent.h"
+#include "Game/Gameplay/Components/MIHealthComponent.h"
 
 AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UMICharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -21,6 +22,11 @@ UMICharacterInteractComponent* AMICharacterBase::GetInteractComponent() const
 {
 	// Provides access to the interaction component that handles hover/attach behavior
 	return InteractComponent;
+}
+
+UMIHealthComponent* AMICharacterBase::GetHealthComponent() const
+{
+	return HealthComponent;
 }
 
 void AMICharacterBase::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -49,4 +55,14 @@ void AMICharacterBase::InteractByHand()
 {
 	// Attaches the interactable to the character's right hand bone
 	GetInteractComponent()->AttachInteractable(GetMesh(), RightHandName);
+}
+
+float AMICharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	const float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	
+	HealthComponent->TakeDamage(Damage);
+	
+	return Damage;
 }
