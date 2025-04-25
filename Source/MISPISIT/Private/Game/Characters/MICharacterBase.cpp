@@ -10,6 +10,7 @@ AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer)
 {
 	// Create and attach the interaction component responsible for object interaction logic
 	InteractComponent = CreateDefaultSubobject<UMICharacterInteractComponent>(TEXT("InteractComponent"));
+	HealthComponent = CreateDefaultSubobject<UMIHealthComponent>(TEXT("HealthComponent"));
 }
 
 UMICharacterMovementComponent* AMICharacterBase::GetCharacterMovement() const
@@ -60,6 +61,8 @@ void AMICharacterBase::InteractByHand()
 float AMICharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 	class AController* EventInstigator, AActor* DamageCauser)
 {
+	if (HealthComponent->IsDead()) return 0;
+	
 	const float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	
 	HealthComponent->TakeDamage(Damage);

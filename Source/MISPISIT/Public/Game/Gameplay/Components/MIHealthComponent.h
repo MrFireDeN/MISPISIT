@@ -33,13 +33,13 @@ public:
 	virtual bool IsDead() const { return CurrentHealth <= KINDA_SMALL_NUMBER; };
 
 	UFUNCTION(BlueprintPure, Category="Health")
-	virtual float GeCurrentHealth() const { return CurrentHealth; }
+	virtual float GetCurrentHealth() const { return CurrentHealth; }
 
 	UFUNCTION(BlueprintPure, Category="Health")
 	virtual float GetMaxHealth() const { return MaxHealth; }
 
 protected:
-	virtual void InitializeComponent() override;
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth = 100;
