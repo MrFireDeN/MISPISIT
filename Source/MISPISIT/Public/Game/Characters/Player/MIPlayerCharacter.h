@@ -17,9 +17,6 @@ class MISPISIT_API AMIPlayerCharacter : public AMICharacterBase
 
 public:
 	explicit AMIPlayerCharacter(const FObjectInitializer& ObjectInitializer);
-	
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeView();
@@ -28,7 +25,6 @@ public:
 	UCameraComponent* GetCurrentCamera() const { return CurrentCamera; }
 
 protected:
-	virtual void BeginPlay() override;
 	virtual void PostInitProperties() override;
 	virtual void PostInitializeComponents() override;
 	

@@ -4,7 +4,9 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Game/Characters/Components/MICharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+
 
 AMIPlayerCharacter::AMIPlayerCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -16,7 +18,7 @@ AMIPlayerCharacter::AMIPlayerCharacter(const FObjectInitializer& ObjectInitializ
 
 	// SpringArm
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(GetCapsuleComponent());
+	SpringArm->SetupAttachment(GetMesh());
 	SpringArm->SetRelativeLocation(FVector(0, 0, 72.f));
 	SpringArm->bUsePawnControlRotation = true;
 	SpringArm->TargetArmLength = 100.f;
@@ -67,11 +69,6 @@ void AMIPlayerCharacter::ChangeView()
 	}
 
 	GetWorldTimerManager().SetTimer(CameraTransitionTimerHandle, this, &AMIPlayerCharacter::UpdateCameraTransition, 0.01f, true);
-}
-
-void AMIPlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
 }
 
 void AMIPlayerCharacter::PostInitProperties()
@@ -125,14 +122,3 @@ void AMIPlayerCharacter::FinishCameraTransition()
 	CurrentCamera->SetActive(true);
 
 }
-
-void AMIPlayerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-void AMIPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
