@@ -1,6 +1,8 @@
 ﻿// MICharacterBase.cpp
 
 #include "Game/Characters/MICharacterBase.h"
+
+#include "Components/CapsuleComponent.h"
 #include "Game/Characters/Components/MICharacterMovementComponent.h"
 #include "Game/Characters/Components/MICharacterInteractComponent.h"
 #include "Game/Gameplay/Components/MIHealthComponent.h"
@@ -28,6 +30,13 @@ UMICharacterInteractComponent* AMICharacterBase::GetInteractComponent() const
 UMIHealthComponent* AMICharacterBase::GetHealthComponent() const
 {
 	return HealthComponent;
+}
+
+void AMICharacterBase::HandleDeath_Implementation()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetSimulatePhysics(true);
 }
 
 void AMICharacterBase::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -61,11 +70,22 @@ void AMICharacterBase::InteractByHand()
 float AMICharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 	class AController* EventInstigator, AActor* DamageCauser)
 {
+	if (!ensure(HealthComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HealthComponent is NOT valid"));
+		return DamageAmount;
+	}
+	
 	if (HealthComponent->IsDead()) return 0;
 	
 	const float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	
 	HealthComponent->TakeDamage(Damage);
+
+	if (HealthComponent->IsDead())
+	{
+		HandleDeath();	
+	}
 	
 	return Damage;
 }

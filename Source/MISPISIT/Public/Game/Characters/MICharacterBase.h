@@ -44,25 +44,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	FORCEINLINE UMICharacterInteractComponent* GetInteractComponent() const;
-	
+
+	/**s
+	 * Returns the health component used to track this character's health state.
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	FORCEINLINE UMIHealthComponent* GetHealthComponent() const;
-
-	/**
-	 * Called when another actor begins to overlap this character.
-	 * Used to trigger hover events for interactable actors.
-	 *
-	 * @param OtherActor The actor that began overlapping this character.
-	 */
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
-
-	/**
-	 * Called when another actor ends overlap with this character.
-	 * Used to clear interaction states for interactable actors.
-	 *
-	 * @param OtherActor The actor that ended overlapping this character.
-	 */
-	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 	/**
 	 * Initiates an interaction by attaching the currently hovered interactable object
@@ -73,7 +60,9 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Character: Interaction")
 	virtual void InteractByHand();
-
+	
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
@@ -81,12 +70,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character: Interaction", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FName RightHandName = FName("rightHand");
 
+	/**
+	 * Called when the character has received fatal damage.
+	 * Override in subclasses to implement custom death behavior (ragdoll, respawn, etc).
+	 */
+	UFUNCTION(BlueprintNativeEvent, Category = "Character")
+	void HandleDeath();
+	virtual void HandleDeath_Implementation();
+
 private:
 	/** Component responsible for managing interaction logic (hover, attach, detach). */
 	UPROPERTY(VisibleAnywhere, Category = "Character: Interaction", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMICharacterInteractComponent> InteractComponent;
 	
-	
+	/** Component responsible for managing health logic (take damage, heal, death). */
 	UPROPERTY(VisibleAnywhere, Category = "Character: Health", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMIHealthComponent> HealthComponent;
 };
