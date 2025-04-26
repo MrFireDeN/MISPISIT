@@ -19,9 +19,9 @@ AMIPlayerCharacter::AMIPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	// SpringArm
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetMesh());
-	SpringArm->SetRelativeLocation(FVector(0, 0, 72.f));
+	SpringArm->SetRelativeLocation(FVector(0, 0, 144.f));
 	SpringArm->bUsePawnControlRotation = true;
-	SpringArm->TargetArmLength = 100.f;
+	SpringArm->TargetArmLength = 150.f;
 
 	// ThirdPersonCamera
 	ThirdPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ThirdPersonCamera"));
