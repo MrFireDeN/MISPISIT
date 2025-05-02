@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "MIArmorComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnArmorsChangedSignature, TArray<UMIArmor*> const&, Armors);
+
 class UMIArmor;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -15,6 +17,9 @@ class MISPISIT_API UMIArmorComponent : public UActorComponent
 
 public:
 	UMIArmorComponent();
+	
+	UPROPERTY(BlueprintAssignable, Category="Events")
+	FOnArmorsChangedSignature OnArmorsChanged;
 
 	UFUNCTION(BlueprintCallable, Category="Armor")
 	virtual float TakeDamage(const float Damage);

@@ -26,6 +26,8 @@ float UMIArmorComponent::TakeDamage(const float Damage)
 
 		if (RemainingDamage <= 0) break;
 	}
+
+	if (TotalAbsorbed > 0) OnArmorsChanged.Broadcast(Armors);
 	
 	return TotalAbsorbed;
 }
@@ -34,10 +36,14 @@ void UMIArmorComponent::AddArmor(UMIArmor* NewArmor)
 {
 	if (!NewArmor || Armors.Contains(NewArmor)) return;
 	Armors.Add(NewArmor);
+
+	OnArmorsChanged.Broadcast(Armors);
 }
 
 void UMIArmorComponent::RemoveArmor(UMIArmor* NewArmor)
 {
 	Armors.Remove(NewArmor);
+
+	OnArmorsChanged.Broadcast(Armors);
 }
 
