@@ -56,7 +56,7 @@ void UMIShieldComponent::RegenerateShield()
 		GetWorld()->GetTimerManager().ClearTimer(RegenTickTimerHandle);
 	  }
 
-	}, 0.1f, true); // Update every 0.1s
+	}, GetWorld()->GetDeltaSeconds(), true);
 }
 
 void UMIShieldComponent::BroadcastShieldChange()
