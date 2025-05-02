@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/DesignPatterns/Behavioral/CoR/MIDamageHandler.h"
 #include "GameFramework/Character.h"
 #include "MICharacterBase.generated.h"
 
@@ -77,6 +78,13 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category = "Character")
 	void HandleDeath();
 	virtual void HandleDeath_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Character")
+	void InitializeDamageChain();
+	virtual void InitializeDamageChain_Implementation();
+
+	UPROPERTY(VisibleAnywhere, Category = "Character")
+	TScriptInterface<IMIDamageHandler> DamageHandlerChain;
 
 private:
 	/** Component responsible for managing interaction logic (hover, attach, detach). */

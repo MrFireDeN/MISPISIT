@@ -39,6 +39,11 @@ void AMICharacterBase::HandleDeath_Implementation()
 	GetMesh()->SetSimulatePhysics(true);
 }
 
+void AMICharacterBase::InitializeDamageChain_Implementation()
+{
+	DamageHandlerChain = nullptr;
+}
+
 void AMICharacterBase::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);

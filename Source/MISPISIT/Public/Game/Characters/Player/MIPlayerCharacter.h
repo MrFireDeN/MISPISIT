@@ -9,6 +9,8 @@
 class USpringArmComponent;
 class UCameraComponent;
 class USceneComponent;
+class UMIShieldComponent;
+class UMIArmorComponent;
 
 UCLASS()
 class MISPISIT_API AMIPlayerCharacter : public AMICharacterBase
@@ -24,9 +26,16 @@ public:
 	UFUNCTION(BlueprintPure)
 	UCameraComponent* GetCurrentCamera() const { return CurrentCamera; }
 
+	FORCEINLINE UMIShieldComponent* GetShieldComponent() const { return ShieldComponent; }
+	FORCEINLINE UMIArmorComponent* GetArmorComponent() const { return ArmorComponent; }
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 protected:
 	virtual void PostInitProperties() override;
 	virtual void PostInitializeComponents() override;
+
+	virtual void InitializeDamageChain_Implementation() override;
 	
 	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArm;
@@ -58,4 +67,12 @@ private:
 
 	UFUNCTION()
 	void FinishCameraTransition();
+	
+	/** Component responsible for managing armor logic. */
+	UPROPERTY(VisibleAnywhere, Category = "Character: Armor", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMIArmorComponent> ArmorComponent;
+	
+	/** Component responsible for managing shield logic. */
+	UPROPERTY(VisibleAnywhere, Category = "Character: Shield", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMIShieldComponent> ShieldComponent;
 };

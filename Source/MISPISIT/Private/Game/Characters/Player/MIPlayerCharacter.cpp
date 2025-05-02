@@ -5,6 +5,12 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Game/Characters/Components/MICharacterMovementComponent.h"
+#include "Game/Gameplay/Components/MIArmorComponent.h"
+#include "Game/Gameplay/Components/MIShieldComponent.h"
+#include "Game/DesignPatterns/Behavioral/CoR/MIArmorDamageHandler.h"
+#include "Game/DesignPatterns/Behavioral/CoR/MIHealthDamageHandler.h"
+#include "Game/DesignPatterns/Behavioral/CoR/MIShieldDamageHandler.h"
+#include "Game/Gameplay/Components/MIHealthComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 
@@ -47,6 +53,10 @@ AMIPlayerCharacter::AMIPlayerCharacter(const FObjectInitializer& ObjectInitializ
 	// Default Settings
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// Components
+	ShieldComponent = CreateDefaultSubobject<UMIShieldComponent>(TEXT("ShieldComponent"));
+	ArmorComponent = CreateDefaultSubobject<UMIArmorComponent>(TEXT("ArmorComponent"));
 }
 
 void AMIPlayerCharacter::ChangeView()
@@ -71,6 +81,23 @@ void AMIPlayerCharacter::ChangeView()
 	GetWorldTimerManager().SetTimer(CameraTransitionTimerHandle, this, &AMIPlayerCharacter::UpdateCameraTransition, 0.01f, true);
 }
 
+float AMIPlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	if (DamageHandlerChain == nullptr || GetHealthComponent()->IsDead()) return 0.f;
+
+	const float ActualDamage = ACharacter::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	DamageHandlerChain->HandleDamage(ActualDamage, DamageEvent);
+
+	if (GetHealthComponent()->IsDead())
+	{
+		HandleDeath();
+	}
+	
+	return ActualDamage;
+}
+
 void AMIPlayerCharacter::PostInitProperties()
 {
 	Super::PostInitProperties();
@@ -86,6 +113,23 @@ void AMIPlayerCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	CurrentCamera->SetActive(true);
+	InitializeDamageChain_Implementation();
+}
+
+void AMIPlayerCharacter::InitializeDamageChain_Implementation()
+{
+	auto* HealthHandler = NewObject<UMIHealthDamageHandler>(this);
+	HealthHandler->SetHealthComponent(GetHealthComponent());
+	
+	auto* ArmorHandler = NewObject<UMIArmorDamageHandler>(this);
+	ArmorHandler->SetArmorComponent(ArmorComponent);
+	ArmorHandler->SetNextHandler(HealthHandler);
+	
+	auto* ShieldHandler = NewObject<UMIShieldDamageHandler>(this);
+	ShieldHandler->SetShieldComponent(ShieldComponent);
+	ShieldHandler->SetNextHandler(ArmorHandler);
+	
+	DamageHandlerChain = ShieldHandler;
 }
 
 void AMIPlayerCharacter::UpdateCameraTransition()
