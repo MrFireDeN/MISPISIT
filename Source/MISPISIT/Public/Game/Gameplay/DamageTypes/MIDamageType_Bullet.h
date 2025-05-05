@@ -25,5 +25,14 @@ public:
 		DestructibleImpulse = 2000.0f;
 		DestructibleDamageSpreadScale = 0.5f;
 		DamageFalloff = 1.8f;
+		PenetrationPower = 1.0f;
 	}
+
+	/**
+	 * Bullet penetration (0.0 - does not penetrate, 1.0 - standard, >1.0 - armor-piercing).
+	 * Affects penetration of walls, armor and number of targets.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bullet Properties",
+			  meta=(ClampMin="0.0", UIMin="0.0", UIMax="5.0", Tooltip="The ability of a bullet to penetrate obstacles and targets"))
+	float PenetrationPower;
 };
