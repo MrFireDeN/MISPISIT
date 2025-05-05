@@ -67,6 +67,8 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
+	virtual void PostInitializeComponents() override;
+	
 	/** Name of the socket or bone on the skeletal mesh to attach interactables to (usually a hand socket). */
 	UPROPERTY(EditDefaultsOnly, Category = "Character: Interaction", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FName RightHandName = FName("rightHand");

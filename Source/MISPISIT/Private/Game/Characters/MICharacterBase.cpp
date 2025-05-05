@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Game/Characters/Components/MICharacterMovementComponent.h"
 #include "Game/Characters/Components/MICharacterInteractComponent.h"
+#include "Game/DesignPatterns/Behavioral/CoR/MIHealthDamageHandler.h"
 #include "Game/Gameplay/Components/MIHealthComponent.h"
 
 AMICharacterBase::AMICharacterBase(const FObjectInitializer& ObjectInitializer)
@@ -41,7 +42,10 @@ void AMICharacterBase::HandleDeath_Implementation()
 
 void AMICharacterBase::InitializeDamageChain_Implementation()
 {
-	DamageHandlerChain = nullptr;
+	auto* HealthHandler = NewObject<UMIHealthDamageHandler>(this);
+	HealthHandler->SetHealthComponent(GetHealthComponent());
+	
+	DamageHandlerChain = HealthHandler;
 }
 
 void AMICharacterBase::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -77,20 +81,38 @@ float AMICharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const
 {
 	if (!ensure(HealthComponent))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HealthComponent is NOT valid"));
-		return DamageAmount;
+		UE_LOG(LogTemp, Error, TEXT("[%s] TakeDamage: HealthComponent is NOT valid!"), *GetNameSafe(this));
+		return 0.f;
+	}
+
+	if (DamageHandlerChain == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s] TakeDamage: DamageHandlerChain is nullptr!"), *GetNameSafe(this));
+		return 0.f;
 	}
 	
-	if (DamageHandlerChain == nullptr || GetHealthComponent()->IsDead()) return 0.f;
+	if (GetHealthComponent()->IsDead()) return 0.f;
 
-	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	DamageHandlerChain->HandleDamage(ActualDamage, DamageEvent);
+	ActualDamage = DamageHandlerChain->HandleDamage(ActualDamage, DamageEvent);
 
 	if (GetHealthComponent()->IsDead())
 	{
 		HandleDeath();
 	}
+
+	if (ActualDamage > 0.f)
+	{
+		UE_LOG(LogTemp, Log, TEXT("[%s] Took %.2f damage (after modifiers)"), *GetNameSafe(this), ActualDamage);
+	}
 	
 	return ActualDamage;
+}
+
+void AMICharacterBase::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+	InitializeDamageChain_Implementation();
 }

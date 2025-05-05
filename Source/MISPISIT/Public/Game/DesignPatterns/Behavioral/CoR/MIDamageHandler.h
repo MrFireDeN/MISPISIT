@@ -21,8 +21,9 @@ class MISPISIT_API IMIDamageHandler
   GENERATED_BODY()
 
 public:
-  virtual void HandleDamage(float DamageAmount, const FDamageEvent& DamageEvent) = 0;
+  virtual float HandleDamage(float DamageAmount, const FDamageEvent& DamageEvent) = 0;
   virtual void SetNextHandler(const TScriptInterface<IMIDamageHandler>& Next) = 0;
+  virtual TScriptInterface<IMIDamageHandler> GetNextHandler() = 0;
 };
 
 /**
@@ -41,13 +42,15 @@ public:
    * @param DamageAmount - The total amount of incoming damage.
    * @param DamageEvent - Struct containing details about the damage.
    */
-  virtual void HandleDamage(float DamageAmount, const FDamageEvent& DamageEvent) override;
+  virtual float HandleDamage(float DamageAmount, const FDamageEvent& DamageEvent) override;
 
   /**
    * Sets the next handler in the chain.
    * @param Next - The next damage handler to call if this one doesn't fully consume the damage.
    */
   virtual void SetNextHandler(const TScriptInterface<IMIDamageHandler>& Next) override;
+
+  virtual TScriptInterface<IMIDamageHandler> GetNextHandler() override;
 
 protected:
   /** Pointer to the next handler in the chain */

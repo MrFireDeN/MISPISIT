@@ -96,11 +96,17 @@ void AMIPlayerCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	CurrentCamera->SetActive(true);
-	InitializeDamageChain_Implementation();
 }
 
 void AMIPlayerCharacter::InitializeDamageChain_Implementation()
 {
+	if (!ArmorComponent || !ShieldComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[%s] ArmorComponent or ShieldComponent is missing! Using fallback chain."), *GetNameSafe(this));
+		Super::InitializeDamageChain_Implementation();
+		return;
+	}
+	
 	auto* HealthHandler = NewObject<UMIHealthDamageHandler>(this);
 	HealthHandler->SetHealthComponent(GetHealthComponent());
 	
@@ -113,6 +119,17 @@ void AMIPlayerCharacter::InitializeDamageChain_Implementation()
 	ShieldHandler->SetNextHandler(ArmorHandler);
 	
 	DamageHandlerChain = ShieldHandler;
+
+#if !UE_BUILD_SHIPPING
+	// Лог только для дебага
+	UE_LOG(LogTemp, Log, TEXT("[%s] Damage chain: Shield -> Armor -> Health"), *GetNameSafe(this));
+	UE_LOG(LogTemp, Log, TEXT("[%s] Damage chain initialized: %s -> %s -> %s"), 
+	*GetNameSafe(this),
+	*GetNameSafe(DamageHandlerChain.GetObject()),
+	*GetNameSafe(DamageHandlerChain->GetNextHandler().GetObject()),
+	*GetNameSafe(DamageHandlerChain->GetNextHandler()->GetNextHandler().GetObject())
+);
+#endif
 }
 
 void AMIPlayerCharacter::UpdateCameraTransition()

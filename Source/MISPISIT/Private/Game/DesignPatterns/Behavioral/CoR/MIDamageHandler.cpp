@@ -5,7 +5,7 @@
 
 UMIDamageHandlerBase::UMIDamageHandlerBase() = default;
 
-void UMIDamageHandlerBase::HandleDamage(float DamageAmount, const FDamageEvent& DamageEvent)
+float UMIDamageHandlerBase::HandleDamage(float DamageAmount, const FDamageEvent& DamageEvent)
 {
 	if (CanHandle(DamageAmount, DamageEvent))
 	{
@@ -14,13 +14,19 @@ void UMIDamageHandlerBase::HandleDamage(float DamageAmount, const FDamageEvent& 
 
 		if (RemainingDamage > KINDA_SMALL_NUMBER && NextHandler)
 		{
-			NextHandler->HandleDamage(RemainingDamage, DamageEvent);
+			return NextHandler->HandleDamage(RemainingDamage, DamageEvent) + DamageProcessed;
 		}
+		
+		return DamageProcessed;
 	}
-	else if (NextHandler)
+	
+	if (NextHandler)
 	{
-		NextHandler->HandleDamage(DamageAmount, DamageEvent);
+		return NextHandler->HandleDamage(DamageAmount, DamageEvent);
 	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Unhandled damage: %.2f (no valid NextHandler)"), *GetNameSafe(this), DamageAmount);
+	return 0;
 }
 
 void UMIDamageHandlerBase::SetNextHandler(const TScriptInterface<IMIDamageHandler>& Next)
@@ -32,6 +38,11 @@ void UMIDamageHandlerBase::SetNextHandler(const TScriptInterface<IMIDamageHandle
 	}
 
 	NextHandler = Next;
+}
+
+TScriptInterface<IMIDamageHandler> UMIDamageHandlerBase::GetNextHandler()
+{
+	return NextHandler ? NextHandler : TScriptInterface<IMIDamageHandler>();
 }
 
 bool UMIDamageHandlerBase::CanHandle(float DamageAmount, const FDamageEvent& DamageEvent)
