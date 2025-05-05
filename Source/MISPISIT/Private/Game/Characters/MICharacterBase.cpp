@@ -81,16 +81,16 @@ float AMICharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const
 		return DamageAmount;
 	}
 	
-	if (HealthComponent->IsDead()) return 0;
-	
-	const float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	
-	HealthComponent->TakeDamage(Damage);
+	if (DamageHandlerChain == nullptr || GetHealthComponent()->IsDead()) return 0.f;
 
-	if (HealthComponent->IsDead())
+	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	DamageHandlerChain->HandleDamage(ActualDamage, DamageEvent);
+
+	if (GetHealthComponent()->IsDead())
 	{
-		HandleDeath();	
+		HandleDeath();
 	}
 	
-	return Damage;
+	return ActualDamage;
 }

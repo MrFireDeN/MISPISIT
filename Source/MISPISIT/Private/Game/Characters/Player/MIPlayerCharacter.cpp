@@ -81,23 +81,6 @@ void AMIPlayerCharacter::ChangeView()
 	GetWorldTimerManager().SetTimer(CameraTransitionTimerHandle, this, &AMIPlayerCharacter::UpdateCameraTransition, 0.01f, true);
 }
 
-float AMIPlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
-	class AController* EventInstigator, AActor* DamageCauser)
-{
-	if (DamageHandlerChain == nullptr || GetHealthComponent()->IsDead()) return 0.f;
-
-	const float ActualDamage = ACharacter::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-
-	DamageHandlerChain->HandleDamage(ActualDamage, DamageEvent);
-
-	if (GetHealthComponent()->IsDead())
-	{
-		HandleDeath();
-	}
-	
-	return ActualDamage;
-}
-
 void AMIPlayerCharacter::PostInitProperties()
 {
 	Super::PostInitProperties();

@@ -29,8 +29,6 @@ public:
 	FORCEINLINE UMIShieldComponent* GetShieldComponent() const { return ShieldComponent; }
 	FORCEINLINE UMIArmorComponent* GetArmorComponent() const { return ArmorComponent; }
 
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-
 protected:
 	virtual void PostInitProperties() override;
 	virtual void PostInitializeComponents() override;
