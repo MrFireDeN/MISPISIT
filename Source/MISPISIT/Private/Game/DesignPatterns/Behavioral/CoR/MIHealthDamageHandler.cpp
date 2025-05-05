@@ -1,7 +1,9 @@
 ﻿// MIHealthDamageHandler.cpp
 
 #include "Game/DesignPatterns/Behavioral/CoR/MIHealthDamageHandler.h"
+#include "Engine/DamageEvents.h"
 #include "Game/Gameplay/Components/MIHealthComponent.h"
+#include "Game/Gameplay/DamageTypes/MIDamageType_Bullet.h"
 
 UMIHealthDamageHandler::UMIHealthDamageHandler() = default;
 
@@ -25,7 +27,15 @@ float UMIHealthDamageHandler::ApplyEffects(float DamageAmount, const FDamageEven
 
 	// TODO: Apply DamageType-based modifiers here (fire, acid, DOTs, etc.)
 
-	const float AppliedDamage = FMath::Min(DamageAmount, HealthComponent->GetCurrentHealth());
+	float AppliedDamage = FMath::Min(DamageAmount, HealthComponent->GetCurrentHealth());
+
+	/*
+	if (DamageEvent.DamageTypeClass && DamageEvent.DamageTypeClass->IsChildOf(UMIDamageType_Bullet::StaticClass()))
+	{
+		AppliedDamage *= 0.1f;
+	}
+	*/
+		
 	HealthComponent->TakeDamage(AppliedDamage);
 	return AppliedDamage;
 }
