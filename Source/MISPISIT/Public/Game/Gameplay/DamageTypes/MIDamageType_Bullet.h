@@ -25,6 +25,8 @@ public:
 		DestructibleImpulse = 2000.0f;
 		DestructibleDamageSpreadScale = 0.5f;
 		DamageFalloff = 1.8f;
+
+		// Bullet Properties
 		PenetrationPower = 1.0f;
 	}
 
