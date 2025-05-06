@@ -19,23 +19,24 @@ void UMIArmorDamageHandler::SetArmorComponent(UMIArmorComponent* InArmorComponen
 
 float UMIArmorDamageHandler::ApplyEffects(float DamageAmount, const FDamageEvent& DamageEvent)
 {
-	if (!ArmorComponent) return 0.f;
+	if (!IsValid(ArmorComponent)) return 0.f;
 
-	const auto StrategyProvider = Cast<IMIDamageStrategyProvider>(ArmorComponent);
+	const IMIDamageStrategyProvider* StrategyProvider = Cast<IMIDamageStrategyProvider>(ArmorComponent);
 	if (!StrategyProvider) return 0.f;
 
 	float ModifiedDamage = DamageAmount;
 
-	for (const auto& Strategy : StrategyProvider->GetDamageStrategies_Implementation())
+	const TArray<TScriptInterface<IMIDamageStrategy>> Strategies = StrategyProvider->Execute_GetDamageStrategies(ArmorComponent);
+	for (const TScriptInterface<IMIDamageStrategy>& Strategy : Strategies)
 	{
 		if (Strategy)
 		{
-			ModifiedDamage = Strategy->ApplyDamage_Implementation(ModifiedDamage, DamageEvent);
+			ModifiedDamage = Strategy->Execute_ApplyDamage(Strategy.GetObject(), ModifiedDamage, DamageEvent);
 		}
 	}
 
 	const float DamageDifference = DamageAmount - ModifiedDamage;
-	
 	const float AbsorbedDamage = ArmorComponent->TakeDamage(ModifiedDamage);
+	
 	return AbsorbedDamage + DamageDifference;
 }
