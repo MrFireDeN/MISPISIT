@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class MISPISIT_API UMIBulletDamageStrategy : public UMIDamageStrategyBase, public IMIDamageStrategy
 {
 	GENERATED_BODY()

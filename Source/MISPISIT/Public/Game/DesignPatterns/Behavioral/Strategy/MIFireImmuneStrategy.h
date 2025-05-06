@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class MISPISIT_API UMIFireImmuneStrategy : public UMIDamageStrategyBase, public IMIDamageStrategy
 {
 	GENERATED_BODY()
