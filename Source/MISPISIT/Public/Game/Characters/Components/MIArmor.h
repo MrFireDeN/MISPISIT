@@ -6,6 +6,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "MIArmor.generated.h"
 
+class IMIDamageStrategy;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnArmorChangedSignature, float, CurrentArmor, float, MaxArmor);
 
 /**
@@ -19,9 +21,11 @@ class MISPISIT_API UMIArmor : public USkeletalMeshComponent
 	GENERATED_BODY()
 
 public:
-
 	/** Constructor */
 	UMIArmor();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Armor")
+	TScriptInterface<IMIDamageStrategy> DamageStrategy;
 
 	/** Called when armor value changes (either increased or reduced) */
 	UPROPERTY(BlueprintAssignable, Category="Armor")

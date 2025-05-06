@@ -2,6 +2,8 @@
 
 #include "Game/Gameplay/Components/MIArmorComponent.h"
 #include "Game/Characters/Components/MIArmor.h"
+#include "Game/DesignPatterns/Behavioral/Strategy/MIDamageStrategy.h"
+
 
 UMIArmorComponent::UMIArmorComponent()
 {
@@ -47,3 +49,17 @@ void UMIArmorComponent::RemoveArmor(UMIArmor* NewArmor)
 	OnArmorsChanged.Broadcast(Armors);
 }
 
+TArray<TScriptInterface<IMIDamageStrategy>> UMIArmorComponent::GetDamageStrategies_Implementation() const
+{
+	TArray<TScriptInterface<IMIDamageStrategy>> DamageStrategies;
+
+	for (const auto& Armor : Armors)
+	{
+		if (IsValid(Armor) && Armor->DamageStrategy.GetInterface())
+		{
+			DamageStrategies.Add(Armor->DamageStrategy);
+		}
+	}
+	
+	return DamageStrategies;
+}

@@ -1,6 +1,8 @@
 ﻿// MIArmorDamageHandler.cpp
 
 #include "Game/DesignPatterns/Behavioral/CoR/MIArmorDamageHandler.h"
+
+#include "Game/DesignPatterns/Behavioral/Strategy/MIDamageStrategy.h"
 #include "Game/Gameplay/Components/MIArmorComponent.h"
 
 
@@ -17,12 +19,23 @@ void UMIArmorDamageHandler::SetArmorComponent(UMIArmorComponent* InArmorComponen
 
 float UMIArmorDamageHandler::ApplyEffects(float DamageAmount, const FDamageEvent& DamageEvent)
 {
-	if (!ArmorComponent || DamageAmount <= 0.f)
+	if (!ArmorComponent) return 0.f;
+
+	const auto StrategyProvider = Cast<IMIDamageStrategyProvider>(ArmorComponent);
+	if (!StrategyProvider) return 0.f;
+
+	float ModifiedDamage = DamageAmount;
+
+	for (const auto& Strategy : StrategyProvider->GetDamageStrategies_Implementation())
 	{
-		return 0.f;
+		if (Strategy)
+		{
+			ModifiedDamage = Strategy->ApplyDamage_Implementation(ModifiedDamage, DamageEvent);
+		}
 	}
 
-	// ArmorComponent returns how much damage it actually absorbed
-	const float AbsorbedDamage = ArmorComponent->TakeDamage(DamageAmount);
-	return AbsorbedDamage;
+	const float DamageDifference = DamageAmount - ModifiedDamage;
+	
+	const float AbsorbedDamage = ArmorComponent->TakeDamage(ModifiedDamage);
+	return AbsorbedDamage + DamageDifference;
 }
