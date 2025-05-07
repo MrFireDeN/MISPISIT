@@ -25,4 +25,7 @@ public:
 	virtual bool OnSecondaryAction() { return true; }
 	virtual bool OnNumericAction(const int Digit) { return true; }
 	virtual bool OnCustomKeyAction(const FKey Key) { return true; }
+
+	virtual bool OnPrimaryAction_Trigger() { return true; }
+	virtual bool OnPrimaryAction_Stopped() { return true; }
 };

@@ -56,6 +56,11 @@ protected:
 	UFUNCTION()
 	void HandlePrimaryAction(const FInputActionValue& Value);
 
+	UFUNCTION()
+	void HandlePrimaryAction_Trigger(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandlePrimaryAction_Stopped(const FInputActionValue& Value);
 
 	UFUNCTION()
 	void HandleSecondaryAction(const FInputActionValue& Value);

@@ -87,6 +87,9 @@ void AMIPlayerController::SetupInputComponent()
 		if (PrimaryAction)
 		{
 			Input->BindAction(PrimaryAction, ETriggerEvent::Started, this, &AMIPlayerController::HandlePrimaryAction);
+			Input->BindAction(PrimaryAction, ETriggerEvent::Triggered, this, &AMIPlayerController::HandlePrimaryAction_Trigger);
+			Input->BindAction(PrimaryAction, ETriggerEvent::Canceled, this, &AMIPlayerController::HandlePrimaryAction_Stopped);
+			Input->BindAction(PrimaryAction, ETriggerEvent::Completed, this, &AMIPlayerController::HandlePrimaryAction_Stopped);
 		}
 
 		if (SecondaryAction)
@@ -173,6 +176,22 @@ void AMIPlayerController::HandlePrimaryAction(const FInputActionValue& Value)
 	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
 	{
 		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnPrimaryAction();
+	}
+}
+
+void AMIPlayerController::HandlePrimaryAction_Trigger(const FInputActionValue& Value)
+{
+	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	{
+		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnPrimaryAction_Trigger();
+	}
+}
+
+void AMIPlayerController::HandlePrimaryAction_Stopped(const FInputActionValue& Value)
+{
+	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	{
+		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnPrimaryAction_Stopped();
 	}
 }
 
