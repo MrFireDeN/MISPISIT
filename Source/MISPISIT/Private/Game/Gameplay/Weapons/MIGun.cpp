@@ -2,7 +2,7 @@
 
 
 #include "Game/Gameplay/Weapons/MIGun.h"
-#include "AssetLoader.h"
+#include "Components/BoxComponent.h"
 #include "Game/Characters/MICharacterBase.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState_Idle.h"
@@ -12,9 +12,15 @@
 AMIGun::AMIGun()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
+	
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetupAttachment(RootComponent);
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	BoxCollision->SetBoxExtent(FVector(50));
+	BoxCollision->SetupAttachment(RootComponent);
 }
 
 bool AMIGun::OnAttach()
@@ -27,18 +33,36 @@ bool AMIGun::OnAttach()
 		return false;
 	}
 	
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
 	return true;
 }
 
 bool AMIGun::OnDetach()
 {
 	CharacterOwner = nullptr;
+	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	
 	return true;
 }
 
 bool AMIGun::OnPrimaryAction()
 {
 	StartFire();
+	
+	return ICPP_Interactable::OnPrimaryAction();
+}
+
+bool AMIGun::OnPrimaryAction_Trigger()
+{
+	//StartFire();
+	
+	return ICPP_Interactable::OnPrimaryAction();
+}
+
+bool AMIGun::OnPrimaryAction_Stopped()
+{
+	StopFire();
 	
 	return ICPP_Interactable::OnPrimaryAction();
 }
@@ -71,7 +95,7 @@ void AMIGun::SetState(TScriptInterface<IMIGunState> NewState)
 {
 	if (!NewState)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[%s] SetState: Invalid Gun State"));
+		UE_LOG(LogTemp, Warning, TEXT("[%s] SetState: Invalid Gun State"), *GetName());
 		return;
 	}
 	

@@ -8,6 +8,7 @@
 #include "MIGun.generated.h"
 
 class UStaticMeshComponent;
+class UBoxComponent;
 class IMIGunState;
 
 UENUM(BlueprintType)
@@ -29,6 +30,8 @@ public:
 	virtual bool OnAttach() override;
 	virtual bool OnDetach() override;
 	virtual bool OnPrimaryAction() override;
+	virtual bool OnPrimaryAction_Trigger() override;
+	virtual bool OnPrimaryAction_Stopped() override;
 
 	virtual void StartFire();
 	virtual void StopFire();
@@ -44,6 +47,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Gun")
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Gun")
+	UBoxComponent* BoxCollision;
 	
 	/** Character currently wielding this weapon */
 	UPROPERTY(BlueprintReadOnly)
