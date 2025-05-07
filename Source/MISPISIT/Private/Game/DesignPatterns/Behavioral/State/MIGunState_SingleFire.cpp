@@ -2,12 +2,12 @@
 
 
 #include "Game/DesignPatterns/Behavioral/State/MIGunState_SingleFire.h"
-
-#include "Compose/CPP_Gun.h"
+#include "Game/DesignPatterns/Behavioral/State/MIGunState_Idle.h"
+#include "Game/Gameplay/Weapons/MIGun.h"
 
 void UMIGunState_SingleFire::StartFire_Implementation()
 {
-	ACPP_Gun* Gun = Cast<ACPP_Gun>(GetOuter());
+	AMIGun* Gun = Cast<AMIGun>(GetOuter());
 
 	if (!IsValid(Gun))
 	{
@@ -17,14 +17,14 @@ void UMIGunState_SingleFire::StartFire_Implementation()
 
 	UE_LOG(LogTemp, Log, TEXT("[%s] Start Fire"), *GetName())
 	
-	Gun->OnPrimaryAction();
+	//Gun->OnPrimaryAction();
 
 	Execute_StopFire(this);
 }
 
 void UMIGunState_SingleFire::StopFire_Implementation()
 {
-	ACPP_Gun* Gun = Cast<ACPP_Gun>(GetOuter());
+	AMIGun* Gun = Cast<AMIGun>(GetOuter());
 
 	if (!IsValid(Gun))
 	{
@@ -32,9 +32,9 @@ void UMIGunState_SingleFire::StopFire_Implementation()
 		return;
 	}
 
-	
-	
-	IMIGunState::StopFire_Implementation();
+	Gun->SetState(NewObject<UMIGunState_Idle>(Gun));
+
+	UE_LOG(LogTemp, Log, TEXT("[%s] Stop Fire"), *GetName())
 }
 
 void UMIGunState_SingleFire::Reload_Implementation()
