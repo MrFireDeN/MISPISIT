@@ -95,6 +95,11 @@ void AMIGun::SetState(TScriptInterface<IMIGunState> NewState)
 	CurrentState = NewState;
 }
 
+void AMIGun::Fire()
+{
+	UE_LOG(LogTemp, Log, TEXT("[%s] Fire: Shoot"), *GetName());
+}
+
 // Called when the game starts or when spawned
 void AMIGun::BeginPlay()
 {

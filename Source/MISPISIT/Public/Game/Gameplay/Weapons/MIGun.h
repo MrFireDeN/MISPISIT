@@ -38,6 +38,9 @@ public:
 
 	void SetState(TScriptInterface<IMIGunState> NewState);
 
+	UFUNCTION(BlueprintCallable)
+	void Fire();
+
 	UFUNCTION(BlueprintPure, Category = "Gun")
 	TScriptInterface<IMIGunState> GetCurrentState() const { return CurrentState; }
 
