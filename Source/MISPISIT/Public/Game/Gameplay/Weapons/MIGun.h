@@ -47,6 +47,15 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Gun")
 	float GetReloadDelay() const { return ReloadDelay; }
 
+	UFUNCTION(BlueprintPure, Category = "Gun")
+	float GetFireRate() const { return FireRate; }
+	
+	UFUNCTION(BlueprintPure, Category = "Gun")
+	int32 GetBurstShotsCount() const { return BurstShotsCount; }
+
+	UPROPERTY()
+	int32 RemainingBurstShots = 0;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -65,6 +74,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
 	float ReloadDelay = 2.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	float FireRate = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	int32 BurstShotsCount = 3;
 
 private:
 	UPROPERTY()

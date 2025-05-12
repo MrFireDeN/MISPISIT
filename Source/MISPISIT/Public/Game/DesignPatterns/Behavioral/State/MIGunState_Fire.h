@@ -7,6 +7,8 @@
 #include "UObject/Object.h"
 #include "MIGunState_Fire.generated.h"
 
+class AMIGun;
+
 /**
  * 
  */
@@ -22,4 +24,10 @@ public:
 
 protected:
 	void TraceShoot();
+
+private:
+	FTimerHandle FireRateTimerHandle;
+
+	UPROPERTY()
+	TObjectPtr<AMIGun> CachedGun;
 };
