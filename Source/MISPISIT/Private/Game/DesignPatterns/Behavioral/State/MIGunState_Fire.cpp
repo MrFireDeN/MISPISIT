@@ -19,6 +19,12 @@ void UMIGunState_Fire::StartFire_Implementation()
 		return;
 	}
 
+	if (CachedGun->GetWorld()->GetTimerManager().IsTimerActive(StopFireTimerHandle) ||
+		CachedGun->GetWorld()->GetTimerManager().IsTimerActive(FireRateTimerHandle))
+	{
+		return;
+	}
+
 	UE_LOG(LogTemp, Log, TEXT("[%s] Start Fire"), *GetName())
 
 	const bool bIsAuto = CachedGun->GetFireMode() == EFireMode::Auto ||
@@ -45,6 +51,11 @@ void UMIGunState_Fire::StopFire_Implementation()
 	if (!IsValid(CachedGun))
 	{
 		UE_LOG(LogTemp, Error, TEXT("[%s] StopFire: Gun is NOT valid"), *GetName());
+		return;
+	}
+
+	if (CachedGun->GetWorld()->GetTimerManager().IsTimerActive(StopFireTimerHandle))
+	{
 		return;
 	}
 
@@ -89,7 +100,28 @@ void UMIGunState_Fire::TraceShoot()
 
 		if (CachedGun->RemainingBurstShots <= 0)
 		{
-			Execute_StopFire(this);
+			CachedGun->GetWorld()->GetTimerManager().SetTimer(
+				StopFireTimerHandle,
+				[this]()
+				{
+					StopFireTimerHandle.Invalidate();
+					Execute_StopFire(this);
+				},
+				1 / CachedGun->GetFireRate(),
+				false);
 		}
+	}
+
+	if (CachedGun->GetFireMode() == EFireMode::Single)
+	{
+		CachedGun->GetWorld()->GetTimerManager().SetTimer(
+				StopFireTimerHandle,
+				[this]()
+				{
+					StopFireTimerHandle.Invalidate();
+					Execute_StopFire(this);
+				},
+				1 / CachedGun->GetFireRate(),
+				false);
 	}
 }

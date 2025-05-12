@@ -27,6 +27,7 @@ protected:
 
 private:
 	FTimerHandle FireRateTimerHandle;
+	FTimerHandle StopFireTimerHandle;
 
 	UPROPERTY()
 	TObjectPtr<AMIGun> CachedGun;
