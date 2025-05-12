@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MIPlayerController.generated.h"
 
+class ICPP_Interactable;
 class AMIPlayerCharacter;
 class AMIPlayerCameraManager;
 class UInputMappingContext;
@@ -64,10 +65,12 @@ protected:
 
 	UFUNCTION()
 	void HandleSecondaryAction(const FInputActionValue& Value);
-
-
+	
 	UFUNCTION()
 	void HandleNumeric(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void HandleReload(const FInputActionValue& Value);
 	
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
@@ -99,7 +102,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	TObjectPtr<UInputAction> NumericAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = Input)
+	TObjectPtr<UInputAction> ReloadAction;
+
 private:
 	UPROPERTY()
 	TObjectPtr<AMIPlayerCharacter> PlayerCharacter;
+
+	TScriptInterface<ICPP_Interactable> CheckInteractable() &;
 };

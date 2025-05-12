@@ -6,11 +6,10 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "InteractableHelper.h"
-#include "Blueprint/UserWidget.h"
 #include "Game/Characters/Components/MICharacterInteractComponent.h"
 #include "Game/Characters/Components/MICharacterMovementComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Game/Gameplay/Weapons/MIGun.h"
+#include "CPP_Interactable.h"
 
 AMIPlayerController::AMIPlayerController()
 {
@@ -101,6 +100,11 @@ void AMIPlayerController::SetupInputComponent()
 		{
 			Input->BindAction(NumericAction, ETriggerEvent::Started, this, &AMIPlayerController::HandleNumeric);
 		}
+
+		if (ReloadAction)
+		{
+			Input->BindAction(ReloadAction, ETriggerEvent::Started, this, &AMIPlayerController::HandleReload);
+		}
 	}
 }
 
@@ -173,42 +177,71 @@ void AMIPlayerController::HandleInteract(const FInputActionValue& Value)
 
 void AMIPlayerController::HandlePrimaryAction(const FInputActionValue& Value)
 {
-	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	if (const TScriptInterface<ICPP_Interactable> Interactable = CheckInteractable())
 	{
-		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnPrimaryAction();
+		Interactable->OnPrimaryAction();
 	}
 }
 
 void AMIPlayerController::HandlePrimaryAction_Trigger(const FInputActionValue& Value)
 {
-	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	if (const TScriptInterface<ICPP_Interactable> Interactable = CheckInteractable())
 	{
-		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnPrimaryAction_Trigger();
+		Interactable->OnPrimaryAction_Trigger();
 	}
 }
 
 void AMIPlayerController::HandlePrimaryAction_Stopped(const FInputActionValue& Value)
 {
-	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	if (const TScriptInterface<ICPP_Interactable> Interactable = CheckInteractable())
 	{
-		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnPrimaryAction_Stopped();
+		Interactable->OnPrimaryAction_Stopped();
 	}
 }
 
 void AMIPlayerController::HandleSecondaryAction(const FInputActionValue& Value)
 {
-	if (PlayerCharacter && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	if (const TScriptInterface<ICPP_Interactable> Interactable = CheckInteractable())
 	{
-		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnSecondaryAction();
+		Interactable->OnSecondaryAction();
 	}
 }
 
 void AMIPlayerController::HandleNumeric(const FInputActionValue& Value)
 {
 	const int32 Numeric = Value.Get<float>();
-
-	if (PlayerCharacter && Numeric && PlayerCharacter->GetInteractComponent()->GetInteractable())
+	
+	if (const TScriptInterface<ICPP_Interactable> Interactable = CheckInteractable())
 	{
-		PlayerCharacter->GetInteractComponent()->GetInteractable()->OnNumericAction(Numeric);
+		Interactable->OnNumericAction(Numeric);
 	}
+}
+
+void AMIPlayerController::HandleReload(const FInputActionValue& Value)
+{
+	const TScriptInterface<ICPP_Interactable> Interactable = CheckInteractable();
+	
+	if (AMIGun* Gun = Cast<AMIGun>(Interactable.GetObject()))
+	{
+		Gun->Reload();
+	}
+}
+
+TScriptInterface<ICPP_Interactable> AMIPlayerController::CheckInteractable() &
+{
+	static const  TScriptInterface<ICPP_Interactable> EmptyInteractable = nullptr;
+	
+	if (!PlayerCharacter || !PlayerCharacter->GetInteractComponent())
+	{
+		return EmptyInteractable;
+	}
+
+	TScriptInterface<ICPP_Interactable> Interactable = PlayerCharacter->GetInteractComponent()->GetInteractable();
+
+	if (!Interactable || !IsValid(Interactable.GetObject()))
+	{
+		return EmptyInteractable;
+	}
+
+	return Interactable;
 }
