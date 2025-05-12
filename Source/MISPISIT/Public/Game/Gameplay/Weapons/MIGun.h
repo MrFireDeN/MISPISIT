@@ -12,7 +12,7 @@ class UBoxComponent;
 class IMIGunState;
 
 UENUM(BlueprintType)
-enum EFireMode : uint8
+enum class EFireMode : uint8
 {
 	Single,
 	Auto,
@@ -41,6 +41,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Gun")
 	TScriptInterface<IMIGunState> GetCurrentState() const { return CurrentState; }
 
+	UFUNCTION(BlueprintPure, Category = "Gun")
+	EFireMode GetFireMode() const { return FireMode; }
+
+	UFUNCTION(BlueprintPure, Category = "Gun")
+	float GetReloadDelay() const { return ReloadDelay; }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -55,7 +61,10 @@ protected:
 	ACharacter* CharacterOwner;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
-	uint8 FireMode = EFireMode::Single;
+	EFireMode FireMode = EFireMode::Single;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	float ReloadDelay = 2.f;
 
 private:
 	UPROPERTY()
