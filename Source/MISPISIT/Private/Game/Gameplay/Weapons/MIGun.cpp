@@ -53,13 +53,6 @@ bool AMIGun::OnPrimaryAction()
 	return ICPP_Interactable::OnPrimaryAction();
 }
 
-bool AMIGun::OnPrimaryAction_Trigger()
-{
-	//StartFire();
-	
-	return ICPP_Interactable::OnPrimaryAction();
-}
-
 bool AMIGun::OnPrimaryAction_Stopped()
 {
 	StopFire();

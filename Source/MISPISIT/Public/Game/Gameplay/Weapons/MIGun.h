@@ -30,7 +30,6 @@ public:
 	virtual bool OnAttach() override;
 	virtual bool OnDetach() override;
 	virtual bool OnPrimaryAction() override;
-	virtual bool OnPrimaryAction_Trigger() override;
 	virtual bool OnPrimaryAction_Stopped() override;
 
 	virtual void StartFire();
