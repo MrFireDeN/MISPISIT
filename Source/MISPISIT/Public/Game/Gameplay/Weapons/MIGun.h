@@ -5,11 +5,14 @@
 #include "CoreMinimal.h"
 #include "CPP_Interactable.h"
 #include "GameFramework/Actor.h"
+#include "Flyweight/CPP_SpraySubsystem.h"
 #include "MIGun.generated.h"
 
 class UStaticMeshComponent;
 class UBoxComponent;
 class IMIGunState;
+class UTraceHelper;
+class UCPP_SpraySubsystem;
 
 UENUM(BlueprintType)
 enum class EFireMode : uint8
@@ -58,6 +61,10 @@ public:
 
 	UPROPERTY()
 	int32 RemainingBurstShots = 0;
+	
+	/** Current shot counter for spray pattern sequencing */
+	UPROPERTY()
+	int32 ShotIndex = 0;
 
 protected:
 	virtual void BeginPlay() override;
@@ -72,6 +79,18 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ACharacter* CharacterOwner;
 
+	/** Subsystem managing shared spray patterns (Flyweight pattern) */
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	UCPP_SpraySubsystem* SpraySubsystem;
+
+	/** Type of weapon spray pattern to use */
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	ESprayType SprayType;
+
+	/** Base damage per shot */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	float Damage = 50;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
 	EFireMode FireMode = EFireMode::Single;
 
@@ -83,6 +102,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
 	int32 BurstShotsCount = 3;
+
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UTraceHelper* TraceHelper;
 
 private:
 	UPROPERTY()

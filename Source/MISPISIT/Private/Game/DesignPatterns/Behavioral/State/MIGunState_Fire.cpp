@@ -26,6 +26,7 @@ void UMIGunState_Fire::StopFire_Implementation()
 	UE_LOG(LogTemp, Log, TEXT("[%s] Stop Fire"), *GetName())
 	
 	CachedGun->GetWorld()->GetTimerManager().ClearTimer(FireRateTimerHandle);
+	CachedGun->ShotIndex = 0;
 	CachedGun->SetState(NewObject<UMIGunState_Idle>(CachedGun));
 }
 
