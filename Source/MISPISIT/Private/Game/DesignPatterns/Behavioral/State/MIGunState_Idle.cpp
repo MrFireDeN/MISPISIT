@@ -2,8 +2,12 @@
 
 
 #include "Game/DesignPatterns/Behavioral/State/MIGunState_Idle.h"
+
+#include "Game/DesignPatterns/Behavioral/State/MIGunState_AutoFire.h"
+#include "Game/DesignPatterns/Behavioral/State/MIGunState_BurstFire.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState_Fire.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState_Reload.h"
+#include "Game/DesignPatterns/Behavioral/State/MIGunState_SingleFire.h"
 #include "Game/Gameplay/Weapons/MIGun.h"
 
 void UMIGunState_Idle::StartFire_Implementation()
@@ -18,7 +22,22 @@ void UMIGunState_Idle::StartFire_Implementation()
 
 	UE_LOG(LogTemp, Log, TEXT("[%s] Start Fire"), *GetName())
 
-	Gun->SetState(NewObject<UMIGunState_Fire>(Gun));
+	switch (Gun->GetFireMode())
+	{
+	case EFireMode::Single:
+		Gun->SetState(NewObject<UMIGunState_SingleFire>(Gun));
+		break;
+	case EFireMode::Auto:
+		Gun->SetState(NewObject<UMIGunState_AutoFire>(Gun));
+		break;
+	case EFireMode::Burst:
+		Gun->SetState(NewObject<UMIGunState_BurstFire>(Gun));
+		break;
+	default:
+		Gun->SetState(NewObject<UMIGunState_Fire>(Gun));
+		break;
+	}
+	
 	Gun->StartFire();
 }
 

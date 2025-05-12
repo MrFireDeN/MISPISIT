@@ -12,7 +12,7 @@ class AMIGun;
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class MISPISIT_API UMIGunState_Fire : public UObject, public IMIGunState
 {
 	GENERATED_BODY()
@@ -23,12 +23,10 @@ public:
 	virtual void Reload_Implementation() override;
 
 protected:
-	void TraceShoot();
-
-private:
+	virtual bool IsGunReady();
+	
 	FTimerHandle FireRateTimerHandle;
-	FTimerHandle StopFireTimerHandle;
-
+	
 	UPROPERTY()
 	TObjectPtr<AMIGun> CachedGun;
 };

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "MIGunState_Fire.h"
-#include "MIGunState_SingleFire.generated.h"
+#include "MIGunState_BurstFire.generated.h"
 
 /**
  * 
  */
 UCLASS(BlueprintType)
-class MISPISIT_API UMIGunState_SingleFire : public UMIGunState_Fire
+class MISPISIT_API UMIGunState_BurstFire : public UMIGunState_Fire
 {
 	GENERATED_BODY()
 

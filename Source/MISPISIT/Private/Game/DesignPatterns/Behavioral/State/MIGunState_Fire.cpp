@@ -8,64 +8,36 @@
 
 void UMIGunState_Fire::StartFire_Implementation()
 {
-	if (!IsValid(CachedGun))
+	if (!IsGunReady()) return;
+
+	CachedGun->Fire();
+
+	CachedGun->GetWorld()->GetTimerManager().SetTimer(FireRateTimerHandle, [this]()
 	{
-		CachedGun = Cast<AMIGun>(GetOuter());
-	}
-
-	if (!IsValid(CachedGun))
-	{
-		UE_LOG(LogTemp, Error, TEXT("[%s] StartFire: Gun is NOT valid"), *GetName());
-		return;
-	}
-
-	if (CachedGun->GetWorld()->GetTimerManager().IsTimerActive(StopFireTimerHandle) ||
-		CachedGun->GetWorld()->GetTimerManager().IsTimerActive(FireRateTimerHandle))
-	{
-		return;
-	}
-
-	UE_LOG(LogTemp, Log, TEXT("[%s] Start Fire"), *GetName())
-
-	const bool bIsAuto = CachedGun->GetFireMode() == EFireMode::Auto ||
-						 CachedGun->GetFireMode() == EFireMode::Burst;
-
-	CachedGun->RemainingBurstShots = CachedGun->GetBurstShotsCount();
-	
-	CachedGun->GetWorld()->GetTimerManager().SetTimer(
-		FireRateTimerHandle,
-		this,
-		&UMIGunState_Fire::TraceShoot,
-		1 / CachedGun->GetFireRate(),
-		bIsAuto,
-		0.f);
+		FireRateTimerHandle.Invalidate();
+		Execute_StopFire(this);
+	}, 1 / CachedGun.Get()->GetFireRate(), false);
 }
 
 void UMIGunState_Fire::StopFire_Implementation()
 {
-	if (!IsValid(CachedGun))
-	{
-		CachedGun = Cast<AMIGun>(GetOuter());
-	}
-
-	if (!IsValid(CachedGun))
-	{
-		UE_LOG(LogTemp, Error, TEXT("[%s] StopFire: Gun is NOT valid"), *GetName());
-		return;
-	}
-
-	if (CachedGun->GetWorld()->GetTimerManager().IsTimerActive(StopFireTimerHandle))
-	{
-		return;
-	}
+	if (!IsGunReady()) return;
 
 	UE_LOG(LogTemp, Log, TEXT("[%s] Stop Fire"), *GetName())
-
+	
 	CachedGun->GetWorld()->GetTimerManager().ClearTimer(FireRateTimerHandle);
 	CachedGun->SetState(NewObject<UMIGunState_Idle>(CachedGun));
 }
 
 void UMIGunState_Fire::Reload_Implementation()
+{
+	if (!IsGunReady()) return;
+	
+	CachedGun->SetState(NewObject<UMIGunState_Reload>(CachedGun));
+	CachedGun->Reload();
+}
+
+bool UMIGunState_Fire::IsGunReady()
 {
 	if (!IsValid(CachedGun))
 	{
@@ -75,53 +47,8 @@ void UMIGunState_Fire::Reload_Implementation()
 	if (!IsValid(CachedGun))
 	{
 		UE_LOG(LogTemp, Error, TEXT("[%s] Reload: Gun is NOT valid"), *GetName());
-		return;
+		return false;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("[%s] Reload"), *GetName())
-	
-	CachedGun->SetState(NewObject<UMIGunState_Reload>(CachedGun));
-	CachedGun->Reload();
-}
-
-void UMIGunState_Fire::TraceShoot()
-{
-	if (!IsValid(CachedGun))
-	{
-		Execute_StopFire(this);
-		return;
-	}
-	
-	UE_LOG(LogTemp, Log, TEXT("[%s] TraceShoot: Shoot"), *GetName());
-
-	if (CachedGun->GetFireMode() == EFireMode::Burst)
-	{
-		CachedGun->RemainingBurstShots--;
-
-		if (CachedGun->RemainingBurstShots <= 0)
-		{
-			CachedGun->GetWorld()->GetTimerManager().SetTimer(
-				StopFireTimerHandle,
-				[this]()
-				{
-					StopFireTimerHandle.Invalidate();
-					Execute_StopFire(this);
-				},
-				1 / CachedGun->GetFireRate(),
-				false);
-		}
-	}
-
-	if (CachedGun->GetFireMode() == EFireMode::Single)
-	{
-		CachedGun->GetWorld()->GetTimerManager().SetTimer(
-				StopFireTimerHandle,
-				[this]()
-				{
-					StopFireTimerHandle.Invalidate();
-					Execute_StopFire(this);
-				},
-				1 / CachedGun->GetFireRate(),
-				false);
-	}
+	return !CachedGun->GetWorld()->GetTimerManager().IsTimerActive(FireRateTimerHandle);
 }

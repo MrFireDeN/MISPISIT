@@ -7,37 +7,17 @@
 
 void UMIGunState_SingleFire::StartFire_Implementation()
 {
-	AMIGun* Gun = Cast<AMIGun>(GetOuter());
+	if (!IsGunReady()) return;
 
-	if (!IsValid(Gun))
-	{
-		UE_LOG(LogTemp, Error, TEXT("[%s] StartFire: Gun is NOT valid"), *GetName());
-		return;
-	}
+	CachedGun->Fire();
 
-	UE_LOG(LogTemp, Log, TEXT("[%s] Start Fire"), *GetName())
-	
-	//Gun->OnPrimaryAction();
-
-	Execute_StopFire(this);
-}
-
-void UMIGunState_SingleFire::StopFire_Implementation()
-{
-	AMIGun* Gun = Cast<AMIGun>(GetOuter());
-
-	if (!IsValid(Gun))
-	{
-		UE_LOG(LogTemp, Error, TEXT("[%s] StartFire: Gun is NOT valid"), *GetName());
-		return;
-	}
-
-	Gun->SetState(NewObject<UMIGunState_Idle>(Gun));
-
-	UE_LOG(LogTemp, Log, TEXT("[%s] Stop Fire"), *GetName())
-}
-
-void UMIGunState_SingleFire::Reload_Implementation()
-{
-	IMIGunState::Reload_Implementation();
+	CachedGun->GetWorld()->GetTimerManager().SetTimer(
+		FireRateTimerHandle,
+		[this]()
+		{
+			FireRateTimerHandle.Invalidate();
+			Execute_StopFire(this);
+		},
+		1 / CachedGun->GetFireRate(),
+		false);
 }
