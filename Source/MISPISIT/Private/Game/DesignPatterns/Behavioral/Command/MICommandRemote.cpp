@@ -7,6 +7,7 @@
 #include "Game/Characters/MICharacterBase.h"
 #include "Game/DesignPatterns/Behavioral/Command/MIAIController_Command.h"
 #include "Game/DesignPatterns/Behavioral/Command/MICommand.h"
+#include "Game/DesignPatterns/Behavioral/Command/MICrouchCommand.h"
 #include "Game/DesignPatterns/Behavioral/Command/MILookAtCommand.h"
 #include "Game/DesignPatterns/Behavioral/Command/MIMoveToCommand.h"
 
@@ -61,7 +62,16 @@ bool AMICommandRemote::OnSecondaryAction()
 
 bool AMICommandRemote::OnNumericAction(const int Digit)
 {
-	return ICPP_Interactable::OnNumericAction(Digit);
+	switch (Digit)
+	{
+		case 1:
+			TScriptInterface<IMICommand> Command = NewObject<UMICrouchCommand>();
+			Cast<UMICrouchCommand>(Command.GetObject())->Initialize(TargetController);
+			Command->Execute_Execute(Command.GetObject());
+			return true;
+	}
+
+	return true;
 }
 
 void AMICommandRemote::BeginPlay()
