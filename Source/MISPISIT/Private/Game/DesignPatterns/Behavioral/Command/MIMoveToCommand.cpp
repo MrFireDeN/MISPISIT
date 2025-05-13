@@ -8,15 +8,9 @@
 
 void UMIMoveToCommand::Initialize(AMIAIController_Command* InReceiver, const FVector& InLocation)
 {
-	if (!IsValid(InReceiver))
+	if (!InReceiver)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s: Initialize failed - invalid Receiver"), *GetNameSafe(this));
-		return;
-	}
-
-	if (!InLocation.IsNearlyZero()) // Basic location validation
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s: Initialize failed - invalid Location"), *GetNameSafe(this));
 		return;
 	}
 
@@ -26,7 +20,7 @@ void UMIMoveToCommand::Initialize(AMIAIController_Command* InReceiver, const FVe
 
 void UMIMoveToCommand::Execute_Implementation()
 {
-	if (!IsValid(Receiver))
+	if (!Receiver)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s: Execute failed - invalid Receiver"), *GetNameSafe(this));
 		return;
@@ -42,22 +36,6 @@ void UMIMoveToCommand::Execute_Implementation()
 	// Store current location for undo
 	PrevLocation = ControlledPawn->GetActorLocation();
 
-	// Validate navigation
-	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
-	if (!IsValid(NavSystem))
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s: Execute failed - navigation system unavailable"), *GetNameSafe(this));
-		return;
-	}
-
-	// Check if location is reachable
-	FNavLocation NavLocation;
-	if (!NavSystem->ProjectPointToNavigation(TargetLocation, NavLocation))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s: Target location is not navigable"), *GetNameSafe(this));
-		return;
-	}
-
 	// Execute move command
 	Receiver->MoveToLocation(TargetLocation);
     
@@ -66,7 +44,7 @@ void UMIMoveToCommand::Execute_Implementation()
 
 void UMIMoveToCommand::Undo_Implementation()
 {
-	if (!IsValid(Receiver) || !IsValid(Receiver->GetPawn()))
+	if (!Receiver || !Receiver->GetPawn())
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s: Undo failed - invalid Receiver or Pawn"), *GetNameSafe(this));
 		return;
