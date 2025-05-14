@@ -7,6 +7,7 @@
 #include "Game/Characters/MICharacterBase.h"
 #include "Game/DesignPatterns/Behavioral/Command/MIAIController_Command.h"
 #include "Game/DesignPatterns/Behavioral/Command/MICommand.h"
+#include "Game/DesignPatterns/Behavioral/Command/MICommandHistory.h"
 #include "Game/DesignPatterns/Behavioral/Command/MICrouchCommand.h"
 #include "Game/DesignPatterns/Behavioral/Command/MILookAtCommand.h"
 #include "Game/DesignPatterns/Behavioral/Command/MIMoveToCommand.h"
@@ -32,7 +33,8 @@ bool AMICommandRemote::OnPrimaryAction()
 
 	TScriptInterface<IMICommand> Command = NewObject<UMIMoveToCommand>();
 	Cast<UMIMoveToCommand>(Command.GetObject())->Initialize(TargetController, Hit.Location);
-	Command->Execute_Execute(Command.GetObject());
+	
+	TargetController->ExecuteCommand(Command);
 
 	return true;
 }
@@ -55,20 +57,36 @@ bool AMICommandRemote::OnSecondaryAction()
 
 	TScriptInterface<IMICommand> Command = NewObject<UMILookAtCommand>();
 	Cast<UMILookAtCommand>(Command.GetObject())->Initialize(TargetController, HitActor);
-	Command->Execute_Execute(Command.GetObject());
+	
+	TargetController->ExecuteCommand(Command);
 
 	return true;
 }
 
 bool AMICommandRemote::OnNumericAction(const int Digit)
 {
+	
 	switch (Digit)
 	{
 		case 1:
-			TScriptInterface<IMICommand> Command = NewObject<UMICrouchCommand>();
-			Cast<UMICrouchCommand>(Command.GetObject())->Initialize(TargetController);
-			Command->Execute_Execute(Command.GetObject());
-			return true;
+			{
+				TScriptInterface<IMICommand> Command = NewObject<UMICrouchCommand>();
+				Cast<UMICrouchCommand>(Command.GetObject())->Initialize(TargetController);
+				
+				TargetController->ExecuteCommand(Command);
+				
+				return true;
+			}
+		case 2:
+			{
+				UMICommandHistory* CommandHistory = TargetController->GetCommandHistory();
+				
+				if (!CommandHistory) return false;
+				
+				CommandHistory->UndoLast();
+				
+				return true;
+			}
 	}
 
 	return true;
