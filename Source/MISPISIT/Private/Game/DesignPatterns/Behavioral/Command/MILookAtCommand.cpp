@@ -42,8 +42,9 @@ void UMILookAtCommand::Execute_Implementation()
 	
 	const FVector DirectionToTarget = Target->GetActorLocation() - ControlledPawn->GetActorLocation();
 	const FRotator NewRotation = DirectionToTarget.Rotation();
+	const FRotator YawOnlyRotation(0.f, NewRotation.Yaw, 0.f);
     
-	ControlledPawn->SetActorRotation(NewRotation);
+	ControlledPawn->SetActorRotation(YawOnlyRotation);
     
 	UE_LOG(LogTemp, Log, TEXT("%s: Executed look at %s"), *GetNameSafe(this), *GetNameSafe(Target));
 }
