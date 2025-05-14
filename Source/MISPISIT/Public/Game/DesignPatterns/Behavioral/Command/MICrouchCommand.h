@@ -22,6 +22,7 @@ public:
 	 * Initializes command with receiver
 	 * @param InReceiver - AI controller that will execute the command
 	 */
+	UFUNCTION(BlueprintCallable, Category = "Command")
 	void Initialize(AMIAIController_Command* InReceiver);
 	
 	virtual void Execute_Implementation() override;
