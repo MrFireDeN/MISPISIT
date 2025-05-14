@@ -23,6 +23,7 @@ public:
 	 * @param InReceiver - AI controller that will execute the command
 	 * @param InLocation - Target location to move to
 	 */
+	UFUNCTION(BlueprintCallable, Category = "Command")
 	void Initialize(AMIAIController_Command* InReceiver, const FVector& InLocation);
 	
 	virtual void Execute_Implementation() override;
