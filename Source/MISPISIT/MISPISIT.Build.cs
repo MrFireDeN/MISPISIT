@@ -17,7 +17,10 @@ public class MISPISIT : ModuleRules
 				"AIModule",
 				"NavigationSystem",
 				"InputCore", 
-				"EnhancedInput"
+				"EnhancedInput",
+				"UMG",
+				"Slate",
+				"SlateCore"
 			});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
