@@ -10,6 +10,7 @@
 #include "Game/DesignPatterns/Behavioral/Command/MICommandHistory.h"
 #include "Game/DesignPatterns/Behavioral/Command/MICrouchCommand.h"
 #include "Game/DesignPatterns/Behavioral/Command/MILookAtCommand.h"
+#include "Game/DesignPatterns/Behavioral/Command/MIMacroCommand.h"
 #include "Game/DesignPatterns/Behavioral/Command/MIMoveToCommand.h"
 
 
@@ -36,6 +37,11 @@ bool AMICommandRemote::OnPrimaryAction()
 	
 	TargetController->ExecuteCommand(Command);
 
+	if (bIsRecording)
+	{
+		MacroCommand->AddCommand(Command);
+	}
+
 	return true;
 }
 
@@ -60,6 +66,11 @@ bool AMICommandRemote::OnSecondaryAction()
 	
 	TargetController->ExecuteCommand(Command);
 
+	if (bIsRecording)
+	{
+		MacroCommand->AddCommand(Command);
+	}
+
 	return true;
 }
 
@@ -74,6 +85,11 @@ bool AMICommandRemote::OnNumericAction(const int Digit)
 				Cast<UMICrouchCommand>(Command.GetObject())->Initialize(TargetController);
 				
 				TargetController->ExecuteCommand(Command);
+
+				if (bIsRecording)
+				{
+					MacroCommand->AddCommand(Command);
+				}
 				
 				return true;
 			}
@@ -84,6 +100,24 @@ bool AMICommandRemote::OnNumericAction(const int Digit)
 				if (!CommandHistory) return false;
 				
 				CommandHistory->UndoLast();
+				
+				return true;
+			}
+		case 3:
+			{
+				StartRecording();
+				return true;
+			}
+		case 4:
+			{
+				StopRecording();
+				return true;
+			}
+		case 5:
+			{
+				if (!IsValid(MacroCommand) || bIsRecording) return false;
+
+				TargetController->ExecuteCommand(MacroCommand);
 				
 				return true;
 			}
@@ -100,4 +134,19 @@ void AMICommandRemote::BeginPlay()
 		TargetController = Cast<AMIAIController_Command>(Target->GetController());
 	}
 	
+}
+
+void AMICommandRemote::StartRecording()
+{
+	MacroCommand = NewObject<UMIMacroCommand>();
+	bIsRecording = true;
+	
+	UE_LOG(LogTemp, Log, TEXT("%s: Start Recording"), *GetNameSafe(this));
+}
+
+void AMICommandRemote::StopRecording()
+{
+	bIsRecording = false;
+	
+	UE_LOG(LogTemp, Log, TEXT("%s: Stop Recording"), *GetNameSafe(this));
 }

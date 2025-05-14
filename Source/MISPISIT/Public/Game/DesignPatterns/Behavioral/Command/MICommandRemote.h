@@ -6,6 +6,7 @@
 #include "Game/Gameplay/MIInteractableBase.h"
 #include "MICommandRemote.generated.h"
 
+class UMIMacroCommand;
 class AMIAIController_Command;
 class AMICharacterBase;
 
@@ -23,6 +24,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	void StartRecording();
+	void StopRecording();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Remote", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<AMICharacterBase> Target = nullptr;
@@ -30,4 +34,10 @@ protected:
 private:
 	UPROPERTY()
 	TObjectPtr<AMIAIController_Command> TargetController;
+
+	UPROPERTY()
+	TObjectPtr<UMIMacroCommand> MacroCommand;
+
+	UPROPERTY()
+	bool bIsRecording = false;
 };
