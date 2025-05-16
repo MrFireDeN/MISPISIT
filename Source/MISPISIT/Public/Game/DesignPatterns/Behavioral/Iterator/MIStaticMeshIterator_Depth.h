@@ -41,8 +41,6 @@ protected:
 
 	int32 CurrentIndex = -1;
 
-	UObject* ScanNextStaticMeshFromPath(const FString& Path) const;
+	UObject* ScanNextStaticMeshFromPath(const FString& Path);
 	void ExpandFolder(const FString& FolderPath);
 };
-
-

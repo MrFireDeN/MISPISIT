@@ -28,7 +28,7 @@ UMIStaticMeshIterator_Depth::UMIStaticMeshIterator_Depth(const FObjectInitialize
 
 UObject* UMIStaticMeshIterator_Depth::GetNext_Implementation()
 {
-	if (!HasNext()) return nullptr;
+	if (!Execute_HasNext(this)) return nullptr;
 
 	bNextScanned = false;
 	++CurrentIndex;
@@ -40,7 +40,7 @@ UObject* UMIStaticMeshIterator_Depth::GetNext_Implementation()
 
 UObject* UMIStaticMeshIterator_Depth::GetPrevious_Implementation()
 {
-	if (!HasPrevious()) return nullptr;
+	if (!Execute_HasPrevious(this)) return nullptr;
 	return History[--CurrentIndex];
 }
 
@@ -84,7 +84,7 @@ void UMIStaticMeshIterator_Depth::Reset_Implementation()
 	CachedNext.Reset();
 }
 
-UObject* UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& Path) const
+UObject* UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& Path)
 {
 	FAssetRegistryModule& AssetRegistry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
 	TArray<FAssetData> Assets;
@@ -92,8 +92,10 @@ UObject* UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& 
 
 	for (const FAssetData& Asset : Assets)
 	{
-		if (Asset.AssetClassPath.ToString() == AssetClassFilter->GetName())
+		if (Asset.GetClass() == AssetClassFilter.Get())
 		{
+			UE_LOG(LogTemp, Log, TEXT("[%s] Asset: %s"), *GetNameSafe(this), *(Asset.AssetName.ToString()))
+			
 			return Asset.GetAsset();
 		}
 	}
