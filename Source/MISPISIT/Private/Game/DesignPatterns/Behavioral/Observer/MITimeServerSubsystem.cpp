@@ -5,9 +5,17 @@
 
 #include "Game/DesignPatterns/Behavioral/Observer/MIObserver.h"
 
-void UMITimeServerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UMITimeServerSubsystem::Deinitialize()
 {
-	Super::Initialize(Collection);
+	Stop();
+	Observers.Empty();
+	
+	Super::Deinitialize();
+}
+
+void UMITimeServerSubsystem::Start()
+{
+	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) return;
 	
 	GetWorld()->GetTimerManager().SetTimer(
 		TimerHandle,
@@ -18,12 +26,9 @@ void UMITimeServerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		);
 }
 
-void UMITimeServerSubsystem::Deinitialize()
+void UMITimeServerSubsystem::Stop()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
-	Observers.Empty();
-	
-	Super::Deinitialize();
 }
 
 void UMITimeServerSubsystem::Subscribe(UObject* Observer)

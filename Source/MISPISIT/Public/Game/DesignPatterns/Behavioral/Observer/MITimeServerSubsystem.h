@@ -9,14 +9,19 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class MISPISIT_API UMITimeServerSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
 public:
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
+
+	UFUNCTION(BlueprintCallable, Category = "Observer")
+	void Start();
+
+	UFUNCTION(BlueprintCallable, Category = "Observer")
+	void Stop();
 
 	UFUNCTION(BlueprintCallable, Category = "Observer")
 	void Subscribe(UObject* Observer);
