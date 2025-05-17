@@ -19,6 +19,8 @@ class MISPISIT_API UMIStaticMeshCollection : public UObject, public IMIAssetColl
 
 public:
 	virtual TScriptInterface<IMIAssetIterator> CreateIterator_Implementation() override;
+
+	virtual TArray<FString> GetAssetRoots_Implementation() override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Iterator")
 	TArray<FString> RootFolders;

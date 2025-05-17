@@ -1,18 +1,18 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// MIAssetIteratorBase.cpp
 
 
-#include "Game/DesignPatterns/Behavioral/Iterator/MIStaticMeshIterator_Depth.h"
+#include "Game/DesignPatterns/Behavioral/Iterator/MIAssetIteratorBase.h"
 
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Game/DesignPatterns/Behavioral/Iterator/MIStaticMeshCollection.h"
 
-UMIStaticMeshIterator_Depth::UMIStaticMeshIterator_Depth(const FObjectInitializer& ObjectInitializer)
+UMIAssetIteratorBase::UMIAssetIteratorBase()
 {
 	TArray<FString> RootPaths = {};
 	
-	if (UMIStaticMeshCollection* Collection = Cast<UMIStaticMeshCollection>(GetOuter()))
+	if (TScriptInterface<IMIAssetCollection> Collection = GetOuter())
 	{
-		RootPaths = Collection->RootFolders;
+		RootPaths = Collection->Execute_GetAssetRoots(Collection.GetObject());
 	}
 	else
 	{
@@ -22,11 +22,9 @@ UMIStaticMeshIterator_Depth::UMIStaticMeshIterator_Depth(const FObjectInitialize
 	Stack = RootPaths;
 	History.Empty();
 	CurrentIndex = -1;
-	bNextScanned = false;
-	AssetClassFilter = UStaticMesh::StaticClass();
 }
 
-UObject* UMIStaticMeshIterator_Depth::GetNext_Implementation()
+UObject* UMIAssetIteratorBase::GetNext_Implementation()
 {
 	if (!Execute_HasNext(this)) return nullptr;
 
@@ -43,7 +41,7 @@ UObject* UMIStaticMeshIterator_Depth::GetNext_Implementation()
 	return NextAsset;
 }
 
-UObject* UMIStaticMeshIterator_Depth::GetPrevious_Implementation()
+UObject* UMIAssetIteratorBase::GetPrevious_Implementation()
 {
 	if (!Execute_HasPrevious(this)) return nullptr;
 	--CurrentIndex;
@@ -51,7 +49,7 @@ UObject* UMIStaticMeshIterator_Depth::GetPrevious_Implementation()
 	return History[CurrentIndex];
 }
 
-bool UMIStaticMeshIterator_Depth::HasNext_Implementation()
+bool UMIAssetIteratorBase::HasNext_Implementation()
 {
 	if (!PendingAssets.IsEmpty())
 	{
@@ -78,21 +76,24 @@ bool UMIStaticMeshIterator_Depth::HasNext_Implementation()
 	return false;
 }
 
-bool UMIStaticMeshIterator_Depth::HasPrevious_Implementation()
+bool UMIAssetIteratorBase::HasPrevious_Implementation()
 {
 	return CurrentIndex > 0;
 }
 
-void UMIStaticMeshIterator_Depth::Reset_Implementation()
+void UMIAssetIteratorBase::Reset_Implementation()
 {
 	CurrentIndex = -1;
 	History.Empty();
-	bNextScanned = false;
-	CachedNext.Reset();
 }
 
-void UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& Path)
+void UMIAssetIteratorBase::ScanNextStaticMeshFromPath(const FString& Path)
 {
+	if (!AssetClassFilter) {
+		UE_LOG(LogTemp, Error, TEXT("[%s]: AssetClassFilter is NOT valid"), *GetNameSafe(this))
+		return;
+	}
+	
 	FAssetRegistryModule& AssetRegistry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
 	
 	TArray<FAssetData> Assets;
@@ -110,7 +111,7 @@ void UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& Path
 	}
 }
 
-void UMIStaticMeshIterator_Depth::ExpandFolder(const FString& FolderPath)
+void UMIAssetIteratorBase::ExpandFolder(const FString& FolderPath)
 {
 	IFileManager& FileManager = IFileManager::Get();
 	TArray<FString> SubDirs;

@@ -24,4 +24,7 @@ class MISPISIT_API IMIAssetCollection
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Iterator")
 	TScriptInterface<IMIAssetIterator> CreateIterator();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Iterator")
+	TArray<FString> GetAssetRoots();
 };

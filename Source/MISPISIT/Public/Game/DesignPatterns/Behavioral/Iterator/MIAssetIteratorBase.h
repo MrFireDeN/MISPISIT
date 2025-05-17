@@ -1,22 +1,22 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// MIAssetIteratorBase.h
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "MIAssetIterator.h"
 #include "UObject/Object.h"
-#include "MIStaticMeshIterator_Depth.generated.h"
+#include "MIAssetIteratorBase.generated.h"
 
 /**
  * 
  */
-UCLASS(Blueprintable, BlueprintType)
-class MISPISIT_API UMIStaticMeshIterator_Depth : public UObject, public IMIAssetIterator
+UCLASS(Abstract)
+class MISPISIT_API UMIAssetIteratorBase : public UObject, public IMIAssetIterator
 {
 	GENERATED_BODY()
 
 public:
-	UMIStaticMeshIterator_Depth(const FObjectInitializer& ObjectInitializer);
+	UMIAssetIteratorBase();
 	
 	virtual UObject* GetNext_Implementation() override;
 	virtual UObject* GetPrevious_Implementation() override;
@@ -40,9 +40,6 @@ protected:
 
 	UPROPERTY()
 	TSet<FString> VisitedPaths;
-	
-	TWeakObjectPtr<UObject> CachedNext = nullptr;
-	mutable bool bNextScanned = false;
 
 	int32 CurrentIndex = -1;
 
