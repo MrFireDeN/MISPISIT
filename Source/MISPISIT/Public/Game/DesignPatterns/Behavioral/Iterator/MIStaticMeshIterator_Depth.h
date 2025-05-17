@@ -33,14 +33,19 @@ protected:
 	UPROPERTY()
 	TArray<UObject*> History;
 
+	TQueue<UObject*> PendingAssets;
+
 	UPROPERTY()
 	TSubclassOf<UObject> AssetClassFilter;
+
+	UPROPERTY()
+	TSet<FString> VisitedPaths;
 	
 	TWeakObjectPtr<UObject> CachedNext = nullptr;
 	mutable bool bNextScanned = false;
 
 	int32 CurrentIndex = -1;
 
-	UObject* ScanNextStaticMeshFromPath(const FString& Path);
+	void ScanNextStaticMeshFromPath(const FString& Path);
 	void ExpandFolder(const FString& FolderPath);
 };

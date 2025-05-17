@@ -30,44 +30,51 @@ UObject* UMIStaticMeshIterator_Depth::GetNext_Implementation()
 {
 	if (!Execute_HasNext(this)) return nullptr;
 
-	bNextScanned = false;
-	++CurrentIndex;
-	History.SetNum(CurrentIndex + 1);
-	History[CurrentIndex] = CachedNext.Get();
+	UObject* NextAsset = nullptr;
+	PendingAssets.Dequeue(NextAsset);
 	
-	return CachedNext.Get();
+	if (NextAsset != nullptr)
+	{
+		++CurrentIndex;
+		History.SetNum(CurrentIndex + 1);
+		History[CurrentIndex] = NextAsset;
+	}
+
+	return NextAsset;
 }
 
 UObject* UMIStaticMeshIterator_Depth::GetPrevious_Implementation()
 {
 	if (!Execute_HasPrevious(this)) return nullptr;
-	return History[--CurrentIndex];
+	--CurrentIndex;
+	
+	return History[CurrentIndex];
 }
 
 bool UMIStaticMeshIterator_Depth::HasNext_Implementation()
 {
-	if (bNextScanned) return CachedNext.IsValid();
+	if (!PendingAssets.IsEmpty())
+	{
+		return true;
+	}
 
 	while (Stack.Num() > 0)
 	{
 		FString CurrentPath = Stack.Pop();
-		UObject* Found = ScanNextStaticMeshFromPath(CurrentPath);
 
-		if (Found)
+		if (VisitedPaths.Contains(CurrentPath))
+			continue;
+
+		VisitedPaths.Add(CurrentPath);
+		ExpandFolder(CurrentPath);
+		ScanNextStaticMeshFromPath(CurrentPath);
+		
+		if (!PendingAssets.IsEmpty())
 		{
-			ExpandFolder(CurrentPath);
-			CachedNext = Found;
-			bNextScanned = true;
 			return true;
 		}
-		else
-		{
-			ExpandFolder(CurrentPath);
-		}
 	}
-
-	CachedNext.Reset();
-	bNextScanned = false;
+	
 	return false;
 }
 
@@ -84,9 +91,10 @@ void UMIStaticMeshIterator_Depth::Reset_Implementation()
 	CachedNext.Reset();
 }
 
-UObject* UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& Path)
+void UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& Path)
 {
 	FAssetRegistryModule& AssetRegistry = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	
 	TArray<FAssetData> Assets;
 	AssetRegistry.Get().GetAssetsByPath(FName(*Path), Assets, true);
 
@@ -94,13 +102,12 @@ UObject* UMIStaticMeshIterator_Depth::ScanNextStaticMeshFromPath(const FString& 
 	{
 		if (Asset.GetClass() == AssetClassFilter.Get())
 		{
-			UE_LOG(LogTemp, Log, TEXT("[%s] Asset: %s"), *GetNameSafe(this), *(Asset.AssetName.ToString()))
-			
-			return Asset.GetAsset();
+			if (UObject* LoadedAsset = Asset.GetAsset())
+			{
+				PendingAssets.Enqueue(LoadedAsset);
+			}
 		}
 	}
-	
-	return nullptr;
 }
 
 void UMIStaticMeshIterator_Depth::ExpandFolder(const FString& FolderPath)
