@@ -26,6 +26,11 @@ UMIAssetIteratorBase::UMIAssetIteratorBase()
 
 UObject* UMIAssetIteratorBase::GetNext_Implementation()
 {
+	if (!History.IsEmpty() && CurrentIndex < History.Num() - 1)
+	{
+		return History[++CurrentIndex];
+	}
+
 	if (!Execute_HasNext(this)) return nullptr;
 
 	UObject* NextAsset = nullptr;
