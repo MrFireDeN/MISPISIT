@@ -43,6 +43,6 @@ protected:
 
 	int32 CurrentIndex = -1;
 
-	void ScanNextStaticMeshFromPath(const FString& Path);
+	void FillPendingAssetsFromPath(const FString& Path);
 	void ExpandFolder(const FString& FolderPath);
 };

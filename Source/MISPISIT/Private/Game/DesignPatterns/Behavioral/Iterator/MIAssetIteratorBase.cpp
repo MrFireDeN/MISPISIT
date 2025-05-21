@@ -65,7 +65,7 @@ bool UMIAssetIteratorBase::HasNext_Implementation()
 
 		VisitedPaths.Add(CurrentPath);
 		ExpandFolder(CurrentPath);
-		ScanNextStaticMeshFromPath(CurrentPath);
+		FillPendingAssetsFromPath(CurrentPath);
 		
 		if (!PendingAssets.IsEmpty())
 		{
@@ -87,7 +87,7 @@ void UMIAssetIteratorBase::Reset_Implementation()
 	History.Empty();
 }
 
-void UMIAssetIteratorBase::ScanNextStaticMeshFromPath(const FString& Path)
+void UMIAssetIteratorBase::FillPendingAssetsFromPath(const FString& Path)
 {
 	if (!AssetClassFilter) {
 		UE_LOG(LogTemp, Error, TEXT("[%s]: AssetClassFilter is NOT valid"), *GetNameSafe(this))
