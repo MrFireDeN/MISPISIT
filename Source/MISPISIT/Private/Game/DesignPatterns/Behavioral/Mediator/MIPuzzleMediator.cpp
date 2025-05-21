@@ -7,7 +7,7 @@
 
 void UMIPuzzleMediator::RegisterElement(FName ElementID, const TScriptInterface<IMIPuzzleElement>& Element)
 {
-	if (!Elements.Contains(ElementID) && IsValid(Element.GetObject()))
+	if (!Elements.Contains(ElementID) && Element.GetObject() != nullptr)
 	{
 		Elements.Add(ElementID, Element);
 	}
