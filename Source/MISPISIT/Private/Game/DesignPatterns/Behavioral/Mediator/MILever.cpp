@@ -23,7 +23,7 @@ void AMILever::Toggle()
 
 	OnLeverToggled(bIsOn);
 
-	Execute_NotifyMediator(this);
+	Execute_NotifyMediator(this, bIsOn);
 }
 
 void AMILever::ReceiveEvent_Implementation(FName EventName)

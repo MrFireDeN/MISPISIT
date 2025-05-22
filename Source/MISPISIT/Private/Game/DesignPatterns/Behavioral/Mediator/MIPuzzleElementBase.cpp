@@ -13,10 +13,10 @@ void AMIPuzzleElementBase::RegisterWithMediator_Implementation(UMIPuzzleMediator
 	Mediator->RegisterElement(ID, this);
 }
 
-void AMIPuzzleElementBase::NotifyMediator_Implementation()
+void AMIPuzzleElementBase::NotifyMediator_Implementation(const bool State)
 {
 	if (IsValid(Mediator.Get()))
 	{
-		Mediator->NotifyFrom(ID);
+		Mediator->NotifyFrom(ID, State);
 	}
 }

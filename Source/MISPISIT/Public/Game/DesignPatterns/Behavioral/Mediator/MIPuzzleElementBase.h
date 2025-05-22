@@ -16,7 +16,7 @@ class MISPISIT_API AMIPuzzleElementBase : public AActor, public IMIPuzzleElement
 
 public:
 	virtual void RegisterWithMediator_Implementation(UMIPuzzleMediator* InMediator) override;
-	virtual void NotifyMediator_Implementation() override;
+	virtual void NotifyMediator_Implementation(bool State) override;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mediator")

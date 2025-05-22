@@ -13,7 +13,7 @@ void UMIPuzzleMediator::RegisterElement(FName ElementID, const TScriptInterface<
 	}
 }
 
-void UMIPuzzleMediator::NotifyFrom(FName Name)
+void UMIPuzzleMediator::NotifyFrom(FName Name, const bool State)
 {
 	UE_LOG(LogTemp, Display, TEXT("[%s]::NotifyFrom: %s"), *GetNameSafe(this), *Name.ToString());
 }

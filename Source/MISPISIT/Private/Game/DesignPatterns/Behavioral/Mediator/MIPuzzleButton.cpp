@@ -23,7 +23,7 @@ void AMIPuzzleButton::Press()
 
 	bIsActive = true;
 	OnPressed();
-	Execute_NotifyMediator(this);
+	Execute_NotifyMediator(this, bIsActive);
 
 	GetWorld()->GetTimerManager().SetTimer(
 		ButtonTimerHandle,
@@ -48,5 +48,5 @@ void AMIPuzzleButton::Expire()
 {
 	bIsActive = false;
 	OnExpired();
-	Execute_NotifyMediator(this);
+	Execute_NotifyMediator(this, bIsActive);
 }

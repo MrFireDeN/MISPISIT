@@ -21,7 +21,7 @@ public:
 	void RegisterElement(FName ElementID, const TScriptInterface<IMIPuzzleElement>& Element);
 
 	UFUNCTION(BlueprintCallable, Category = "Mediator")
-	void NotifyFrom(FName Name);
+	void NotifyFrom(FName Name, bool State);
 
 	UFUNCTION(BlueprintCallable, Category = "Mediator")
 	void SendEventTo(FName ElementID, FName EventName);
@@ -29,4 +29,6 @@ public:
 private:
 	UPROPERTY()
 	TMap<FName, TScriptInterface<IMIPuzzleElement>> Elements;
+
+	bool bButtonPressed = false;
 };

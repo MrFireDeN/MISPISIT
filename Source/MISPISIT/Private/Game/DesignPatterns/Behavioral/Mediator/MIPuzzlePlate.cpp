@@ -29,7 +29,7 @@ void AMIPuzzlePlate::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		bIsPressured = true;
 		OnPressured();
-		Execute_NotifyMediator(this);
+		Execute_NotifyMediator(this, bIsPressured);
 	}
 }
 
@@ -41,7 +41,7 @@ void AMIPuzzlePlate::NotifyActorEndOverlap(AActor* OtherActor)
 	{
 		bIsPressured = false;
 		OnUnpressured();
-		Execute_NotifyMediator(this);
+		Execute_NotifyMediator(this, bIsPressured);
 	}
 }
 

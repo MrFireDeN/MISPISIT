@@ -19,7 +19,7 @@ void AMIPuzzleChest::Open()
 	{
 		bIsOpen = true;
 		OnOpen();
-		Execute_NotifyMediator(this);
+		Execute_NotifyMediator(this, bIsOpen);
 	}
 }
 
@@ -29,7 +29,7 @@ void AMIPuzzleChest::Close()
 	{
 		bIsOpen = false;
 		OnClose();
-		Execute_NotifyMediator(this);
+		Execute_NotifyMediator(this, bIsOpen);
 	}
 }
 

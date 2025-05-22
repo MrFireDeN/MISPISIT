@@ -26,7 +26,7 @@ public:
 	void RegisterWithMediator(class UMIPuzzleMediator* InMediator);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Mediator")
-	void NotifyMediator();
+	void NotifyMediator(bool State);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Mediator")
 	void ReceiveEvent(FName EventName);
