@@ -4,6 +4,8 @@
 #include "Game/DesignPatterns/Behavioral/Mediator/MIPuzzleMediator.h"
 
 #include "Game/DesignPatterns/Behavioral/Mediator/MIPuzzleElement.h"
+#include "Game/DesignPatterns/Behavioral/Memento/MIMemento.h"
+#include "Game/DesignPatterns/Behavioral/Memento/MIPuzzleSnapshot.h"
 
 void UMIPuzzleMediator::RegisterElement(FName ElementID, const TScriptInterface<IMIPuzzleElement>& Element)
 {
@@ -27,16 +29,18 @@ void UMIPuzzleMediator::NotifyFrom(FName Name, const bool State)
 		{
 			SendEventTo("Lamp", FName("TurnOff"));
 		}
+		bLeverState = State;
 	}
 
 	if (Name == "Button")
 	{
-		bButtonPressed = State;
+		bButtonState = State;
 	}
 
-	if (Name == "Plate" && bButtonPressed)
+	if (Name == "Plate" && bButtonState)
 	{
 		SendEventTo("Chest", FName("Open"));
+		bChestState = true;
 	}
 }
 
@@ -50,4 +54,20 @@ void UMIPuzzleMediator::SendEventTo(FName ElementID, FName EventName)
 		
 		IMIPuzzleElement::Execute_ReceiveEvent(Element.GetObject(), EventName);
 	}
+}
+
+TScriptInterface<IMIMemento> UMIPuzzleMediator::Save_Implementation()
+{
+	
+	TScriptInterface<IMIMemento> Result = NewObject<UMIPuzzleSnapshot>(this);
+	
+	const FPuzzleState PuzzleState = {
+		bLeverState,
+		bButtonState,
+		bChestState
+	};
+
+	Cast<UMIPuzzleSnapshot>(Result.GetObject())->Init(PuzzleState);
+
+	return Result;
 }

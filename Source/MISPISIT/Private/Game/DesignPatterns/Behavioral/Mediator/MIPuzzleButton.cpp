@@ -42,6 +42,17 @@ void AMIPuzzleButton::ReceiveEvent_Implementation(FName EventName)
 		GetWorld()->GetTimerManager().ClearTimer(ButtonTimerHandle);
 		OnExpired();
 	}
+	
+	if (EventName == "ForceOn")
+	{
+		Press();
+	}
+	
+	if (EventName == "ForceOff")
+	{
+		GetWorld()->GetTimerManager().ClearTimer(ButtonTimerHandle);
+		Expire();
+	}
 }
 
 void AMIPuzzleButton::Expire()
