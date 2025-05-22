@@ -1,9 +1,9 @@
-﻿// MILever.cpp
+﻿// MIPuzzleLever.cpp
 
-#include "Game/DesignPatterns/Behavioral/Mediator/MILever.h"
+#include "Game/DesignPatterns/Behavioral/Mediator/MIPuzzleLever.h"
 
 
-AMILever::AMILever()
+AMIPuzzleLever::AMIPuzzleLever()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
@@ -15,7 +15,7 @@ AMILever::AMILever()
 	ID = FName("Lever");
 }
 
-void AMILever::Toggle()
+void AMIPuzzleLever::Toggle()
 {
 	UE_LOG(LogTemp, Error, TEXT("[%s]: Toggle"), *GetNameSafe(this));
 	
@@ -26,7 +26,7 @@ void AMILever::Toggle()
 	Execute_NotifyMediator(this, bIsOn);
 }
 
-void AMILever::ReceiveEvent_Implementation(FName EventName)
+void AMIPuzzleLever::ReceiveEvent_Implementation(FName EventName)
 {
 	if (EventName == FName("Reset"))
 	{

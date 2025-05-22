@@ -1,20 +1,20 @@
-﻿// MILever.h
+﻿// MIPuzzleLever.h
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "MIPuzzleElementBase.h"
-#include "MILever.generated.h"
+#include "MIPuzzleLever.generated.h"
 
 class UStaticMeshComponent;
 
 UCLASS(Blueprintable, BlueprintType)
-class MISPISIT_API AMILever : public AMIPuzzleElementBase
+class MISPISIT_API AMIPuzzleLever : public AMIPuzzleElementBase
 {
 	GENERATED_BODY()
 
 public:
-	AMILever();
+	AMIPuzzleLever();
 
 	UFUNCTION(BlueprintCallable, Category = "Lever")
 	void Toggle();
