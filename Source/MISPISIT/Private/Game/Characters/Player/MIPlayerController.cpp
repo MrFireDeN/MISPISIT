@@ -236,7 +236,7 @@ TScriptInterface<ICPP_Interactable> AMIPlayerController::CheckInteractable() &
 		return EmptyInteractable;
 	}
 
-	TScriptInterface<ICPP_Interactable> Interactable = PlayerCharacter->GetInteractComponent()->GetInteractable();
+	TScriptInterface<ICPP_Interactable> Interactable = PlayerCharacter->GetInteractComponent()->GetAttachedActor();
 
 	if (!Interactable || !IsValid(Interactable.GetObject()))
 	{
