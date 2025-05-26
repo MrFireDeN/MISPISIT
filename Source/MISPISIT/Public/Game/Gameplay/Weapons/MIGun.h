@@ -13,6 +13,8 @@ class UBoxComponent;
 class IMIGunState;
 class UTraceHelper;
 class UCPP_SpraySubsystem;
+class UAudioComponent;
+class USoundBase;
 
 UENUM(BlueprintType)
 enum class EFireMode : uint8
@@ -70,18 +72,24 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Gun")
-	UStaticMeshComponent* Mesh;
+	TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Gun")
-	UBoxComponent* BoxCollision;
+	TObjectPtr<UBoxComponent> BoxCollision;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Gun")
+	TObjectPtr<UAudioComponent> AudioComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	TObjectPtr<USoundBase> FireSound;
 	
 	/** Character currently wielding this weapon */
 	UPROPERTY(BlueprintReadOnly)
-	ACharacter* CharacterOwner;
+	TObjectPtr<ACharacter> CharacterOwner;
 
 	/** Subsystem managing shared spray patterns (Flyweight pattern) */
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Gun")
-	UCPP_SpraySubsystem* SpraySubsystem;
+	TObjectPtr<UCPP_SpraySubsystem> SpraySubsystem;
 
 	/** Type of weapon spray pattern to use */
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Gun")
@@ -104,9 +112,19 @@ protected:
 	int32 BurstShotsCount = 3;
 
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	UTraceHelper* TraceHelper;
+	TObjectPtr<UTraceHelper> TraceHelper;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	float RecoilDuration = 0.1f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
+	float RecoilStrength = 10.f;
 
 private:
 	UPROPERTY()
 	TScriptInterface<IMIGunState> CurrentState;
+
+	void ApplyRecoil();
+	FTimerHandle RecoilApplyTimer;
+	FTimerHandle RecoilDurationTimer;
 };

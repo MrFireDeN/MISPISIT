@@ -4,6 +4,7 @@
 #include "Game/Gameplay/Weapons/MIGun.h"
 
 #include "TraceHelper.h"
+#include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "Engine/DamageEvents.h"
 #include "Flyweight/CPP_FSprayPattern.h"
@@ -11,6 +12,7 @@
 #include "Game/Characters/MICharacterBase.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState_Idle.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -26,6 +28,10 @@ AMIGun::AMIGun()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 	BoxCollision->SetBoxExtent(FVector(50));
 	BoxCollision->SetupAttachment(RootComponent);
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+	AudioComponent->SetupAttachment(RootComponent);
+	AudioComponent->bOverrideAttenuation = true;
 }
 
 bool AMIGun::OnAttach()
@@ -102,6 +108,11 @@ void AMIGun::SetState(TScriptInterface<IMIGunState> NewState)
 
 void AMIGun::Fire()
 {
+	ApplyRecoil();
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSound, GetActorLocation());
+	//AudioComponent->Play();
+	ShotIndex++;
+	
 	UE_LOG(LogTemp, Log, TEXT("[%s] Fire: Shoot"), *GetName());
 
 	TOptional<FHitResult> HitResult = TraceHelper->TraceFromPlayer(5000, true);
@@ -119,21 +130,6 @@ void AMIGun::Fire()
 	// Apply damage with proper damage event
 	const FPointDamageEvent DamageEvent(Damage, Hit, GetActorForwardVector(), nullptr);
 	HitActor->TakeDamage(Damage, DamageEvent, GetInstigatorController(), this);
-
-	// Apply recoil if valid owner exists
-	if (CharacterOwner && SpraySubsystem)
-	{
-		const FCPP_SprayPattern* SprayPattern = SpraySubsystem->GetSprayPattern(SprayType);
-		if (SprayPattern)
-		{
-			const FVector2D Recoil = SprayPattern->GetSprayOffset(ShotIndex);
-			
-			CharacterOwner->AddControllerPitchInput(-Recoil.X);
-			CharacterOwner->AddControllerYawInput(Recoil.Y);
-			
-			ShotIndex++;
-		}
-	}
 }
 
 // Called when the game starts or when spawned
@@ -158,4 +154,63 @@ void AMIGun::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red,
 			TEXT("Failed to load SpraySubsystem"));
 	}
+	
+	AudioComponent->SetSound(FireSound);
+}
+
+void AMIGun::ApplyRecoil()
+{
+	if (!CharacterOwner)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s]::ApplyRecoil: missing CharacterOwner"), *GetNameSafe(this));
+		return;
+	}
+
+	if (!SpraySubsystem)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s]::ApplyRecoil: missing SpraySubsystem"), *GetNameSafe(this));
+		return;
+	}
+
+	const FCPP_SprayPattern* SprayPattern = SpraySubsystem->GetSprayPattern(SprayType);
+	
+	if (!SprayPattern)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[%s]::ApplyRecoil: invalid SprayPattern"), *GetNameSafe(this));
+		return;
+	}
+
+	const FVector2D Recoil = SprayPattern->GetSprayOffset(ShotIndex);
+	UWorld* World = GetWorld();
+	
+	if (!World) return;
+
+	World->GetTimerManager().ClearTimer(RecoilApplyTimer);
+	World->GetTimerManager().ClearTimer(RecoilDurationTimer);
+
+	World->GetTimerManager().SetTimer(RecoilDurationTimer, RecoilDuration, false);
+
+	const float DeltaTime = World->GetDeltaSeconds();
+	World->GetTimerManager().SetTimer(RecoilApplyTimer, [this, Recoil, World, DeltaTime]()
+	{
+		if (!CharacterOwner) 
+		{
+			World->GetTimerManager().ClearTimer(RecoilApplyTimer);
+			return;
+		}
+
+		float TimeRemaining = World->GetTimerManager().GetTimerRemaining(RecoilDurationTimer);
+		float RecoilProgress = FMath::Pow(FMath::Clamp(TimeRemaining / RecoilDuration, 0.0f, 1.0f), 2.0f);
+    
+		float FrameRecoil = DeltaTime * RecoilStrength * RecoilProgress;
+		CharacterOwner->AddControllerPitchInput(-Recoil.X * FrameRecoil);
+		CharacterOwner->AddControllerYawInput(Recoil.Y * FrameRecoil);
+
+		if (TimeRemaining <= 0.f)
+		{
+			World->GetTimerManager().ClearTimer(RecoilApplyTimer);
+		}
+	},
+	DeltaTime,
+	true);
 }
