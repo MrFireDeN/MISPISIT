@@ -5,6 +5,9 @@
 
 #include "Game/DesignPatterns/Behavioral/CoR/MIHealthDamageHandler.h"
 #include "Game/DesignPatterns/Behavioral/CoR/MIShieldDamageHandler.h"
+#include "Game/DesignPatterns/Behavioral/Strategy/MIBulletDamageStrategy.h"
+#include "Game/DesignPatterns/Behavioral/Strategy/MIDamageStrategy.h"
+#include "Game/Gameplay/Components/MIHealthComponent.h"
 #include "Game/Gameplay/Components/MIShieldComponent.h"
 
 
@@ -23,6 +26,15 @@ AMIEnemy_Medium::AMIEnemy_Medium(const FObjectInitializer& ObjectInitializer) : 
 	}
 	
 	ShieldComponent = CreateDefaultSubobject<UMIShieldComponent>(TEXT("ShieldComponent"));
+}
+
+void AMIEnemy_Medium::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UMIBulletDamageStrategy* BulletDamageStrategy = NewObject<UMIBulletDamageStrategy>(this);
+	BulletDamageStrategy->DamageModifier = 0.9f;
+	GetHealthComponent()->DamageStrategies.Add(BulletDamageStrategy);
 }
 
 void AMIEnemy_Medium::InitializeDamageChain_Implementation()

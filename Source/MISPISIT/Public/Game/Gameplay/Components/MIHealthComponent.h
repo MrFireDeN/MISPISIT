@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Game/DesignPatterns/Behavioral/Strategy/MIDamageStrategyProvider.h"
 #include "MIHealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeathSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChangedSignature, float, CurrentHealth, float, MaxHealth);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class MISPISIT_API UMIHealthComponent : public UActorComponent
+class MISPISIT_API UMIHealthComponent : public UActorComponent, public IMIDamageStrategyProvider
 {
 	GENERATED_BODY()
 
@@ -37,6 +38,12 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="Health")
 	virtual float GetMaxHealth() const { return MaxHealth; }
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Armor")
+	TArray<TScriptInterface<IMIDamageStrategy>> DamageStrategies;
+
+	virtual TArray<TScriptInterface<IMIDamageStrategy>> GetDamageStrategies_Implementation() const override;
 
 protected:
 	virtual void BeginPlay() override;

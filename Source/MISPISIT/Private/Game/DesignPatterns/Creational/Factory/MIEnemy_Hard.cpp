@@ -7,7 +7,9 @@
 #include "Game/DesignPatterns/Behavioral/CoR/MIArmorDamageHandler.h"
 #include "Game/DesignPatterns/Behavioral/CoR/MIHealthDamageHandler.h"
 #include "Game/DesignPatterns/Behavioral/CoR/MIShieldDamageHandler.h"
+#include "Game/DesignPatterns/Behavioral/Strategy/MIBulletDamageStrategy.h"
 #include "Game/Gameplay/Components/MIArmorComponent.h"
+#include "Game/Gameplay/Components/MIHealthComponent.h"
 #include "Game/Gameplay/Components/MIShieldComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -40,6 +42,10 @@ void AMIEnemy_Hard::BeginPlay()
 		Armor->SetupAttachment(RootComponent);
 		ArmorComponent->AddArmor(Armor);
 	}
+
+	UMIBulletDamageStrategy* BulletDamageStrategy = NewObject<UMIBulletDamageStrategy>(this);
+	BulletDamageStrategy->DamageModifier = 0.8f;
+	GetHealthComponent()->DamageStrategies.Add(BulletDamageStrategy);
 }
 
 void AMIEnemy_Hard::InitializeDamageChain_Implementation()

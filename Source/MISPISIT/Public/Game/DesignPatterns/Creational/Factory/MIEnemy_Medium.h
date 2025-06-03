@@ -19,6 +19,8 @@ public:
 	FORCEINLINE UMIShieldComponent* GetShieldComponent() const { return ShieldComponent; }
 
 protected:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(VisibleAnywhere, Category = "Enemy: Shield", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMIShieldComponent> ShieldComponent;
 

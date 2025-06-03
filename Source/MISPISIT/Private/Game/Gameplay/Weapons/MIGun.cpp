@@ -12,6 +12,7 @@
 #include "Game/Characters/MICharacterBase.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState.h"
 #include "Game/DesignPatterns/Behavioral/State/MIGunState_Idle.h"
+#include "Game/Gameplay/DamageTypes/MIDamageType_Bullet.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -115,7 +116,7 @@ void AMIGun::Fire()
 	
 	UE_LOG(LogTemp, Log, TEXT("[%s] Fire: Shoot"), *GetName());
 
-	TOptional<FHitResult> HitResult = TraceHelper->TraceFromPlayer(5000, true);
+	TOptional<FHitResult> HitResult = TraceHelper->TraceFromPlayer(5000, false);
 
 	if (!HitResult) return;
 	
@@ -128,7 +129,7 @@ void AMIGun::Fire()
 	if (!HitActor) return;
 
 	// Apply damage with proper damage event
-	const FPointDamageEvent DamageEvent(Damage, Hit, GetActorForwardVector(), nullptr);
+	const FPointDamageEvent DamageEvent(Damage, Hit, GetActorForwardVector(), UMIDamageType_Bullet::StaticClass());
 	HitActor->TakeDamage(Damage, DamageEvent, GetInstigatorController(), this);
 }
 

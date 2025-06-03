@@ -29,6 +29,11 @@ void UMIHealthComponent::Heal(const float Amount)
 	UE_LOG(LogTemp, Display, TEXT("Heal"));
 }
 
+TArray<TScriptInterface<IMIDamageStrategy>> UMIHealthComponent::GetDamageStrategies_Implementation() const
+{
+	return DamageStrategies;
+}
+
 void UMIHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
