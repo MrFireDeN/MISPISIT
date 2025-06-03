@@ -3,6 +3,10 @@
 
 #include "Game/DesignPatterns/Creational/Factory/MIEnemy_Medium.h"
 
+#include "Game/DesignPatterns/Behavioral/CoR/MIHealthDamageHandler.h"
+#include "Game/DesignPatterns/Behavioral/CoR/MIShieldDamageHandler.h"
+#include "Game/Gameplay/Components/MIShieldComponent.h"
+
 
 AMIEnemy_Medium::AMIEnemy_Medium(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -17,5 +21,21 @@ AMIEnemy_Medium::AMIEnemy_Medium(const FObjectInitializer& ObjectInitializer) : 
 	{
 		GetMesh()->SetMaterial(1, Material_02.Object);
 	}
+	
+	ShieldComponent = CreateDefaultSubobject<UMIShieldComponent>(TEXT("ShieldComponent"));
+}
+
+void AMIEnemy_Medium::InitializeDamageChain_Implementation()
+{
+	Super::InitializeDamageChain_Implementation();
+
+	auto* HealthHandler = NewObject<UMIHealthDamageHandler>(this);
+	HealthHandler->SetHealthComponent(GetHealthComponent());
+	
+	auto* ShieldHandler = NewObject<UMIShieldDamageHandler>(this);
+	ShieldHandler->SetShieldComponent(ShieldComponent);
+	ShieldHandler->SetNextHandler(HealthHandler);
+	
+	DamageHandlerChain = ShieldHandler;
 }
 
