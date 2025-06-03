@@ -119,6 +119,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Gun")
 	float RecoilStrength = 10.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"), Category = "Gun")
+	TObjectPtr<UMaterialInterface> BulletHoleMaterial;
 
 private:
 	UPROPERTY()
@@ -127,4 +130,6 @@ private:
 	void ApplyRecoil();
 	FTimerHandle RecoilApplyTimer;
 	FTimerHandle RecoilDurationTimer;
+
+	void SpawnBulletHoleDecal(const FHitResult& Hit);
 };

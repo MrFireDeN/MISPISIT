@@ -6,6 +6,7 @@
 #include "TraceHelper.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/DecalComponent.h"
 #include "Engine/DamageEvents.h"
 #include "Flyweight/CPP_FSprayPattern.h"
 #include "Flyweight/CPP_SpraySubsystem.h"
@@ -123,6 +124,8 @@ void AMIGun::Fire()
 	const FHitResult& Hit = *HitResult;
 
 	if (!Hit.IsValidBlockingHit()) return;
+
+	SpawnBulletHoleDecal(Hit);
 	
 	AActor* HitActor = Hit.GetActor();
 	
@@ -214,4 +217,27 @@ void AMIGun::ApplyRecoil()
 	},
 	DeltaTime,
 	true);
+}
+
+void AMIGun::SpawnBulletHoleDecal(const FHitResult& Hit)
+{
+	if (!Hit.GetComponent() || !BulletHoleMaterial)
+	{
+		return;
+	}
+
+	UDecalComponent* Decal = UGameplayStatics::SpawnDecalAtLocation(
+		Hit.GetComponent()->GetWorld(),
+		BulletHoleMaterial,
+		FVector(5, 4, 5),
+		Hit.Location,
+		Hit.ImpactNormal.Rotation(),
+		10.f
+	);
+
+	if (Decal)
+	{
+		Decal->SetFadeScreenSize(0.001f);
+		Decal->SetFadeOut(10.f, 1.f);
+	}
 }
