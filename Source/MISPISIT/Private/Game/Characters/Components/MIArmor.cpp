@@ -5,7 +5,7 @@
 
 UMIArmor::UMIArmor()
 {
-	
+	CurrentArmor = MaxArmor;
 }
 
 float UMIArmor::TakeDamage(const float Damage)
