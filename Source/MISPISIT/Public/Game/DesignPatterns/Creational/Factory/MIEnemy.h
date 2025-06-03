@@ -16,4 +16,6 @@ public:
 	AMIEnemy(const FObjectInitializer& ObjectInitializer);
 
 	virtual void BeginPlay() override;
+
+	virtual void HandleDeath_Implementation() override;
 };

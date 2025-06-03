@@ -6,6 +6,7 @@
 #include "Game/DesignPatterns/Creational/Factory/MIEnemy_Easy.h"
 #include "Game/DesignPatterns/Creational/Factory/MIEnemy_Hard.h"
 #include "Game/DesignPatterns/Creational/Factory/MIEnemy_Medium.h"
+#include "Game/Gameplay/MIShootingRangeSubsystem.h"
 
 AMIEnemyFactory::AMIEnemyFactory()
 {
@@ -15,11 +16,15 @@ AMIEnemyFactory::AMIEnemyFactory()
 void AMIEnemyFactory::Start()
 {
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMIEnemyFactory::SpawnEnemy, 1, true);
+
+	GetWorld()->GetSubsystem<UMIShootingRangeSubsystem>()->Start();
 }
 
 void AMIEnemyFactory::Stop()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+
+	GetWorld()->GetSubsystem<UMIShootingRangeSubsystem>()->Stop();
 }
 
 void AMIEnemyFactory::SpawnEnemy()

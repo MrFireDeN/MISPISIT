@@ -4,6 +4,7 @@
 #include "Game/DesignPatterns/Creational/Factory/MIEnemy.h"
 
 #include "Components/CapsuleComponent.h"
+#include "Game/Gameplay/MIShootingRangeSubsystem.h"
 
 
 AMIEnemy::AMIEnemy(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -45,4 +46,11 @@ void AMIEnemy::BeginPlay()
 	{
 		Destroy();
 	}, 5, false);
+}
+
+void AMIEnemy::HandleDeath_Implementation()
+{
+	Super::HandleDeath_Implementation();
+
+	GetWorld()->GetSubsystem<UMIShootingRangeSubsystem>()->AddScore();
 }
